@@ -332,5 +332,11 @@
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
+@if (data$ | async; as data){
+  @for(row of data; track row.summary){
+    <p>{{row | json }}</p>
+  }
+}
+
 
 <router-outlet />
