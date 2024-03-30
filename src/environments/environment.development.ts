@@ -1,3 +1,3 @@
 export const environment = {
-  baseApiUrl: 'https://airportwarehouseapi.onrender.com/'
+  baseApiUrl: 'https://localhost:44379/api/'
 };
