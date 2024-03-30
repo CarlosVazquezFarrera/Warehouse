@@ -1,0 +1,12 @@
+{
+  "errors": {
+    "emploeeNumber": {
+      "required": "The emploee number is required",
+      "minlength": "The employee number must be at least 6 characters long",
+      "onlyNumbers": "The employee number must be numbers only"
+    },
+    "password": {
+      "required": "The password is required"
+    }
+  }
+}

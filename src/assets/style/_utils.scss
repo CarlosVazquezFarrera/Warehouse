@@ -1,0 +1,22 @@
+@use 'variables' as v;
+
+@mixin shadow() {
+  box-shadow: 4px 6px 26px 4px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 4px 6px 26px 4px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 6px 26px 4px rgba(0,0,0,0.75);
+}
+
+@mixin border-radius($radius: v.$border-radius-default) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin border($color) {
+  border: 1px solid $color;
+}
+
+@mixin rounded-border($color: v.$primary-color, $radius: v.$border-radius-default) {
+  @include border($color);
+  @include border-radius($radius)
+}

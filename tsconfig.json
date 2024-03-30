@@ -19,6 +19,14 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@validators/*": ["./src/app/shared/validators/*"],
+      "@components/*": ["./src/app/components/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@types/*": ["./src/app/types/*"],
+    },
     "lib": [
       "ES2022",
       "dom"

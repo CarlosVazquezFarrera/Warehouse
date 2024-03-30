@@ -1,0 +1,65 @@
+@use 'media-queries' as mq;
+@use 'utils' as ut;
+
+.login-container {
+  display: flex;
+  justify-content: center;
+
+  @include mq.lg() {
+    padding-top: 2%;
+  }
+
+  .login {
+    background-color: white;
+
+    @include mq.lg() {
+      @include ut.shadow();
+      @include ut.border-radius();
+    }
+
+    @include mq.sm() {
+      width: 90dvw;
+    }
+
+    @include mq.lg() {
+      display: flex;
+      justify-content: space-around;
+
+    }
+
+    .login-img {
+      margin-bottom: 5%;
+      padding: 2%;
+
+      @include mq.sm() {
+        padding: 5%;
+      }
+
+      display: flex;
+      justify-content: center;
+
+      img {
+        width: 85dvw;
+
+        @include mq.sm() {
+          width: 80dvw;
+        }
+
+        @include mq.lg() {
+          width: 25dvw;
+        }
+      }
+
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      @include mq.lg() {
+        justify-content: center;
+        min-width: 25%;
+        row-gap: 3%;
+      }
+    }
+  }
+}

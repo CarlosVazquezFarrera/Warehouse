@@ -1,0 +1,28 @@
+<main class="login-container">
+  <form [formGroup]="formLogin" class="login" autocomplete="off">
+    <section class="login-img">
+      <img src="assets/united-logo.png">
+    </section>
+    <section class="login-form">
+      <!-- Employee number -->
+      <mat-form-field>
+        <mat-label>Employee number</mat-label>
+        <input matInput type="text" formControlName="emploeeNumber">
+        <mat-icon matSuffix>account_circle</mat-icon>
+        @if(emploeeNumber.touched && emploeeNumber.invalid){
+        <mat-error>{{errorEmploeeNumber()}}</mat-error>
+        }
+      </mat-form-field>
+      <!-- Password -->
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="passWord">
+        <mat-icon matSuffix>password</mat-icon>
+        <mat-error>{{errorpassWord}}</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="login()">
+        Login
+      </button>
+    </section>
+  </form>
+</main>
