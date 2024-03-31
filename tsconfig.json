@@ -26,6 +26,11 @@
       "@services/*": ["./src/app/services/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@types/*": ["./src/app/types/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@store/*": ["./src/app/store/*"],
+      "@guards/*": ["./src/app/guards/*"],
+      "@routes/*": ["./src/app/routes/*"],
+
     },
     "lib": [
       "ES2022",

@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { LoadingService } from '@services/loading.service';
+import { MessageService } from '@services/message.service';
 import { catchError, finalize, throwError } from 'rxjs';
 
 let activePetitions: number = 0;
@@ -9,6 +10,8 @@ let anyError: boolean = false;
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   let loadingService = inject(LoadingService);
+  let messageService = inject(MessageService);
+
 
   if (!lodingDisplayed){
     loadingService.showLoadingScreen();
@@ -25,14 +28,18 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
     finalize(()=>{
       activePetitions--;
       if (activePetitions == 0) {
-        loadingService.hideLoadingScreen();
+        loadingService.closeModal();
         lodingDisplayed = false;
       }
     }),
     catchError((error: HttpErrorResponse) => {
-      if (error.status !== 200) {
+      if (error.status === 0) {
         anyError = true;
-        console.log("Error")
+        messageService.showMessage('Error con el servidor. Llame al soporte');
+      }
+      else if (error.status === 404) {
+        anyError = true;
+        messageService.showMessage('Recurso no encontrado', 'Ha ocurrido algo');
       }
       return throwError(() => new Error(error.message));
     })

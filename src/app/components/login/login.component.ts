@@ -9,6 +9,7 @@ import * as jsonErrors from './login-metadata.json';
 import { onlyNumbers } from '@validators/only-numbers';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { LoginService } from '@services/login.service';
+import { WarehouseStore } from '@store/warehouse.store';
 
 
 @Component({
@@ -31,19 +32,20 @@ export class LoginComponent {
   }
   //#region Properties
   public fb = inject(FormBuilder);
+  private store = inject(WarehouseStore);
   private loginService:LoginService = inject(LoginService);
 
   public formLogin = this.fb.group(
     {
-      emploeeNumber: ['123123', [Validators.required, Validators.minLength(6), onlyNumbers()]],
-      passWord: ['asdasdasd', [Validators.required]]
+      emploeeNumber: ['303683', [Validators.required, Validators.minLength(6), onlyNumbers()]],
+      passWord: ['Lish2349', [Validators.required]]
     },
   )
 
   public emploeeNumber: AbstractControl = this.formLogin.get('emploeeNumber')!;
   public passWord: AbstractControl = this.formLogin.get('passWord')!;
 
-  public errorEmploeeNumber = signal(jsonErrors.errors.emploeeNumber.required);;
+  public errorEmploeeNumber = signal(jsonErrors.errors.emploeeNumber.required);
   public errorpassWord = jsonErrors.errors.password.required;
   //#endregion
 
@@ -53,9 +55,9 @@ export class LoginComponent {
       this.formLogin.markAllAsTouched();
     if (this.formLogin.invalid)
       return;
-
-   const c = await this.loginService.login(this.emploeeNumber.value, this.passWord.value);
-   console.log(c)
+    this.store.login(this.emploeeNumber.value, this.passWord.value)
+  //  const agentUser = await this.loginService.login(this.emploeeNumber.value, this.passWord.value);
+  //  console.log(agentUser)
   }
   //#endregion
 }
