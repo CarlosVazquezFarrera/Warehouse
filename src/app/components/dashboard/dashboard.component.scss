@@ -1,0 +1,33 @@
+@use 'media-queries' as mq;
+
+.dasboard-container {
+  height: 93dvh;
+
+  @include mq.md() {
+    height: 94dvh;
+  }
+
+  @include mq.lg() {
+    height: 95dvh;
+  }
+
+  .mat-drawer {
+    width: 85dvw;
+
+    @include mq.md() {
+      width: 50dvw;
+    }
+
+    @include mq.lg() {
+      width: 35dvh;
+    }
+  }
+}
+mat-drawer {
+  mat-nav-list {
+    h4 {
+      opacity: 1;
+      margin: auto 10px;
+    }
+  }
+}

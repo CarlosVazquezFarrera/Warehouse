@@ -1,2 +1,9 @@
-<p>dashboard works!</p>
-{{store.agent().name}}
+<app-header />
+<mat-drawer-container class="dasboard-container" [hasBackdrop]="true">
+  <mat-drawer class="drawer" [disableClose]="true" mode="over" [opened]="store.isOpen()">
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet />
+    Hola
+  </mat-drawer-content>
+</mat-drawer-container>

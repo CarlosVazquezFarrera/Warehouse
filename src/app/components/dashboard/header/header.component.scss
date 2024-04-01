@@ -1,0 +1,13 @@
+@use 'media-queries' as mq;
+.spacer {
+  flex: 1 1 auto;
+}
+.header {
+  height: 7dvh;
+  @include mq.md() {
+    height: 6dvh;
+  }
+  @include mq.lg() {
+    height: 5dvh;
+  }
+}

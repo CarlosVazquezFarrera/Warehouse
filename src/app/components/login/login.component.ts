@@ -10,7 +10,10 @@ import { onlyNumbers } from '@validators/only-numbers';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { LoginService } from '@services/login.service';
 import { WarehouseStore } from '@store/warehouse.store';
-
+import { Router } from '@angular/router';
+import { AppRoutes } from '@routes/app-routers';
+import { AgentInfo } from '@models/api/agentInfo';
+import { SesionService } from '@services/sesion.service';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +36,9 @@ export class LoginComponent {
   //#region Properties
   public fb = inject(FormBuilder);
   private store = inject(WarehouseStore);
-  private loginService:LoginService = inject(LoginService);
+  private router = inject(Router);
+  private sesionService = inject(SesionService);
+
 
   public formLogin = this.fb.group(
     {
@@ -55,9 +60,11 @@ export class LoginComponent {
       this.formLogin.markAllAsTouched();
     if (this.formLogin.invalid)
       return;
-    this.store.login(this.emploeeNumber.value, this.passWord.value)
-  //  const agentUser = await this.loginService.login(this.emploeeNumber.value, this.passWord.value);
-  //  console.log(agentUser)
+    const user = await this.store.login(this.emploeeNumber.value, this.passWord.value);
+    if (user) {
+      this.sesionService.login(user);
+      this.router.navigateByUrl(AppRoutes.dashboard);
+    }
   }
   //#endregion
 }
