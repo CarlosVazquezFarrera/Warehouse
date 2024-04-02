@@ -1,16 +1,17 @@
 import { Component, Inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MessageParams } from '../models/messageParams';
 
 @Component({
-  selector: 'app-message',
+  selector: 'app-confirmation',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
-  templateUrl: './message.component.html',
-  styleUrl: './message.component.scss'
+  imports: [MatDialogModule, MatButtonModule, MatDividerModule],
+  templateUrl: './confirmation.component.html',
+  styleUrl: './confirmation.component.scss'
 })
-export class MessageComponent {
+export class ConfirmationComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: MessageParams) {
     this.message.set(data.message);
     this.tittle.set(data.title);

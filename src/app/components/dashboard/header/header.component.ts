@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { SesionService } from '@services/sesion.service';
 import { AppRoutes } from '@routes/app-routers';
+import { MessageService } from '@services/message.service';
 
 @Component({
   selector: 'app-header',
@@ -19,14 +20,19 @@ export class HeaderComponent {
   public store = inject(WarehouseStore);
   private router = inject(Router);
   private sesionService = inject(SesionService);
+  public messageService = inject(MessageService);
 
   public toggle(): void {
     this.store.toggleMenu();
   }
-  public logOut(): void {
-    this.sesionService.logOut();
-    this.store.logOut();
-    this.router.navigateByUrl(AppRoutes.login);
+  public async logOut(): Promise<void> {
+    const response = await this.messageService.confirmationMessage('Are you sure you want to log out?', 'Warning');
+    if (response) {
+      this.sesionService.logOut();
+      this.store.logOut();
+      this.router.navigateByUrl(AppRoutes.login);
+    }
+
   }
 }
 

@@ -30,6 +30,9 @@
       "@store/*": ["./src/app/store/*"],
       "@guards/*": ["./src/app/guards/*"],
       "@routes/*": ["./src/app/routes/*"],
+      "@pipes/*": ["./src/app/pipes/*"],
+      "@directives/*": ["./src/app/directives/*"],
+
 
     },
     "lib": [

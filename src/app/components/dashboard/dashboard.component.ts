@@ -1,19 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { WarehouseStore } from '@store/warehouse.store';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './header/header.component';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
-import { RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterOutlet } from '@angular/router';
+import { SidebarItemComponent } from '@shared/components/sidebar-item/sidebar-item.component';
+import { DashboardItem } from '@models/custom/dashBoardItem';
+import { getChildRoutePath } from '@routes/app-routers';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatSidenavModule, MatFormFieldModule, MatSelectModule, MatButtonModule, HeaderComponent, MatListModule, MatDividerModule, RouterOutlet, MatIconModule],
+  imports: [MatSidenavModule, HeaderComponent, RouterOutlet, MatListModule, MatIconModule, SidebarItemComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -22,4 +21,10 @@ export class DashboardComponent {
     this.store.agent()
   }
   public store = inject(WarehouseStore);
+
+  public menuItems: Array<DashboardItem> = [
+    { url: getChildRoutePath("dashboard", "inventory"), icon: 'inventory_2', text: 'Inventory'},
+    { url: getChildRoutePath("dashboard", "supplies"), icon: 'list', text: 'Supplies'}
+
+  ]
 }

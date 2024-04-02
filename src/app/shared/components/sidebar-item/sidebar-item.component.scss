@@ -1,0 +1,14 @@
+@use 'variables' as v;
+.item {
+  &:hover {
+    cursor: pointer;
+    background-color: v.$hover-color-translucent;
+  }
+  &.is-activated {
+    background-color: v.$color-400;
+    mat-icon, div{
+      color: white;
+    }
+
+  }
+}

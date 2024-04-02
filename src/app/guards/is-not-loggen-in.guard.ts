@@ -8,5 +8,5 @@ export const isNotLoggenInGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   if (!sesionService.isLoggedIn)
     return true;
-  return router.createUrlTree([`/${AppRoutes.dashboard}`]);
+  return router.createUrlTree([`/${AppRoutes.dashboard.path}`]);
 };

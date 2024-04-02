@@ -15,7 +15,6 @@ export class LoginService {
   }
 
   private http: HttpClient = inject(HttpClient);
-  private injector = inject(Injector);
   private apiUrl: string;
 
 

@@ -33,13 +33,16 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       }
     }),
     catchError((error: HttpErrorResponse) => {
+      console.log(error)
       if (error.status === 0) {
         anyError = true;
         messageService.showMessage('Error con el servidor. Llame al soporte');
       }
-      else if (error.status === 404) {
-        anyError = true;
-        messageService.showMessage('Recurso no encontrado', 'Ha ocurrido algo');
+      else {
+        if (error.error.status === 460) {
+          anyError = true;
+          messageService.showMessage('Revise sus credenciales', 'Ha ocurrido algo');
+        }
       }
       return throwError(() => new Error(error.message));
     })

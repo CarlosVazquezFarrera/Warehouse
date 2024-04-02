@@ -63,7 +63,7 @@ export class LoginComponent {
     const user = await this.store.login(this.emploeeNumber.value, this.passWord.value);
     if (user) {
       this.sesionService.login(user);
-      this.router.navigateByUrl(AppRoutes.dashboard);
+      this.router.navigateByUrl(AppRoutes.dashboard.path);
     }
   }
   //#endregion
