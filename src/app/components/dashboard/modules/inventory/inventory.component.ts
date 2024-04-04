@@ -10,19 +10,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Airport } from '@models/DTO/airport';
 import { DasboardStore } from '@store/dashboard.store';
-import { JsonPipe } from '@angular/common';
-import { ResponsiveMatTableDirective } from '@directives/responsive-mat-table.directive';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatTableModule, MatDividerModule, MatPaginatorModule, MatIconModule, MatButtonModule, ReactiveFormsModule, ResponsiveMatTableDirective],
+  imports: [MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatTableModule, MatDividerModule, MatPaginatorModule, MatIconModule, MatButtonModule, ReactiveFormsModule],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
 })
