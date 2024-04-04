@@ -5,9 +5,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { WarehouseStore } from '@store/warehouse.store';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { SesionService } from '@services/sesion.service';
 import { AppRoutes } from '@routes/app-routers';
 import { MessageService } from '@services/message.service';
+import { SessionService } from '@services/session.service';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +19,7 @@ import { MessageService } from '@services/message.service';
 export class HeaderComponent {
   public store = inject(WarehouseStore);
   private router = inject(Router);
-  private sesionService = inject(SesionService);
+  private sessionService = inject(SessionService);
   public messageService = inject(MessageService);
 
   public toggle(): void {
@@ -28,7 +28,7 @@ export class HeaderComponent {
   public async logOut(): Promise<void> {
     const response = await this.messageService.confirmationMessage('Are you sure you want to log out?', 'Warning');
     if (response) {
-      this.sesionService.logOut();
+      this.sessionService.logOut();
       this.store.logOut();
       this.router.navigateByUrl(AppRoutes.login);
     }

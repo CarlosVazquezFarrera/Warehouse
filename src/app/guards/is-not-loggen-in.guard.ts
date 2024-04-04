@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AppRoutes } from '@routes/app-routers';
-import { SesionService } from '@services/sesion.service';
+import { SessionService } from '@services/session.service';
 
 export const isNotLoggenInGuard: CanActivateFn = (route, state) => {
-  const sesionService = inject(SesionService);
+  const sessionService = inject(SessionService);
   const router = inject(Router);
-  if (!sesionService.isLoggedIn)
+  if (!sessionService.isLoggedIn)
     return true;
   return router.createUrlTree([`/${AppRoutes.dashboard.path}`]);
 };

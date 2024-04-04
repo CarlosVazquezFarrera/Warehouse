@@ -32,7 +32,7 @@
       "@routes/*": ["./src/app/routes/*"],
       "@pipes/*": ["./src/app/pipes/*"],
       "@directives/*": ["./src/app/directives/*"],
-
+      "@environments/*": ["./src/environments/*"],
 
     },
     "lib": [

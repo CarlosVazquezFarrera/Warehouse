@@ -3,18 +3,16 @@ import { Router } from "@angular/router";
 import { Agent } from "@models/DTO/agent";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { LoginService } from "@services/login.service";
-import { SesionService } from "@services/sesion.service";
 import { AgentInfo } from '@models/api/agentInfo';
+import { SessionService } from "@services/session.service";
 
 type Warehouse = {
   agent: Agent,
   isOpen: boolean,
-  isLoading: boolean
 }
 
 const initialState: Warehouse = {
   isOpen: false,
-  isLoading: false,
   agent: {
     id: '',
     agentNumber: 0,
@@ -28,12 +26,11 @@ const initialState: Warehouse = {
 
 const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
   factory: () => {
-    let sesionService = inject(SesionService);
-    const agent = sesionService.getAgentUser();
+    let sessionService = inject(SessionService);
+    const agent = sessionService.getAgentUser();
     if (agent) {
       const loggedInState: Warehouse = {
-        isOpen: true,
-        isLoading: false,
+        isOpen: false,
         agent
       }
       return loggedInState;
@@ -46,11 +43,10 @@ const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
 export const WarehouseStore = signalStore(
   { providedIn: 'root' },
   withState(() => inject(WarehouseState)),
-  withMethods((store, loginService = inject(LoginService), router = inject(Router), sesionService = inject(SesionService)) => ({
+  withMethods((store, loginService = inject(LoginService)) => ({
     async login(agentNumber: number, passWord: string): Promise<AgentInfo> {
-      patchState(store, { isLoading: true });
       const agentInfo = await loginService.login(agentNumber, passWord);
-      patchState(store, { agent: agentInfo.agent, isLoading: false });
+      patchState(store, { agent: agentInfo.agent});
       return agentInfo;
     },
     logOut(): void {

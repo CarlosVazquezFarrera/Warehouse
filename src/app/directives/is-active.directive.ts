@@ -15,7 +15,6 @@ export class IsActiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
     if (changes['url'].currentValue && changes['url'].firstChange)
       this.toggleClass();
   }

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector, inject } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { lastValueFrom } from 'rxjs';
 import { AgentInfo } from '@models/api/agentInfo';
 import { AgentLogin } from '@models/custom/agentLogin';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'

@@ -22,12 +22,28 @@
       width: 35dvh;
     }
   }
-}
-mat-drawer {
-  mat-nav-list {
-    h4 {
-      opacity: 1;
-      margin: auto 10px;
+
+  mat-drawer {
+    mat-nav-list {
+      h4 {
+        opacity: 1;
+        margin: auto 10px;
+      }
+    }
+  }
+
+  .main {
+    .app-container {
+      margin-right: auto;
+      margin-left: auto;
+      padding: 15px 0;
+      width: 90%;
+      @include mq.md() {
+        width: 85%;
+      }
+      @include mq.lg() {
+        width: 70%;
+      }
     }
   }
 }

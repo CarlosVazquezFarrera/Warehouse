@@ -1,0 +1,27 @@
+@use 'media-queries' as mq;
+.inventory-container {
+  .data {
+    overflow-x:auto;
+    table {
+      width: 100%;
+    }
+    mat-paginator {
+
+    }
+  }
+
+  .inventory-options {
+    @include mq.lg() {
+      display: flex;
+      column-gap: 20px;
+    }
+    .search-row{
+      display: flex;
+      justify-content: space-between;
+      column-gap: 10px;
+      mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+}

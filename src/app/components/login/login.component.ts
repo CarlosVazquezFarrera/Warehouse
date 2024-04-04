@@ -8,12 +8,10 @@ import { JsonPipe } from '@angular/common';
 import * as jsonErrors from './login-metadata.json';
 import { onlyNumbers } from '@validators/only-numbers';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
-import { LoginService } from '@services/login.service';
 import { WarehouseStore } from '@store/warehouse.store';
 import { Router } from '@angular/router';
 import { AppRoutes } from '@routes/app-routers';
-import { AgentInfo } from '@models/api/agentInfo';
-import { SesionService } from '@services/sesion.service';
+import { SessionService } from '@services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +35,7 @@ export class LoginComponent {
   public fb = inject(FormBuilder);
   private store = inject(WarehouseStore);
   private router = inject(Router);
-  private sesionService = inject(SesionService);
+  private sessionService = inject(SessionService);
 
 
   public formLogin = this.fb.group(
@@ -62,7 +60,7 @@ export class LoginComponent {
       return;
     const user = await this.store.login(this.emploeeNumber.value, this.passWord.value);
     if (user) {
-      this.sesionService.login(user);
+      this.sessionService.login(user);
       this.router.navigateByUrl(AppRoutes.dashboard.path);
     }
   }

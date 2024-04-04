@@ -13,6 +13,7 @@ export const routes: Routes = [
     children: [
       { path: AppRoutes.dashboard.children.inventory, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.supplies, loadComponent: () => import('@components/dashboard/modules/supplies/supplies.component').then(s => s.SuppliesComponent) },
+      { path: AppRoutes.dashboard.children.agents, loadComponent: () => import('@components/dashboard/modules/agents/agents.component').then(a => a.AgentsComponent) },
       { path: '', redirectTo: AppRoutes.dashboard.children.inventory, pathMatch: 'full' }
 
     ]

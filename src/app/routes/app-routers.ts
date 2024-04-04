@@ -1,5 +1,5 @@
 type Parents = 'dashboard';
-type DashboardChilden = 'inventory' | 'supplies';
+type DashboardChilden = 'inventory' | 'supplies' | 'agents';
 const dashboard: string = 'dashboard';
 export const AppRoutes = {
   login: 'login',
@@ -8,6 +8,7 @@ export const AppRoutes = {
     children: {
       inventory: 'inventory',
       supplies: 'supplies',
+      agents: 'agents'
     }
   }
 }
