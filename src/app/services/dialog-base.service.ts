@@ -6,7 +6,7 @@ export abstract class DialogBaseService<T> {
 
 
   protected dialog: MatDialog = inject(MatDialog)
-  protected config:MatDialogConfig = {
+  protected config: MatDialogConfig = {
     disableClose: true,
   }
   protected dialogRef!: MatDialogRef<T, unknown>;

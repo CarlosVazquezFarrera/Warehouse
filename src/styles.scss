@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@use 'media-queries' as mq;
 html,
 body {
   height: 100%;
@@ -13,5 +13,24 @@ body {
   width: 100%;
 }
 .w-100 {
+  width: 100%;
+}
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in-right {
+  animation: fadeInRight 0.5s ease-in-out;
+}
+.modal-lateral {
+  animation: fadeInRight 0.5s ease-in-out;
+  height: 100dvh;
   width: 100%;
 }

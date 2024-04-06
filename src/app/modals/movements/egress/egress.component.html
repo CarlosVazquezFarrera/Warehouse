@@ -1,0 +1,44 @@
+<mat-stepper orientation="vertical" [linear]="true" #stepper>
+  <mat-step [stepControl]="petitionerForm">
+    <form [formGroup]="petitionerForm">
+      <ng-template matStepLabel>Petitioner's agent number</ng-template>
+      <mat-form-field class="w-100">
+        <mat-label>Agent number</mat-label>
+        <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="petitionerId"
+          [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          @for (option of filteredOptions | async; track $index) {
+          <mat-option [value]="option.agentNumber">
+            {{option.agentNumber}} | {{option.name}} {{option.lastName}}
+          </mat-option>
+          }
+
+        </mat-autocomplete>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="engressForm">
+    <form [formGroup]="engressForm">
+      <ng-template matStepLabel>How many items are?</ng-template>
+      <mat-form-field class="w-100">
+        <mat-label>Number</mat-label>
+        <input [autocomplete]="false" matInput formControlName="quantity" placeholder="Item count" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Confirmation</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button>Accept</button>
+    </div>
+  </mat-step>
+</mat-stepper>

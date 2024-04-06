@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Airport } from '@models/DTO/airport';
 import { DasboardStore } from '@store/dashboard.store';
+import { ModalsService } from '@services/modals.service';
 
 @Component({
   selector: 'app-inventory',
@@ -22,9 +23,12 @@ export class InventoryComponent implements OnInit {
   ngOnInit(): void {
     this.dashBoarStore.getAiports();
     this.airportId.valueChanges.subscribe(idAirport => this.dashBoarStore.getInventoryByAirport(idAirport))
+    this.modalsService.showLateralModal();
+
   }
   public dashBoarStore = inject(DasboardStore);
   private fb = inject(FormBuilder);
+  private modalsService = inject(ModalsService);
 
   public ariports: Airport[] = [];
 
@@ -32,13 +36,14 @@ export class InventoryComponent implements OnInit {
     airportId: [''],
     search: ['']
   });
-  displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
+  public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
 
   private get airportId(): AbstractControl {
     return this.form.get('airportId')!;
   }
 
   public itemClicked(item:Airport): void {
+    this.modalsService.showLateralModal();
     console.log(item)
   }
 }

@@ -1,0 +1,22 @@
+<app-modal-header></app-modal-header>
+<mat-tab-group [tabIndex]="2">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>input</mat-icon>
+      Engress
+    </ng-template>
+
+    <app-egress />
+
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>local_shipping</mat-icon>
+      <span>
+        Entry
+      </span>
+    </ng-template>
+    <!-- <app-egress /> -->
+  </mat-tab>
+</mat-tab-group>
