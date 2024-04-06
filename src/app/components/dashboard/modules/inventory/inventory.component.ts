@@ -23,7 +23,7 @@ export class InventoryComponent implements OnInit {
   ngOnInit(): void {
     this.dashBoarStore.getAiports();
     this.airportId.valueChanges.subscribe(idAirport => this.dashBoarStore.getInventoryByAirport(idAirport))
-    this.modalsService.showLateralModal();
+    //this.modalsService.showLateralModal();
 
   }
   public dashBoarStore = inject(DasboardStore);
