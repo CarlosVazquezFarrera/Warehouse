@@ -17,6 +17,6 @@ export class AirportService {
   private apiUrl: string;
 
   public async getAll(): Promise<Array<Airport>> {
-    return await lastValueFrom(this.http.get<Airport[]>(`https://localhost:44379/api/Airport`));
+    return await lastValueFrom(this.http.get<Airport[]>(`${this.apiUrl}`));
   }
 }
