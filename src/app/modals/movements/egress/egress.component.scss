@@ -41,7 +41,6 @@ main.confirmation {
 
       section {
         .tittle-mobile {
-          //font-weight: bold;
           @include mq.md() {
             display: none;
           }

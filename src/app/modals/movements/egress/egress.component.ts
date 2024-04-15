@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,6 +20,7 @@ import { WarehouseStore } from '@store/warehouse.store';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
+import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 
 
 @Component({
@@ -48,6 +49,10 @@ import { ModalsService } from '@services/modals.service';
 })
 export class EgressComponent implements OnInit, AfterViewInit {
 
+  constructor() {
+    ErrorMessageHandle(this.quantity, this.errorEgress, json.errors.egress)
+  }
+
   async ngOnInit(): Promise<void> {
     await this.store.getAgents();
     this.filteredOptions = this.petitionerId.valueChanges.pipe(
@@ -72,20 +77,19 @@ export class EgressComponent implements OnInit, AfterViewInit {
   public warehouseStore = inject(WarehouseStore);
   private messageService = inject(MessageService);
   private modalService = inject(ModalsService);
+  public tooltipFinal = json.tooltip.final;
 
-  agents: Array<Agent> = [];
   filteredOptions!: Observable<Agent[]>;
+
+  public errorPetitioner = json.errors.petitioner.required;
+  public errorEgress = signal(json.errors.egress.required);
 
   public petitionerForm = this.fb.group({
     petitionerId: ['', Validators.required],
   });
   public egressForm = this.fb.group({
-    quantity: ['', Validators.required]
+    quantity: ['', [Validators.required, Validators.max(this.store.supplySelected()?.currentQuantity!)]]
   });
-
-  public errorPetitioner = json.errors.petitioner.required;
-  public errorEgress = json.errors.egress.required;
-  public tooltipFinal = json.tooltip.final;
   //#endregion
 
   //#region Methods
@@ -113,6 +117,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     const response = await this.messageService.confirmationMessage('Are you sure you want to continue?', 'Warning');
     if (response) {
       this.modalService.closeModal();
+      this.store.newEgressRegistered(parseInt(this.quantity.value!));
     }
   }
 

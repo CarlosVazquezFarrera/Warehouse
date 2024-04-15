@@ -1,13 +1,14 @@
 {
   "errors": {
     "egress": {
-      "required": "This is required"
+      "required": "This is required",
+      "max": "Insufficient stock"
     },
     "petitioner": {
       "required": "This is required"
     }
   },
   "tooltip": {
-    "final": "Fill in all fields"
+    "final": "Check the fields"
   }
 }

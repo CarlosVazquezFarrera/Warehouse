@@ -6,7 +6,7 @@
         <mat-label>Agent number</mat-label>
         <input type="number" placeholder="Pick one" aria-label="Number" matInput formControlName="petitionerId"
           [matAutocomplete]="auto" required>
-        @if (petitionerId.hasError('required')){
+        @if (petitionerId.touched && petitionerId.invalid){
         <mat-error>{{errorPetitioner}}</mat-error>
         }
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayAgentNumber">
@@ -29,7 +29,9 @@
       <mat-form-field class="w-100">
         <mat-label>Number</mat-label>
         <input matInput formControlName="quantity" placeholder="Item count" required type="number">
-        <mat-error>{{errorEgress}}</mat-error>
+        @if (quantity.touched && quantity.invalid){
+        <mat-error>{{errorEgress()}}</mat-error>
+        }
       </mat-form-field>
       <div>
         <button mat-button matStepperPrevious>Back</button>
@@ -92,8 +94,10 @@
       <button mat-button matStepperPrevious>Back</button>
       <button [class.cursor-not-allowed]="formsInvalid"
               mat-button
-              [disabled]="formsInvalid"
+              [disabled]="!store.newAgressValid()"
               cdkFocusInitial
+              [matTooltip]="tooltipFinal"
+              [matTooltipDisabled]="!formsInvalid"
         (click)="completeEgress()">Accept</button>
     </div>
   </mat-step>

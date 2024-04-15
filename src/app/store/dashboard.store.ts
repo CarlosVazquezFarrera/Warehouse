@@ -54,7 +54,18 @@ export const DasboardStore = signalStore(
     setSupplyId(supplyId: string): void {
       const newEgress: Egress = { ...store.newEgress(), supplyId }
       patchState(store, { newEgress })
-    }
+    },
+    newEgressRegistered(currentQuantity: number): void {
+      const inventory = store.inventory().map(i => {
+        if (i.id == store.newEgress().supplyId) {
+          const newTotal = i.currentQuantity - currentQuantity;
+          const newEgress: InventoryItem = { ...i, currentQuantity: newTotal }
+          return newEgress;
+        }
+        return i
+      });
+      patchState(store, { inventory })
+    },
   })),
   withComputed(({ inventory, newEgress, agents }) => ({
     inventoryCount: computed(() => inventory().length),
@@ -67,7 +78,7 @@ export const DasboardStore = signalStore(
       const agent = agents().find(a => a.id == id);
       return `${agent?.agentNumber} - ${agent?.name} ${agent?.lastName}`;
     }),
-    newAgressValid: computed(()=>{
+    newAgressValid: computed(() => {
       return newEgress.amountRemoved() != 0 && newEgress.petitionerId() != ''
     })
   }))
