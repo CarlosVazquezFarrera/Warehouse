@@ -8,12 +8,16 @@
 
 main.confirmation {
   padding-right: 36px;
+
   .completed {
     max-height: 45dvh;
     overflow-y: scroll;
-    h2 {
-      display: none;
+    @include mq.md() {
+      max-height:unset;
+      overflow-y:unset;
     }
+
+
     .details {
       height: 100%;
       display: flex;
@@ -23,10 +27,10 @@ main.confirmation {
         display: grid;
         grid-template-areas: 'petitioner approver' 'supply supply';
         column-gap: 5px;
+        row-gap: 15px;
       }
 
-      section h2,
-      mat-divider {
+      section h2,mat-divider {
         display: none;
 
         @include mq.sm() {
@@ -35,17 +39,24 @@ main.confirmation {
 
       }
 
-      .approver {
-        .approver-mobile {
+      section {
+        .tittle-mobile {
+          //font-weight: bold;
           @include mq.md() {
             display: none;
           }
         }
 
-        .logged {
+        .tittle-tablet-desktop {
           display: none;
+          @include mq.md() {
+            display: block;
+          }
         }
 
+      }
+
+      .approver {
         @include mq.md() {
           grid-area: approver;
         }
@@ -65,12 +76,16 @@ main.confirmation {
 
         @include mq.md() {
           grid-area: supply;
+          .supply-info {
+            display: flex;
+            justify-content: space-between;
+          }
         }
       }
     }
   }
-  section.incomplete {
-  }
+
+  section.incomplete {}
 
 
   section div {

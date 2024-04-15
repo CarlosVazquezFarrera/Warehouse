@@ -68,7 +68,6 @@ export const DasboardStore = signalStore(
       return `${agent?.agentNumber} - ${agent?.name} ${agent?.lastName}`;
     }),
     newAgressValid: computed(()=>{
-      console.log(newEgress.amountRemoved());
       return newEgress.amountRemoved() != 0 && newEgress.petitionerId() != ''
     })
   }))

@@ -42,45 +42,42 @@
     <main class="confirmation">
       @if(store.newAgressValid()){
       <div class="completed">
-        <h2>Details</h2>
         <div class="details">
-          <section class="petitioner">
-            <h2>Petitioner</h2>
-            <mat-divider />
-            <div>
-              <p><em>Requester info</em></p>
-              <strong>
-                <p><em>{{store.petitionerSelected()}}</em></p>
-              </strong>
-            </div>
-          </section>
-          <section class="approver">
-            <h2>Approver</h2>
-            <mat-divider />
-            <div>
-              <p class="approver-mobile"><em>Approver info</em></p>
-              <p class="logged"><strong><em>Logged in acount</em></strong></p>
-              <strong>
-                <p><em>
-                    {{warehouseStore.agent.agentNumber()}} - {{warehouseStore.fullName()}}
-                  </em></p>
-              </strong>
-            </div>
-          </section>
           <section class="supply">
             <h2>Supply</h2>
             <mat-divider />
             <div class="supply-info">
-              <p><em>Supply</em></p>
-              <strong>
-                <p><em>{{store.supplySelected()?.name}}</em></p>
-              </strong>
-              <p><em>Requested quantity </em></p>
-              <strong>
-                <p><em>{{store.newEgress().amountRemoved}}</em></p>
-              </strong>
+              <div>
+                <p class="tittle-tablet-desktop"><em>Name</em></p>
+                <p class="tittle-mobile"><em>Supply</em></p>
+                <p class="text-bold"><em>{{store.supplySelected()?.name}}</em></p>
+              </div>
+              <div>
+                <p><em>Requested quantity </em></p>
+                <p class="text-bold"><em>{{store.newEgress().amountRemoved}}</em></p>
+              </div>
+
             </div>
           </section>
+
+          <section class="petitioner">
+            <h2>Petitioner</h2>
+            <mat-divider />
+            <p><em>Requester agent</em></p>
+            <p class="text-bold"><em>{{store.petitionerSelected()}}</em></p>
+          </section>
+
+          <section class="approver">
+            <h2>Approver</h2>
+            <mat-divider />
+            <p class="tittle-tablet-desktop"><em>Approver agent</em></p>
+            <p class="tittle-mobile"><em>Signed in approver</em></p>
+            <p class="text-bold"><em>
+                {{warehouseStore.agent.agentNumber()}} - {{warehouseStore.fullName()}}
+              </em></p>
+          </section>
+
+
         </div>
       </div>
       }
@@ -96,7 +93,8 @@
       <button [class.cursor-not-allowed]="formsInvalid"
               mat-button
               [disabled]="formsInvalid"
-              (click)="completeEgress()">Accept</button>
+              cdkFocusInitial
+        (click)="completeEgress()">Accept</button>
     </div>
   </mat-step>
 </mat-stepper>
