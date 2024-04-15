@@ -1,3 +1,74 @@
-::ng-deep .mat-vertical-stepper-header{
+@use 'media-queries' as mq;
+
+::ng-deep .mat-vertical-stepper-header {
   pointer-events: none !important;
+}
+
+mat-dialog-content {
+  min-width: 80dvh;
+
+  main.confirmation {
+    padding-right: 36px;
+
+    section div {
+      padding-top: 10px;
+    }
+
+
+    .details {
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+
+      @include mq.md() {
+        display: grid;
+        grid-template-areas: 'petitioner approver' 'supply supply';
+        column-gap: 5px;
+      }
+
+      section h2,
+      mat-divider {
+        display: none;
+
+        @include mq.sm() {
+          display: block;
+        }
+
+      }
+
+      .approver {
+        .approver-mobile {
+          @include mq.md() {
+            display: none;
+          }
+        }
+
+        .logged {
+          display: none;
+        }
+
+        @include mq.md() {
+          grid-area: approver;
+        }
+
+      }
+
+      .petitioner {
+        order: 1;
+
+        @include mq.md() {
+          grid-area: petitioner;
+        }
+      }
+
+      .supply {
+        order: 2;
+
+        @include mq.md() {
+          grid-area: supply;
+        }
+      }
+    }
+  }
+
 }

@@ -5,16 +5,32 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { RequiredAutoCompleteComponent } from '@shared/controls/required-auto-complete/required-auto-complete.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Observable, map, startWith } from 'rxjs';
+
+import { RequiredAutoCompleteComponent } from '@shared/controls/required-auto-complete/required-auto-complete.component';
 import { AsyncPipe } from '@angular/common';
 import { Agent } from '@models/DTO/agent';
 import { DasboardStore } from '@store/dashboard.store';
-import { MovementsdStore } from '@store/movements.store';
+import * as json from './egress-metadata.json';
+import { WarehouseStore } from '@store/warehouse.store';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MessageService } from '@services/message.service';
+import { ModalsService } from '@services/modals.service';
+
 
 @Component({
   selector: 'app-egress',
   standalone: true,
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { showError: true },
+    },
+  ],
   imports: [MatButtonModule,
     MatStepperModule,
     FormsModule,
@@ -22,17 +38,21 @@ import { MovementsdStore } from '@store/movements.store';
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
-    RequiredAutoCompleteComponent, AsyncPipe],
+    MatDividerModule,
+    RequiredAutoCompleteComponent,
+    AsyncPipe,
+    MatTooltipModule,
+    MatDialogModule],
   templateUrl: './egress.component.html',
   styleUrl: './egress.component.scss'
 })
 export class EgressComponent implements OnInit, AfterViewInit {
-  public horizotal: boolean = false;
+
   async ngOnInit(): Promise<void> {
     await this.store.getAgents();
     this.filteredOptions = this.petitionerId.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map((value: string | number) => this.filter(`${value}`))
     );
   }
   ngAfterViewInit(): void {
@@ -43,31 +63,75 @@ export class EgressComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  //#region Properties
+  @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
+  @ViewChild(MatStepper) stepper!: MatStepper;
+
   private fb = inject(FormBuilder);
-  private store = inject(DasboardStore);
-  private movementStore = inject(MovementsdStore);
+  public store = inject(DasboardStore);
+  public warehouseStore = inject(WarehouseStore);
+  private messageService = inject(MessageService);
+  private modalService = inject(ModalsService);
+
+  agents: Array<Agent> = [];
+  filteredOptions!: Observable<Agent[]>;
+
   public petitionerForm = this.fb.group({
     petitionerId: ['', Validators.required],
   });
-  public engressForm = this.fb.group({
+  public egressForm = this.fb.group({
     quantity: ['', Validators.required]
   });
-  agents: Array<Agent> = [];
-  filteredOptions!: Observable<Agent[]>;
-  @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;
 
-  private _filter(value: string | number): Agent[] {
-    const filterValue = value?.toString().toLowerCase();
+  public errorPetitioner = json.errors.petitioner.required;
+  public errorEgress = json.errors.egress.required;
+  public tooltipFinal = json.tooltip.final;
+  //#endregion
+
+  //#region Methods
+  private filter(value: string): Agent[] {
+    const filterValue = value?.toLowerCase();
 
     return this.store.agents().filter(
-      option => option.agentNumber.toString().toLowerCase().indexOf(filterValue) === 0
+      //option => option.agentNumber.toString().toLowerCase().indexOf(filterValue) === 0
+      option => option.agentNumber.toString().toLocaleLowerCase().startsWith(filterValue) && option.agentNumber != this.warehouseStore.agent().agentNumber
     );
   }
 
+  public nextToEgressForm(): void {
+    this.store.setPetitionerId(this.petitionerId.value.id);
+    this.stepper.next();
+  }
+  public nextToFinal(): void {
+    const amount = parseInt(this.quantity.value!);
+    if (amount)
+      this.store.setRemovedAmount(amount);
+    this.stepper.next();
+  }
+
+  public async completeEgress(): Promise<void> {
+    const response = await this.messageService.confirmationMessage('Are you sure you want to continue?', 'Warning');
+    if (response) {
+      this.modalService.closeModal();
+    }
+  }
+
+  public displayAgentNumber(agent: Agent): string {
+    if (!agent) return '';
+    return `${agent.agentNumber}`;
+  }
+  //#endregion
+
+  //#region Gets
   public get petitionerId(): AbstractControl {
     return this.petitionerForm.get('petitionerId')!;
   }
-  public get quantity(){
-    return this.engressForm.get('quantity')!;
+  public get quantity() {
+    return this.egressForm.get('quantity')!;
   }
+
+  public get frormsInvalid(): boolean {
+    return this.petitionerForm.invalid || this.egressForm.invalid
+  }
+  //#endregion
 }

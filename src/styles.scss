@@ -5,6 +5,17 @@ body {
   height: 100%;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -33,4 +44,16 @@ body {
   animation: fadeInRight 0.5s ease-in-out;
   height: 100dvh;
   width: 100%;
+  @include mq.lg() {
+    width: 50%;
+  }
+  @include mq.xl() {
+    width: 30%;
+  }
+}
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+.pointer :hover {
+  cursor: pointer !important;
 }

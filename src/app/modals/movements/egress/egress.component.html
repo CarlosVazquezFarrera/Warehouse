@@ -1,44 +1,95 @@
-<mat-stepper orientation="vertical" [linear]="true" #stepper>
-  <mat-step [stepControl]="petitionerForm">
-    <form [formGroup]="petitionerForm">
+<mat-stepper orientation="vertical" >
+  <mat-step [stepControl]="petitionerForm" errorMessage="This field is required.">
+    <form [formGroup]="petitionerForm" autocomplete="off">
       <ng-template matStepLabel>Petitioner's agent number</ng-template>
       <mat-form-field class="w-100">
         <mat-label>Agent number</mat-label>
-        <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="petitionerId"
-          [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          @for (option of filteredOptions | async; track $index) {
-          <mat-option [value]="option.agentNumber">
-            {{option.agentNumber}} | {{option.name}} {{option.lastName}}
+        <input type="number" placeholder="Pick one" aria-label="Number" matInput formControlName="petitionerId"
+          [matAutocomplete]="auto" required>
+        @if (petitionerId.hasError('required')){
+        <mat-error>{{errorPetitioner}}</mat-error>
+        }
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayAgentNumber">
+          @for (agent of filteredOptions | async; track agent.id) {
+          <mat-option [value]="agent">
+            {{agent.agentNumber}} | {{agent.name}} {{agent.lastName}}
           </mat-option>
           }
 
         </mat-autocomplete>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button (click)="nextToEgressForm()">Next</button>
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="engressForm">
-    <form [formGroup]="engressForm">
+  <mat-step [stepControl]="egressForm" errorMessage="Check this field.">
+    <form [formGroup]="egressForm" autocomplete="off">
       <ng-template matStepLabel>How many items are?</ng-template>
       <mat-form-field class="w-100">
         <mat-label>Number</mat-label>
-        <input [autocomplete]="false" matInput formControlName="quantity" placeholder="Item count" required>
+        <input matInput formControlName="quantity" placeholder="Item count" required type="number">
+        <mat-error>{{errorEgress}}</mat-error>
       </mat-form-field>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button (click)="nextToFinal()">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Confirmation</ng-template>
-    <p>You are now done.</p>
+    <mat-dialog-content>
+      <main class="confirmation">
+        @if(store.newAgressValid()){
+        <h2>Details</h2>
+        <div class="details">
+          <section class="petitioner">
+            <h2>Petitioner</h2>
+            <mat-divider />
+            <div>
+              <p><em>Requester info</em></p>
+              <strong><p><em>{{store.petitionerSelected()}}</em></p></strong>
+            </div>
+          </section>
+          <section class="approver">
+            <h2>Approver</h2>
+            <mat-divider />
+            <div>
+              <p class="approver-mobile"><em>Approver info</em></p>
+              <p class="logged"><strong><em>Logged in acount</em></strong></p>
+              <strong><p><em>
+                  {{warehouseStore.agent.agentNumber()}} - {{warehouseStore.fullName()}}
+                </em></p></strong>
+            </div>
+          </section>
+          <section class="supply">
+            <h2>Supply</h2>
+            <mat-divider />
+            <div class="supply-info">
+              <p><em>Supply</em></p>
+              <strong><p><em>{{store.supplySelected()?.name}}</em></p></strong>
+              <p><em>Requested quantity </em></p>
+              <strong><p><em>{{store.newEgress().amountRemoved}}</em></p></strong>
+            </div>
+          </section>
+        </div>
+        }
+        @else {
+          <section class="incomplete">
+            <h2>Complete all steps </h2>
+          </section>
+        }
+      </main>
+    </mat-dialog-content>
+
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button>Accept</button>
+      <button [class.cursor-not-allowed]="frormsInvalid"
+            mat-button
+            [matTooltip]="tooltipFinal"
+            [matTooltipDisabled]="!frormsInvalid"
+            (click)="completeEgress()">Accept</button>
     </div>
   </mat-step>
 </mat-stepper>

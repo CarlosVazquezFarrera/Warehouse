@@ -1,0 +1,13 @@
+{
+  "errors": {
+    "egress": {
+      "required": "This is required"
+    },
+    "petitioner": {
+      "required": "This is required"
+    }
+  },
+  "tooltip": {
+    "final": "Fill in all fields"
+  }
+}

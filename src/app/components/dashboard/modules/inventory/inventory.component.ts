@@ -21,12 +21,12 @@ import { ModalsService } from '@services/modals.service';
 })
 export class InventoryComponent implements OnInit {
   ngOnInit(): void {
-    this.dashBoarStore.getAiports();
-    this.airportId.valueChanges.subscribe(idAirport => this.dashBoarStore.getInventoryByAirport(idAirport))
+    this.store.getAiports();
+    this.airportId.valueChanges.subscribe(idAirport => this.store.getInventoryByAirport(idAirport))
     //this.modalsService.showLateralModal();
 
   }
-  public dashBoarStore = inject(DasboardStore);
+  public store = inject(DasboardStore);
   private fb = inject(FormBuilder);
   private modalsService = inject(ModalsService);
 
@@ -43,7 +43,7 @@ export class InventoryComponent implements OnInit {
   }
 
   public itemClicked(item:Airport): void {
+    this.store.setSupplyId(item.id);
     this.modalsService.showLateralModal();
-    console.log(item)
   }
 }

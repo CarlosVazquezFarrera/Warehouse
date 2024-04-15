@@ -4,11 +4,12 @@ import { ModalHeaderComponent } from '@shared/components/modal-header/modal-head
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { EgressComponent } from './egress/egress.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-movements',
   standalone: true,
-  imports: [ModalHeaderComponent, MatTabsModule, MatIconModule, EgressComponent],
+  imports: [ModalHeaderComponent, MatTabsModule, MatIconModule, EgressComponent, MatDialogModule],
   templateUrl: './movements.component.html',
   styleUrl: './movements.component.scss'
 })

@@ -17,7 +17,6 @@ export class ModalsService extends DialogBaseService<unknown> {
       ...this.config,
       position: {
         top: '0',
-        bottom: '0',
         right: '0',
       },
       panelClass: 'modal-lateral'
