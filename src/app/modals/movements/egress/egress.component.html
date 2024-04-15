@@ -1,4 +1,4 @@
-<mat-stepper orientation="vertical" >
+<mat-stepper orientation="vertical">
   <mat-step [stepControl]="petitionerForm" errorMessage="This field is required.">
     <form [formGroup]="petitionerForm" autocomplete="off">
       <ng-template matStepLabel>Petitioner's agent number</ng-template>
@@ -39,9 +39,9 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Confirmation</ng-template>
-    <mat-dialog-content>
-      <main class="confirmation">
-        @if(store.newAgressValid()){
+    <main class="confirmation">
+      @if(store.newAgressValid()){
+      <div class="completed">
         <h2>Details</h2>
         <div class="details">
           <section class="petitioner">
@@ -49,7 +49,9 @@
             <mat-divider />
             <div>
               <p><em>Requester info</em></p>
-              <strong><p><em>{{store.petitionerSelected()}}</em></p></strong>
+              <strong>
+                <p><em>{{store.petitionerSelected()}}</em></p>
+              </strong>
             </div>
           </section>
           <section class="approver">
@@ -58,9 +60,11 @@
             <div>
               <p class="approver-mobile"><em>Approver info</em></p>
               <p class="logged"><strong><em>Logged in acount</em></strong></p>
-              <strong><p><em>
-                  {{warehouseStore.agent.agentNumber()}} - {{warehouseStore.fullName()}}
-                </em></p></strong>
+              <strong>
+                <p><em>
+                    {{warehouseStore.agent.agentNumber()}} - {{warehouseStore.fullName()}}
+                  </em></p>
+              </strong>
             </div>
           </section>
           <section class="supply">
@@ -68,28 +72,31 @@
             <mat-divider />
             <div class="supply-info">
               <p><em>Supply</em></p>
-              <strong><p><em>{{store.supplySelected()?.name}}</em></p></strong>
+              <strong>
+                <p><em>{{store.supplySelected()?.name}}</em></p>
+              </strong>
               <p><em>Requested quantity </em></p>
-              <strong><p><em>{{store.newEgress().amountRemoved}}</em></p></strong>
+              <strong>
+                <p><em>{{store.newEgress().amountRemoved}}</em></p>
+              </strong>
             </div>
           </section>
         </div>
-        }
-        @else {
-          <section class="incomplete">
-            <h2>Complete all steps </h2>
-          </section>
-        }
-      </main>
-    </mat-dialog-content>
+      </div>
+      }
+      @else {
+      <section class="incomplete">
+        <h2 class="align-center">Please complete all steps </h2>
+      </section>
+      }
+    </main>
 
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button [class.cursor-not-allowed]="frormsInvalid"
-            mat-button
-            [matTooltip]="tooltipFinal"
-            [matTooltipDisabled]="!frormsInvalid"
-            (click)="completeEgress()">Accept</button>
+      <button [class.cursor-not-allowed]="formsInvalid"
+              mat-button
+              [disabled]="formsInvalid"
+              (click)="completeEgress()">Accept</button>
     </div>
   </mat-step>
 </mat-stepper>

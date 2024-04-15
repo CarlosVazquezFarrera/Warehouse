@@ -37,9 +37,6 @@ body {
   }
 }
 
-.fade-in-right {
-  animation: fadeInRight 0.5s ease-in-out;
-}
 .modal-lateral {
   animation: fadeInRight 0.5s ease-in-out;
   height: 100dvh;
@@ -57,3 +54,7 @@ body {
 .pointer :hover {
   cursor: pointer !important;
 }
+.align-center{
+  text-align: center;
+}
+

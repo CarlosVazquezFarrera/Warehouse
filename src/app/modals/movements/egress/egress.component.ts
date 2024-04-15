@@ -103,13 +103,13 @@ export class EgressComponent implements OnInit, AfterViewInit {
     this.stepper.next();
   }
   public nextToFinal(): void {
-    const amount = parseInt(this.quantity.value!);
-    if (amount)
-      this.store.setRemovedAmount(amount);
+    const amount = this.quantity.value ? parseInt(this.quantity.value!) : 0;
+    this.store.setRemovedAmount(amount);
     this.stepper.next();
   }
 
   public async completeEgress(): Promise<void> {
+    if (this.formsInvalid) return;
     const response = await this.messageService.confirmationMessage('Are you sure you want to continue?', 'Warning');
     if (response) {
       this.modalService.closeModal();
@@ -130,7 +130,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     return this.egressForm.get('quantity')!;
   }
 
-  public get frormsInvalid(): boolean {
+  public get formsInvalid(): boolean {
     return this.petitionerForm.invalid || this.egressForm.invalid
   }
   //#endregion

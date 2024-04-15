@@ -4,17 +4,16 @@
   pointer-events: none !important;
 }
 
-mat-dialog-content {
-  min-width: 80dvh;
+// min-width: 80dvh;
 
-  main.confirmation {
-    padding-right: 36px;
-
-    section div {
-      padding-top: 10px;
+main.confirmation {
+  padding-right: 36px;
+  .completed {
+    max-height: 45dvh;
+    overflow-y: scroll;
+    h2 {
+      display: none;
     }
-
-
     .details {
       height: 100%;
       display: flex;
@@ -70,5 +69,11 @@ mat-dialog-content {
       }
     }
   }
+  section.incomplete {
+  }
 
+
+  section div {
+    padding-top: 10px;
+  }
 }
