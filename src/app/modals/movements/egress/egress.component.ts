@@ -59,7 +59,6 @@ export class EgressComponent implements OnInit, AfterViewInit {
       startWith(''),
       map((value: string | number) => this.filter(`${value}`))
     );
-    console.log(this.store.supplySelected());
   }
   ngAfterViewInit(): void {
     this.trigger.panelClosingActions.subscribe(e => {

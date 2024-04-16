@@ -58,7 +58,6 @@ export class InventoryComponent implements OnInit {
   }
 
   public itemClicked(item:Airport): void {
-    //console.log(item)
     this.store.setSupplyId(item.id);
     this.modalsService.showLateralModal();
   }
