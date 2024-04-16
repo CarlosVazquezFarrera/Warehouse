@@ -18,7 +18,7 @@
 
         </mat-autocomplete>
       </mat-form-field>
-      <div>
+      <div class="footer-egress">
         <button mat-button (click)="nextToEgressForm()">Next</button>
       </div>
     </form>
@@ -33,7 +33,7 @@
         <mat-error>{{errorEgress()}}</mat-error>
         }
       </mat-form-field>
-      <div>
+      <div class="footer-egress">
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="nextToFinal()">Next</button>
       </div>
@@ -90,7 +90,7 @@
       }
     </main>
 
-    <div>
+    <div class="footer-egress">
       <button mat-button matStepperPrevious>Back</button>
       <button [class.cursor-not-allowed]="formsInvalid"
               mat-button

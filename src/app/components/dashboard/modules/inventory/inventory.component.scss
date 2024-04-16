@@ -1,5 +1,6 @@
 @use 'media-queries' as mq;
 @use 'variables' as v;
+@use 'utils' as u;
 .inventory-container {
   .data {
     overflow-x:auto;
@@ -15,7 +16,17 @@
 
     }
   }
-
+  .no-data {
+    display: flex;
+    justify-content: center;
+    .content {
+      mat-icon {
+        font-size: 50px;
+      }
+      display: grid;
+      justify-items: center;
+    }
+  }
   .inventory-options {
     @include mq.lg() {
       display: flex;

@@ -11,20 +11,35 @@ import { MatButtonModule } from '@angular/material/button';
 import { Airport } from '@models/DTO/airport';
 import { DasboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
+import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatTableModule, MatDividerModule, MatPaginatorModule, MatIconModule, MatButtonModule, ReactiveFormsModule],
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    FormsModule,
+    MatTableModule,
+    MatDividerModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    NoDataComponent],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
 })
 export class InventoryComponent implements OnInit {
-  ngOnInit(): void {
-    this.store.getAiports();
-    this.airportId.valueChanges.subscribe(idAirport => this.store.getInventoryByAirport(idAirport))
-    //this.modalsService.showLateralModal();
 
+  async ngOnInit() {
+    await this.store.getAiports();
+    this.airportId.valueChanges.subscribe(idAirport => this.store.getInventoryByAirport(idAirport));
+    if (this.store.airport().length > 0) {
+      const id = this.store.airport()[0].id;
+      this.airport.setValue(id);
+    }
   }
   public store = inject(DasboardStore);
   private fb = inject(FormBuilder);
@@ -45,5 +60,8 @@ export class InventoryComponent implements OnInit {
   public itemClicked(item:Airport): void {
     this.store.setSupplyId(item.id);
     this.modalsService.showLateralModal();
+  }
+  public get airport(): AbstractControl {
+    return this.form.get('airportId')!;
   }
 }

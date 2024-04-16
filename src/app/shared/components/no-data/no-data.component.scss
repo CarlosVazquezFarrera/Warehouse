@@ -1,0 +1,13 @@
+@use 'media-queries' as mq;
+.no-data{
+  display: flex;
+  justify-content: center;
+  img{
+    width: 100%;
+    height: auto;
+    @include mq.lg(){
+      width: 60%;
+    }
+  }
+
+}
