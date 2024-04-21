@@ -3,8 +3,6 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 
 
 export abstract class DialogBaseService<T> {
-
-
   protected dialog: MatDialog = inject(MatDialog)
   protected config: MatDialogConfig = {
     disableClose: true,
@@ -13,5 +11,9 @@ export abstract class DialogBaseService<T> {
 
   closeModal() {
     this.dialogRef.close();
+  }
+
+  showModal() {
+
   }
 }

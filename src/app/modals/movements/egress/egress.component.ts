@@ -21,6 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
+import { EgressService } from '@services/egress.service';
 
 
 @Component({
@@ -88,7 +89,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     petitionerId: ['', Validators.required],
   });
   public egressForm = this.fb.group({
-    quantity: ['', [Validators.required, Validators.max(this.store.supplySelected()?.currentQuantity!)]]
+    quantity: ['', [Validators.required, Validators.max(this.store.supplySelected()?.currentQuantity!), Validators.min(1)]]
   });
   //#endregion
 
@@ -115,10 +116,10 @@ export class EgressComponent implements OnInit, AfterViewInit {
   public async completeEgress(): Promise<void> {
     if (this.formsInvalid) return;
     const response = await this.messageService.confirmationMessage('Are you sure you want to continue?', 'Warning');
-    if (response) {
-      this.modalService.closeModal();
-      this.store.newEgressRegistered(parseInt(this.quantity.value!));
-    }
+    if (!response) return;
+    await this.store.saveNewEgress();
+    this.modalService.closeModal();
+    // this.store.newEgressRegistered(parseInt(this.quantity.value!));
   }
 
   public displayAgentNumber(agent: Agent): string {

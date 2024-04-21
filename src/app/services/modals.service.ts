@@ -8,7 +8,7 @@ type ModalesAllowed = MovementsComponent;
 @Injectable({
   providedIn: 'root'
 })
-export class ModalsService extends DialogBaseService<unknown> {
+export class ModalsService extends DialogBaseService<ModalesAllowed> {
   private modals: Array<MatDialogRef<ModalesAllowed>> = new Array<MatDialogRef<ModalesAllowed>>();
 
 
@@ -24,7 +24,7 @@ export class ModalsService extends DialogBaseService<unknown> {
     this.open(MovementsComponent, optionsDialogs);
   }
 
-  private open(componente: ComponentType<ModalesAllowed>,config?: MatDialogConfig) {
+  private open(componente: ComponentType<ModalesAllowed>, config?: MatDialogConfig): void {
     config ? config : this.config;
     const dialog = this.dialog.open(componente, config);
     this.modals.push(dialog);
