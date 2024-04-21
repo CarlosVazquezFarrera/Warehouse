@@ -17,7 +17,7 @@ export class InventoryService {
   private http: HttpClient = inject(HttpClient);
   private apiUrl: string;
 
-  public async getInventoryByAirport(id: string) {
-    return await lastValueFrom(this.http.get<InventoryItem[]>(`${this.apiUrl}?Id=${id}`));
+  public async getInventoryByAirport(id: string, search?: string) {
+    return await lastValueFrom(this.http.get<InventoryItem[]>(`${this.apiUrl}?idAiport=${id}&search=${search}`));
   }
 }

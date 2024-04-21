@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common'
 @Component({
   selector: 'app-no-data',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [],
   templateUrl: './no-data.component.html',
   styleUrl: './no-data.component.scss'
 })

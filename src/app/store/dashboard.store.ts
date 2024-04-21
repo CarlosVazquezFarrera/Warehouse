@@ -42,8 +42,9 @@ export const DasboardStore = signalStore(
       const airports = await airportService.getAll();
       patchState(store, { airport: airports })
     },
-    async getInventoryByAirport(id: string): Promise<void> {
-      const inventory = await inventoryService.getInventoryByAirport(id);
+    async getInventoryByAirport(id: string, search: string = ''): Promise<void> {
+      console.log(search)
+      const inventory = await inventoryService.getInventoryByAirport(id, search);
       patchState(store, { inventory })
     },
     async getAgents(): Promise<void> {

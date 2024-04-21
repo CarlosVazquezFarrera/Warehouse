@@ -1,5 +1,5 @@
 <main class="inventory-container">
-  <form class="inventory-options" [formGroup]="form">
+  <form class="inventory-options" [formGroup]="form" autocomplete="off">
     <mat-form-field class="w-100">
       <mat-label>Choose an option</mat-label>
       <mat-icon matIconPrefix>flight</mat-icon>
@@ -12,7 +12,7 @@
     <div class="w-100 search-row">
       <mat-form-field>
         <mat-label>Search</mat-label>
-        <input type="tel" matInput placeholder="Type the name" [autocomplete]="false">
+        <input type="tel" matInput placeholder="Type the Name or Supplier Part" [autocomplete]="false" formControlName="search">
         <mat-icon matIconPrefix>search</mat-icon>
       </mat-form-field>
 

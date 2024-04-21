@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { AfterContentInit, Component, OnInit, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,6 +12,9 @@ import { Airport } from '@models/DTO/airport';
 import { DasboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
+import { debounceTime, merge } from 'rxjs';
+import { environment } from '@environments/environment';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-inventory',
@@ -31,15 +34,19 @@ import { NoDataComponent } from '@shared/components/no-data/no-data.component';
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
 })
-export class InventoryComponent implements OnInit {
-
+export class InventoryComponent implements OnInit, AfterContentInit {
   async ngOnInit() {
     await this.store.getAiports();
-    this.airportId.valueChanges.subscribe(idAirport => this.store.getInventoryByAirport(idAirport));
     if (this.store.airport().length > 0) {
       const id = this.store.airport()[0].id;
       this.airport.setValue(id);
     }
+  }
+  ngAfterContentInit() {
+    merge(
+      this.airportId.valueChanges,
+      this.search.valueChanges.pipe(debounceTime(environment.defaultDebounceTime))
+    ).subscribe(()=>this.store.getInventoryByAirport(this.airportId.value, this.search.value));
   }
   public store = inject(DasboardStore);
   private fb = inject(FormBuilder);
@@ -57,11 +64,15 @@ export class InventoryComponent implements OnInit {
     return this.form.get('airportId')!;
   }
 
-  public itemClicked(item:Airport): void {
+  public itemClicked(item: Airport): void {
     this.store.setSupplyId(item.id);
     this.modalsService.showLateralModal();
   }
   public get airport(): AbstractControl {
     return this.form.get('airportId')!;
+  }
+
+  private get search(): AbstractControl {
+    return this.form.get('search')!;
   }
 }
