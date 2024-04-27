@@ -1,8 +1,10 @@
 import { computed, inject } from "@angular/core";
+import { environment } from "@environments/environment";
 import { Agent } from "@models/DTO/agent";
 import { Airport } from "@models/DTO/airport"
 import { Egress } from "@models/DTO/egress";
 import { InventoryItem } from "@models/api/inventoryItem";
+import { Metadata } from "@models/custom/metadata";
 import { NewEgress } from "@models/custom/newEgress";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { AgentService } from "@services/agent.service";
@@ -14,6 +16,7 @@ type DashBoard = {
   airport: Airport[],
   agents: Agent[],
   inventory: InventoryItem[],
+  inventoryMetadata: Metadata,
   newEgress: NewEgress
 }
 const initialNewEgress: NewEgress = {
@@ -25,7 +28,15 @@ const initialState: DashBoard = {
   airport: [],
   inventory: [],
   agents: [],
-  newEgress: initialNewEgress
+  newEgress: initialNewEgress,
+  inventoryMetadata:{
+    totalCount: 0,
+    pageSize: 0,
+    currentPage: 0,
+    totalPages: 0,
+    hasPreviousPage: false,
+    hasNextPage: false
+  }
 }
 
 
@@ -42,10 +53,10 @@ export const DasboardStore = signalStore(
       const airports = await airportService.getAll();
       patchState(store, { airport: airports })
     },
-    async getInventoryByAirport(id: string, search: string = ''): Promise<void> {
-      console.log(search)
-      const inventory = await inventoryService.getInventoryByAirport(id, search);
-      patchState(store, { inventory })
+    async getInventoryByAirport(id: string, search: string = '', pageNumber: number = environment.pagination.defaultPageNumber, pageSize: number = environment.pagination.defaultPageSize): Promise<void> {
+      const pagedInventory = await inventoryService.getInventoryByAirport(id, search, pageNumber, pageSize);
+      patchState(store, { inventory: pagedInventory.data });
+      patchState(store, { inventoryMetadata: pagedInventory.metadata });
     },
     async getAgents(): Promise<void> {
       const agents = await agentService.getAgents();
@@ -88,7 +99,6 @@ export const DasboardStore = signalStore(
 
   })),
   withComputed(({ inventory, newEgress, agents }) => ({
-    inventoryCount: computed(() => inventory().length),
     supplySelected: computed(() => {
       const id = newEgress.supplyId();
       return inventory().find(i => i.id == id);
