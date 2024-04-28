@@ -7,12 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { debounceTime, filter } from 'rxjs';
+import { filter } from 'rxjs';
 import { DasboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { SnackService } from '@services/snack.service';
 import * as json from './qr-metadata.json';
-import { environment } from '@environments/environment';
+import { sleep } from '@shared/helper/sleep';
 
 LOAD_WASM().subscribe();
 
@@ -43,9 +43,6 @@ export class QrScannerComponent implements AfterViewInit {
       .pipe(
         filter(devices => devices.length > 0)
       )
-      .pipe(
-        debounceTime(environment.qrDefaultDelay),
-      )
       .subscribe(devices => {
         const device = devices.find(f => (/back|rear|environment/gi.test(f.label)));
         const idCamera = device ? device.deviceId : devices[0].deviceId;
@@ -64,8 +61,9 @@ export class QrScannerComponent implements AfterViewInit {
 
     const match = data[0].value.match(this.supplyIdTegex);
     if (!match) {
-      this.scan.start();
       this.snackService.showAutoCloseMessage(json.qrInvalid);
+      await sleep(2);
+      this.scan.start();
       return
     }
     const idSupply = match[1] ?? '';
