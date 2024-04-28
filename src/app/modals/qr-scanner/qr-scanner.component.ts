@@ -1,17 +1,18 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 import { ModalHeaderComponent } from '@shared/components/modal-header/modal-header.component';
-import { NgxScannerQrcodeModule, LOAD_WASM, NgxScannerQrcodeComponent, ScannerQRCodeResult, ScannerQRCodeDevice, ScannerQRCodeConfig } from 'ngx-scanner-qrcode';
+import { NgxScannerQrcodeModule, LOAD_WASM, NgxScannerQrcodeComponent, ScannerQRCodeResult, ScannerQRCodeDevice } from 'ngx-scanner-qrcode';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { filter } from 'rxjs';
+import { debounceTime, filter } from 'rxjs';
 import { DasboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { SnackService } from '@services/snack.service';
 import * as json from './qr-metadata.json';
+import { environment } from '@environments/environment';
 
 LOAD_WASM().subscribe();
 
@@ -40,7 +41,11 @@ export class QrScannerComponent implements AfterViewInit {
     this.scan.start();
     this.scan.devices
       .pipe(
-        filter(devices => devices.length > 0))
+        filter(devices => devices.length > 0)
+      )
+      .pipe(
+        debounceTime(environment.qrDefaultDelay),
+      )
       .subscribe(devices => {
         const device = devices.find(f => (/back|rear|environment/gi.test(f.label)));
         const idCamera = device ? device.deviceId : devices[0].deviceId;
