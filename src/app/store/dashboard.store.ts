@@ -116,7 +116,7 @@ export const DasboardStore = signalStore(
     }
 
   })),
-  withComputed(({ inventory, newEgress, agents }) => ({
+  withComputed(({ newEgress, agents }) => ({
     petitionerSelected: computed(() => {
       const id = newEgress.petitionerId();
       const agent = agents().find(a => a.id == id);

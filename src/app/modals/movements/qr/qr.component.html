@@ -1,0 +1,15 @@
+<section class="qr-section">
+  <qrcode id="qr" [qrdata]="dataQr" ariaLabel="QR code" [colorDark]="'#000000'" [colorLight]="'#ffffff'"
+    [elementType]="'canvas'" errorCorrectionLevel="Q" imageSrc="./assets/united.jpg" [margin]="4" [scale]="1"
+    [width]="900" [imageHeight]="100" [imageWidth]="100" [title]="'code qr'" />
+</section>
+<footer>
+  <button mat-icon-button color="primary" (click)="print()">
+    <mat-icon>print</mat-icon>
+  </button>
+
+  <button mat-icon-button color="primary" (click)="download()">
+    <mat-icon>download</mat-icon>
+  </button>
+
+</footer>

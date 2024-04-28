@@ -1,0 +1,13 @@
+@use 'media-queries' as mq;
+.qr-section {
+  display: flex;
+  justify-content: center;
+}
+footer{
+  display: flex;
+  justify-content: space-around;
+}
+::ng-deep qrcode > .qrcode > canvas {
+  height: auto !important;
+  width: 100% !important;
+}
