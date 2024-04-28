@@ -10,6 +10,11 @@
       </mat-select>
     </mat-form-field>
   </form>
-
   <ngx-scanner-qrcode (event)="qrDetected($event)"></ngx-scanner-qrcode>
 </mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-icon-button color="primary" aria-label="Activate camera again" [disabled]="!showRestart()"
+    (click)="activateCamera()">
+    <mat-icon>photo_camera</mat-icon>
+  </button>
+</mat-dialog-actions>

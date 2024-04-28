@@ -20,7 +20,7 @@ type DashBoard = {
   newEgress: NewEgress,
   supplySelected: InventoryItem
 }
-const newEgress: NewEgress = {
+const initialNewEgress: NewEgress = {
   amountRemoved: 0,
   petitionerId: "",
   supplyId: ""
@@ -44,7 +44,7 @@ const initialState: DashBoard = {
   airport: [],
   inventory: [],
   agents: [],
-  newEgress,
+  newEgress: initialNewEgress,
   inventoryMetadata,
   supplySelected
 }
@@ -92,9 +92,11 @@ export const DasboardStore = signalStore(
           const newEgress: InventoryItem = { ...i, currentQuantity: newTotal }
           return newEgress;
         }
-        return i
+        return i;
       });
-      patchState(store, { inventory })
+      patchState(store, { inventory });
+      patchState(store, {newEgress: {...initialNewEgress}})
+
     },
     async saveNewEgress() {
       const egress: Egress = await egressService.post(store.newEgress())
@@ -107,12 +109,12 @@ export const DasboardStore = signalStore(
       });
       patchState(store, { inventory })
     },
-    async loadSupply(IdSupply: string, idAirport: string): Promise<void> {
-      const item = await inventoryService.getItemByAirportAndIdSupply(IdSupply, idAirport);
+    async loadSupply(IdSupply: string): Promise<void> {
+      const item = await inventoryService.getItemByAirportAndIdSupply(IdSupply);
       if (!item) return;
       const newEgress: NewEgress = { ...store.newEgress(), supplyId: item.id }
       patchState(store, { newEgress });
-      patchState(store, { supplySelected: item });
+      patchState(store, { supplySelected: {...item} });
     }
 
   })),

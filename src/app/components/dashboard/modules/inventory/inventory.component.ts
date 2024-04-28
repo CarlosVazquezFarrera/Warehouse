@@ -97,10 +97,8 @@ export class InventoryComponent implements OnInit, AfterContentInit {
 
   private async handleSupplyGotByURL(): Promise<void> {
     const idSupply = this.route.snapshot.paramMap.get('idSupply');
-    const idAirport = this.route.snapshot.paramMap.get('idAirport');
 
-    if (!idSupply || !idAirport) return;
-    await this.store.loadSupply(idSupply, idAirport);
+    if (!idSupply) return;
     if (this.store.supplySelected.id() == '') return;
 
     this.modalsService.showLateralModal('movements');
