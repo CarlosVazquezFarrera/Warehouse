@@ -33,7 +33,7 @@ export class QrScannerComponent implements AfterViewInit {
       .pipe(
         filter(devices => devices.length > 0))
       .subscribe(devices => {
-        if (!this.platform.ANDROID || ! this.platform.IOS) return;
+        //if (!this.platform.ANDROID || ! this.platform.IOS) return;
 
         const device = devices.find(f => (/back|rear|environment/gi.test(f.label)));
         this.scan.playDevice(device ? device.deviceId : devices[0].deviceId);
