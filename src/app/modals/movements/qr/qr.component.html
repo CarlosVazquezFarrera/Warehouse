@@ -4,7 +4,7 @@
     [width]="900" [imageHeight]="100" [imageWidth]="100" [title]="'code qr'" />
 </section>
 <footer>
-  @if(platform.ANDROID || platform.ANDROID) {
+  @if(!platform.ANDROID || !platform.IOS) {
   <button id="print" mat-icon-button color="primary" (click)="print()">
     <mat-icon>print</mat-icon>
   </button>
