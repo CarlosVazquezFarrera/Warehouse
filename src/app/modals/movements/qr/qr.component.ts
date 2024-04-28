@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DasboardStore } from '@store/dashboard.store';
 import { downloadHTMLElement } from '@shared/helper/download-file';
 import { printHTMLElement } from '@shared/helper/printer';
+import { Platform } from '@angular/cdk/platform';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { printHTMLElement } from '@shared/helper/printer';
 export class QrComponent {
 
   private store = inject(DasboardStore);
+  public platform = inject(Platform);
 
   public async download(): Promise<void> {
     await downloadHTMLElement('qr', this.store.supplySelected.name(), 'jpeg');
