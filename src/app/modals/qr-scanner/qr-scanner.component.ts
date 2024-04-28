@@ -10,9 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { filter } from 'rxjs';
 import { DasboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
-
-
-
+import { SnackService } from '@services/snack.service';
+import * as json from './qr-metadata.json';
 
 LOAD_WASM().subscribe();
 
@@ -30,9 +29,10 @@ export class QrScannerComponent implements AfterViewInit {
   public fbCamera = this.fb.group({
     camera: ['']
   });
-  public showRestart = signal(false);
+
   private store = inject(DasboardStore);
   private modalsService = inject(ModalsService);
+  private snackService = inject(SnackService)
   private supplyIdTegex = new RegExp("^IdSupply=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$");
 
 
@@ -59,7 +59,8 @@ export class QrScannerComponent implements AfterViewInit {
 
     const match = data[0].value.match(this.supplyIdTegex);
     if (!match) {
-      this.showRestart.set(true);
+      this.scan.start();
+      this.snackService.showAutoCloseMessage(json.qrInvalid);
       return
     }
     const idSupply = match[1] ?? '';
@@ -76,11 +77,6 @@ export class QrScannerComponent implements AfterViewInit {
     const devices = this.scan?.devices?.value;
     if (!devices) return [];
     return devices;
-  }
-
-  public activateCamera(){
-    this.scan.start();
-    this.showRestart.set(false);
   }
 
   private get camera(): AbstractControl {

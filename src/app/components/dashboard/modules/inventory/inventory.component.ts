@@ -18,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { InventoryItem } from '@models/api/inventoryItem';
 import { MessageService } from '@services/message.service';
 import * as json from './inventory-metada.json';
+import { SnackService } from '@services/snack.service';
 
 @Component({
   selector: 'app-inventory',
@@ -62,6 +63,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   private modalsService = inject(ModalsService);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
+  private snackService = inject(SnackService);
 
   public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
   public ariports: Airport[] = [];

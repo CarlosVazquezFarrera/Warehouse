@@ -4,5 +4,6 @@ export const environment = {
   pagination: {
     defaultPageSize: 10,
     defaultPageNumber: 1
-  }
+  },
+  snackDefaultDuration: 5
 };
