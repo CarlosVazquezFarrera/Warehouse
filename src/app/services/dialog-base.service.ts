@@ -12,8 +12,4 @@ export abstract class DialogBaseService<T> {
   closeModal() {
     this.dialogRef.close();
   }
-
-  showModal() {
-
-  }
 }

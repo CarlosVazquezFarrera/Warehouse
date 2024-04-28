@@ -1,34 +1,47 @@
 import { Injectable } from '@angular/core';
 import { DialogBaseService } from './dialog-base.service';
 import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { MovementsComponent } from '../modals/movements/movements.component';
 import { ComponentType } from '@angular/cdk/portal';
-type Modals = 'movements';
-type ModalesAllowed = MovementsComponent;
+import { MovementsComponent } from '@modals/movements/movements.component';
+import { QrScannerComponent } from '@modals/qr-scanner/qr-scanner.component';
+type LateralModals = 'movements';
+type Modals = 'qrScanner';
+type AllowedModals = MovementsComponent | QrScannerComponent;
 @Injectable({
   providedIn: 'root'
 })
-export class ModalsService extends DialogBaseService<ModalesAllowed> {
-  private modals: Array<MatDialogRef<ModalesAllowed>> = new Array<MatDialogRef<ModalesAllowed>>();
+export class ModalsService extends DialogBaseService<AllowedModals> {
+  private modals: Array<MatDialogRef<AllowedModals>> = new Array<MatDialogRef<AllowedModals>>();
 
 
-  public showLateralModal(): void {
+  public showLateralModal(modal: LateralModals): void {
     const optionsDialogs: MatDialogConfig = {
-      ...this.config,
       position: {
         top: '0',
         right: '0',
       },
       panelClass: 'modal-lateral'
     }
-    this.open(MovementsComponent, optionsDialogs);
+    switch(modal) {
+      case 'movements':
+        this.open(MovementsComponent, optionsDialogs);
+      break;
+    }
   }
 
-  private open(componente: ComponentType<ModalesAllowed>, config?: MatDialogConfig): void {
-    config ? config : this.config;
-    const dialog = this.dialog.open(componente, config);
+  private open(componente: ComponentType<AllowedModals>, config?: MatDialogConfig): void {
+    const dialog = this.dialog.open(componente, {... this.config, ...config});
     this.modals.push(dialog);
   }
+
+  public showModal(modal: Modals): void {
+    switch(modal) {
+      case 'qrScanner':
+        this.open(QrScannerComponent);
+      break;
+    }
+  }
+
 
   public override closeModal(): void {
     const modal = this.modals.pop()!;

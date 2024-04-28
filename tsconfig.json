@@ -27,6 +27,7 @@
       "@shared/*": ["./src/app/shared/*"],
       "@types/*": ["./src/app/types/*"],
       "@models/*": ["./src/app/models/*"],
+      "@modals/*": ["./src/app/modals/*"],
       "@store/*": ["./src/app/store/*"],
       "@guards/*": ["./src/app/guards/*"],
       "@routes/*": ["./src/app/routes/*"],

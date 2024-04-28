@@ -16,6 +16,8 @@ import { debounceTime, merge } from 'rxjs';
 import { environment } from '@environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { InventoryItem } from '@models/api/inventoryItem';
+import { MessageService } from '@services/message.service';
+import * as json from './inventory-metada.json';
 
 @Component({
   selector: 'app-inventory',
@@ -59,6 +61,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   private fb = inject(FormBuilder);
   private modalsService = inject(ModalsService);
   private route = inject(ActivatedRoute);
+  private messageService = inject(MessageService);
 
   public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
   public ariports: Airport[] = [];
@@ -72,26 +75,35 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   //#region Methods
   public supplyClicked(item: InventoryItem): void {
     this.store.setSupplySelected(item);
-    this.modalsService.showLateralModal();
+    this.modalsService.showLateralModal('movements');
   }
   public clearSearch(): void {
     this.search.patchValue('');
   }
-  handlePageEvent(e: PageEvent) {
+
+  public async scanQr() {
+    const camera: MediaStream = await navigator.mediaDevices.getUserMedia({ video: true })
+    if (!camera) {
+      this.messageService.showMessage(json.cameraNotavailable, 'warning');
+      return;
+    }
+    this.modalsService.showModal('qrScanner');
+  }
+  public handlePageEvent(e: PageEvent) {
     const { pageSize } = e;
     const pageNumber = e.pageIndex + 1;
     this.store.getInventoryByAirport(this.airportId.value, this.search.value, pageNumber, pageSize);
   }
 
-  private async handleSupplyGotByURL(): Promise<void>{
+  private async handleSupplyGotByURL(): Promise<void> {
     const idSupply = this.route.snapshot.paramMap.get('idSupply');
     const idAirport = this.route.snapshot.paramMap.get('idAirport');
 
     if (!idSupply || !idAirport) return;
     await this.store.loadSupply(idSupply, idAirport);
-    if(this.store.supplySelected.id() == '') return;
+    if (this.store.supplySelected.id() == '') return;
 
-    this.modalsService.showLateralModal();
+    this.modalsService.showLateralModal('movements');
   }
   //#endregion
 
