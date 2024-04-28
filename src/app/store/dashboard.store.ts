@@ -17,26 +17,36 @@ type DashBoard = {
   agents: Agent[],
   inventory: InventoryItem[],
   inventoryMetadata: Metadata,
-  newEgress: NewEgress
+  newEgress: NewEgress,
+  supplySelected: InventoryItem
 }
-const initialNewEgress: NewEgress = {
+const newEgress: NewEgress = {
   amountRemoved: 0,
   petitionerId: "",
   supplyId: ""
+}
+
+const inventoryMetadata: Metadata = {
+  totalCount: 0,
+  pageSize: 0,
+  currentPage: 0,
+  totalPages: 0,
+  hasPreviousPage: false,
+  hasNextPage: false
+};
+const supplySelected: InventoryItem = {
+  id: "",
+  name: "",
+  airport: "",
+  currentQuantity: 0
 }
 const initialState: DashBoard = {
   airport: [],
   inventory: [],
   agents: [],
-  newEgress: initialNewEgress,
-  inventoryMetadata:{
-    totalCount: 0,
-    pageSize: 0,
-    currentPage: 0,
-    totalPages: 0,
-    hasPreviousPage: false,
-    hasNextPage: false
-  }
+  newEgress,
+  inventoryMetadata,
+  supplySelected
 }
 
 
@@ -70,9 +80,10 @@ export const DasboardStore = signalStore(
       const newEgress: NewEgress = { ...store.newEgress(), amountRemoved }
       patchState(store, { newEgress })
     },
-    setSupplyId(supplyId: string): void {
-      const newEgress: NewEgress = { ...store.newEgress(), supplyId }
-      patchState(store, { newEgress })
+    setSupplySelected(supply: InventoryItem): void {
+      const newEgress: NewEgress = { ...store.newEgress(), supplyId: supply.id }
+      patchState(store, { newEgress });
+      patchState(store, { supplySelected: supply });
     },
     newEgressRegistered(currentQuantity: number, supplyId: string): void {
       const inventory = store.inventory().map(i => {
@@ -95,14 +106,17 @@ export const DasboardStore = signalStore(
         return i
       });
       patchState(store, { inventory })
+    },
+    async loadSupply(IdSupply: string, idAirport: string): Promise<void> {
+      const item = await inventoryService.getItemByAirportAndIdSupply(IdSupply, idAirport);
+      if (!item) return;
+      const newEgress: NewEgress = { ...store.newEgress(), supplyId: item.id }
+      patchState(store, { newEgress });
+      patchState(store, { supplySelected: item });
     }
 
   })),
   withComputed(({ inventory, newEgress, agents }) => ({
-    supplySelected: computed(() => {
-      const id = newEgress.supplyId();
-      return inventory().find(i => i.id == id);
-    }),
     petitionerSelected: computed(() => {
       const id = newEgress.petitionerId();
       const agent = agents().find(a => a.id == id);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalsService } from '@services/modals.service';
 import { ModalHeaderComponent } from '@shared/components/modal-header/modal-header.component';
 import { MatTabsModule } from '@angular/material/tabs';

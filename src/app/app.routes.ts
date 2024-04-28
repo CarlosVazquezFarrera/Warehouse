@@ -11,6 +11,8 @@ export const routes: Routes = [
     canActivate: [isLoggenInGuard],
     loadComponent: () => import('@components/dashboard/dashboard.component').then(c => c.DashboardComponent),
     children: [
+      // { path: 'account/:id', component: AccountDetailComponent }
+      { path: `${AppRoutes.dashboard.children.inventory}/:idSupply/:idAirport`, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.inventory, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.supplies, loadComponent: () => import('@components/dashboard/modules/supplies/supplies.component').then(s => s.SuppliesComponent) },
       { path: AppRoutes.dashboard.children.agents, loadComponent: () => import('@components/dashboard/modules/agents/agents.component').then(a => a.AgentsComponent) },

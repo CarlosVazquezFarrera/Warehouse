@@ -21,4 +21,8 @@ export class InventoryService {
   public async getInventoryByAirport(id: string, search: string, pageNumber: number, pageSize: number) {
     return await lastValueFrom(this.http.get<PagedResponse<InventoryItem>>(`${this.apiUrl}?idAiport=${id}&search=${search}&pageNumber=${pageNumber}&pageSize=${pageSize}`));
   }
+
+  public async getItemByAirportAndIdSupply(idSupply: string, idAiport: string) {
+    return await lastValueFrom(this.http.get<InventoryItem>(`${this.apiUrl}/GetSuplyByIdAndAirport?IdSupply=${idSupply}&IdAirport=${idAiport}`));
+  }
 }

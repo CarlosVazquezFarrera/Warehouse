@@ -10,6 +10,10 @@ export abstract class HttpBase<T> {
   private http: HttpClient = inject(HttpClient);
   private apiUrl: string;
 
+  public async getById<T>(id: string): Promise<T> {
+    return await lastValueFrom(this.http.get<T>(`${this.apiUrl}/?Id=${id}`));
+  }
+
   public async getAll<T>(): Promise<T> {
     return await lastValueFrom(this.http.get<T>(this.apiUrl));
   }

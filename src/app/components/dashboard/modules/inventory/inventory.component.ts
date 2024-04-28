@@ -14,6 +14,8 @@ import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { debounceTime, merge } from 'rxjs';
 import { environment } from '@environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { InventoryItem } from '@models/api/inventoryItem';
 
 @Component({
   selector: 'app-inventory',
@@ -35,13 +37,15 @@ import { environment } from '@environments/environment';
 })
 export class InventoryComponent implements OnInit, AfterContentInit {
   //#region Hooks
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     await this.store.getAiports();
     if (this.store.airport().length > 0) {
       const id = this.store.airport()[0].id;
       this.airportId.setValue(id);
     }
+    await this.handleSupplyGotByURL();
   }
+
   ngAfterContentInit() {
     merge(
       this.airportId.valueChanges,
@@ -54,6 +58,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   public store = inject(DasboardStore);
   private fb = inject(FormBuilder);
   private modalsService = inject(ModalsService);
+  private route = inject(ActivatedRoute);
 
   public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
   public ariports: Airport[] = [];
@@ -65,8 +70,8 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   //#endregion
 
   //#region Methods
-  public itemClicked(item: Airport): void {
-    this.store.setSupplyId(item.id);
+  public supplyClicked(item: InventoryItem): void {
+    this.store.setSupplySelected(item);
     this.modalsService.showLateralModal();
   }
   public clearSearch(): void {
@@ -76,6 +81,17 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     const { pageSize } = e;
     const pageNumber = e.pageIndex + 1;
     this.store.getInventoryByAirport(this.airportId.value, this.search.value, pageNumber, pageSize);
+  }
+
+  private async handleSupplyGotByURL(): Promise<void>{
+    const idSupply = this.route.snapshot.paramMap.get('idSupply');
+    const idAirport = this.route.snapshot.paramMap.get('idAirport');
+
+    if (!idSupply || !idAirport) return;
+    await this.store.loadSupply(idSupply, idAirport);
+    if(this.store.supplySelected.id() == '') return;
+
+    this.modalsService.showLateralModal();
   }
   //#endregion
 
