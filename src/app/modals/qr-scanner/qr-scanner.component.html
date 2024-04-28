@@ -1,4 +1,15 @@
 <app-modal-header></app-modal-header>
+<mat-dialog-content>
+  <form [formGroup]="fbCamera">
+    <mat-form-field>
+      <mat-label>Choose a camera</mat-label>
+      <mat-select formControlName="camera">
+        @for (camera of cameras; track camera.deviceId) {
+        <mat-option [value]="camera.deviceId">{{camera.label}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
 
-<ngx-scanner-qrcode #action="scanner" (event)="qrDetected($event)"></ngx-scanner-qrcode>
-
+  <ngx-scanner-qrcode (event)="qrDetected($event)"></ngx-scanner-qrcode>
+</mat-dialog-content>
