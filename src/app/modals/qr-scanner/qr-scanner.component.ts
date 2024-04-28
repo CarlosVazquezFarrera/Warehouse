@@ -13,6 +13,7 @@ import { ModalsService } from '@services/modals.service';
 import { SnackService } from '@services/snack.service';
 import * as json from './qr-metadata.json';
 import { sleep } from '@shared/helper/sleep';
+import { environment } from '@environments/environment';
 
 LOAD_WASM().subscribe();
 
@@ -62,7 +63,7 @@ export class QrScannerComponent implements AfterViewInit {
     const match = data[0].value.match(this.supplyIdTegex);
     if (!match) {
       this.snackService.showAutoCloseMessage(json.qrInvalid);
-      await sleep(2);
+      await sleep(environment.qrDefaultDelay);
       this.scan.start();
       return
     }

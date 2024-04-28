@@ -5,6 +5,6 @@ export const environment = {
     defaultPageSize: 10,
     defaultPageNumber: 1
   },
-  qrDefaultDelay: 3000,
+  qrDefaultDelay: 2,
   snackDefaultDuration: 5
 };
