@@ -14,13 +14,14 @@ import { SnackService } from '@services/snack.service';
 import * as json from './qr-metadata.json';
 import { sleep } from '@shared/helper/sleep';
 import { environment } from '@environments/environment';
+import { QrReaderComponent } from '@shared/components/qr-reader/qr-reader.component';
 
 LOAD_WASM().subscribe();
 
 @Component({
   selector: 'app-qr-scanner',
   standalone: true,
-  imports: [ModalHeaderComponent, NgxScannerQrcodeModule, MatSelectModule, MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatButtonModule, MatIconModule],
+  imports: [ModalHeaderComponent, NgxScannerQrcodeModule, MatSelectModule, MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatButtonModule, MatIconModule, QrReaderComponent],
   templateUrl: './qr-scanner.component.html',
   styleUrl: './qr-scanner.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +37,7 @@ export class QrScannerComponent implements AfterViewInit {
   private modalsService = inject(ModalsService);
   private snackService = inject(SnackService)
   private supplyIdTegex = new RegExp("^IdSupply=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$");
+  @ViewChild(NgxScannerQrcodeComponent) public scan!: NgxScannerQrcodeComponent;
 
 
   ngAfterViewInit() {
@@ -75,7 +77,8 @@ export class QrScannerComponent implements AfterViewInit {
     this.modalsService.closeModal();
     this.modalsService.showLateralModal('movements');
   }
-  @ViewChild(NgxScannerQrcodeComponent) public scan!: NgxScannerQrcodeComponent;
+
+
 
   public get cameras(): ScannerQRCodeDevice[] {
     const devices = this.scan?.devices?.value;
