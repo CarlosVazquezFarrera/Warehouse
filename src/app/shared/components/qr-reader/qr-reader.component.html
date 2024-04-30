@@ -1,4 +1,7 @@
-<section>
+<!-- <section>
   <video id="video" width="100%" height="auto" autoplay></video>
   <button (click)="startCamera()">Click</button>
-</section>
+</section> -->
+
+<zxing-scanner (scanSuccess)="valueScanned($event)"></zxing-scanner>
+
