@@ -1,14 +1,19 @@
-import { Component, ViewChild } from '@angular/core';
-import { ZXingScannerComponent, ZXingScannerModule } from '@zxing/ngx-scanner';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { sleep } from '@shared/helper/sleep';
+import { BrowserQRCodeReader } from '@zxing/browser';
+
 
 @Component({
   selector: 'app-qr-reader',
   standalone: true,
-  imports: [ZXingScannerModule],
   templateUrl: './qr-reader.component.html',
   styleUrl: './qr-reader.component.scss'
 })
-export class QrReaderComponent {
+export class QrReaderComponent implements OnInit {
+  async ngOnInit(): Promise<void> {
+    const video = await this.startCamera();
+    await this.decodeQRCode(video);
+  }
   public async startCamera(): Promise<HTMLVideoElement> {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
     const video = document.getElementById('video') as HTMLVideoElement;
@@ -16,27 +21,21 @@ export class QrReaderComponent {
     video.play();
     return video;
   }
-  @ViewChild(ZXingScannerComponent) scanner!: ZXingScannerComponent;
-  valueScanned(value: string): void {
-    console.log(value);
-    this.scanner.scanStop();
-  }
 
-  // private async decodeQRCode(video: HTMLVideoElement) {
-  //   const codeReader = new BrowserQRCodeReader();
-  //   while (true) {
-  //     try {
-  //       const result = await codeReader.decodeFromVideoElement(video, undefined);
-  //       if (result) {
-  //         console.log('Código QR detectado:', result.getText());
-  //         // Aquí puedes hacer lo que quieras con el código QR, como enviarlo a tu servidor
-  //       }
-  //     } catch (error) {
-  //       console.error('Error al decodificar el código QR:', error);
-  //     }
-  //     // Esperar un tiempo antes de intentar decodificar de nuevo
-  //     await new Promise(resolve => setTimeout(resolve, 100));
-  //   }
-  // }
+  private async decodeQRCode(video: HTMLVideoElement) {
+    const codeReader = new BrowserQRCodeReader();
+    while (true) {
+      try {
+        codeReader.decodeFromVideoElement(video, (result) => {
+          if (result) {
+            console.log('Código QR detectado:', result.getText());
+          }
+        });
+      } catch (error) {
+        console.error('Error al decodificar el código QR:', error);
+      }
+      await sleep(100);
+    }
+  }
 
 }
