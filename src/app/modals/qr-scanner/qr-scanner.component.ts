@@ -20,12 +20,10 @@ export class QrScannerComponent {
   private store = inject(DasboardStore);
   private modalsService = inject(ModalsService);
   private snackService = inject(SnackService);
-  public delay = environment.qrDefaultDelay;
   public supplyIdTegex = "^IdSupply=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$";
 
 
   public async qrDetected(scan: QrResult) {
-    console.log(scan)
     if (!scan.valid)  {
       this.snackService.showAutoCloseMessage(json.qrInvalid);
       return

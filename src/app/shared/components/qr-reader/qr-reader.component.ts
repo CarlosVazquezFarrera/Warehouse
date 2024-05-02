@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
 import { environment } from '@environments/environment';
 import { BrowserQRCodeReader } from '@zxing/browser';
 import { Result } from '@zxing/library'
-import { Observable, debounceTime, map } from 'rxjs';
+import { Observable, debounceTime, distinctUntilChanged, map } from 'rxjs';
 
 export type QrResult = {
   valid: boolean,
@@ -52,8 +52,9 @@ export class QrReaderComponent implements OnInit, OnDestroy {
     await this.startCamera();
     this.decodeFromVideoElementObservable(this.video)
       .pipe(
-        debounceTime(environment.qrDefaultDelay * 500),
-        map(video => video.getText()),
+        map(video => video?.getText()),
+        distinctUntilChanged(),
+        debounceTime(environment.qrDefaultDelay)
       )
       .subscribe(result => this.scannedText(result));
   }
@@ -65,7 +66,8 @@ export class QrReaderComponent implements OnInit, OnDestroy {
     this.video.play();
   }
 
-  private scannedText(text: string): void {
+  private scannedText(text: string | undefined): void {
+    if (!text) return;
     this.beep.play();
     if (this.patternMatch()) {
       const regexPatter = new RegExp(this.patternMatch()!);
@@ -82,33 +84,11 @@ export class QrReaderComponent implements OnInit, OnDestroy {
   }
 
 
-
-  // private decodeQRCode(video: HTMLVideoElement) {
-  //   const codeReader = new BrowserQRCodeReader();
-  //   try {
-  //     codeReader.decodeFromVideoElement(video, (result) => {
-  //       if (result) {
-  //         this.beep.play();
-  //         const scanResult = this.scannedText(result.getText());
-  //         if (!scanResult.valid) {
-  //           this.onQrDidNotMatchParrent.emit();
-  //           return;
-  //         }
-  //         this.onQrScanned.emit(scanResult.text);
-  //       }
-  //     });
-  //   } catch {
-  //     this.onError.emit("Unknown error")
-  //   }
-  // }
-
   private decodeFromVideoElementObservable(video: HTMLVideoElement): Observable<Result> {
     return new Observable<Result>(observer => {
       const codeReader = new BrowserQRCodeReader();
       const listener = (result: Result | undefined) => {
-        if (result) {
           observer.next(result);
-        }
       };
       codeReader.decodeFromVideoElement(video, listener);
     });
