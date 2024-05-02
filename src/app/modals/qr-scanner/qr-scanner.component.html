@@ -1,14 +1,7 @@
 <app-modal-header></app-modal-header>
 <mat-dialog-content>
-  <!-- <form [formGroup]="fbCamera">
-    <mat-form-field class="w-100">
-      <mat-label>Choose a camera</mat-label>
-      <mat-select formControlName="camera">
-        @for (camera of cameras; track camera.deviceId) {
-        <mat-option [value]="camera.deviceId">{{camera.label}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </form> -->
-  <app-qr-reader/>
+  <app-qr-reader (onQrScanned)="qrDetected($event)"
+                  [patternMatch]="supplyIdTegex"
+                  [indexPatternMatch]="1"
+                   />
 </mat-dialog-content>

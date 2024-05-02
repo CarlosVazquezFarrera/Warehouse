@@ -1,7 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { sleep } from '@shared/helper/sleep';
+import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
 import { BrowserQRCodeReader } from '@zxing/browser';
+import { Result } from '@zxing/library'
+import { Observable, map } from 'rxjs';
 
+export type QrResult = {
+  valid: boolean,
+  text: string
+}
 
 @Component({
   selector: 'app-qr-reader',
@@ -9,33 +14,102 @@ import { BrowserQRCodeReader } from '@zxing/browser';
   templateUrl: './qr-reader.component.html',
   styleUrl: './qr-reader.component.scss'
 })
-export class QrReaderComponent implements OnInit {
+export class QrReaderComponent implements OnInit, OnDestroy {
+
+  //#region Properties
+  private stream!: MediaStream;
+  private video!: HTMLVideoElement;
+  private beep = new Audio("/assets/audio/beep.mp3");
+  //#endregion
+
+  //#region Inputs
+  patternMatch = input<string>();
+  indexPatternMatch = input<number>(0);
+  deplay = input<number>(5);
+  //#endregion
+
+  //#region Outputs
+  public onError = output<string>();
+  public onQrScanned = output<QrResult>();
+
+  //#endregion
+
+  //#region Methods
   async ngOnInit(): Promise<void> {
-    const video = await this.startCamera();
-    await this.decodeQRCode(video);
-  }
-  public async startCamera(): Promise<HTMLVideoElement> {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-    const video = document.getElementById('video') as HTMLVideoElement;
-    video.srcObject = stream;
-    video.play();
-    return video;
+    await this.startReading();
   }
 
-  private async decodeQRCode(video: HTMLVideoElement) {
-    const codeReader = new BrowserQRCodeReader();
-    while (true) {
-      try {
-        codeReader.decodeFromVideoElement(video, (result) => {
-          if (result) {
-            console.log('Código QR detectado:', result.getText());
-          }
-        });
-      } catch (error) {
-        console.error('Error al decodificar el código QR:', error);
+  ngOnDestroy(): void {
+    this.stop();
+  }
+
+  private stop(): void {
+    this.stream.getTracks().forEach(t => t.stop());
+  }
+
+  public async startReading(): Promise<void> {
+    await this.startCamera();
+    this.decodeFromVideoElementObservable(this.video)
+      .pipe(
+        map(video => video.getText()),
+      )
+      .subscribe(result => this.scannedText(result));
+  }
+
+  private async startCamera(): Promise<void> {
+    this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    this.video = document.getElementById('video') as HTMLVideoElement;
+    this.video.srcObject = this.stream;
+    this.video.play();
+  }
+
+  private scannedText(text: string): void {
+    this.beep.play();
+    if (this.patternMatch()) {
+      const regexPatter = new RegExp(this.patternMatch()!);
+      const match = text.match(regexPatter);
+      if (!match) {
+        this.onQrScanned.emit({ valid: false, text });
+        return;
       }
-      await sleep(100);
+      const matchResult = match[this.indexPatternMatch()];
+      this.onQrScanned.emit({ valid: true, text: matchResult })
     }
+    else
+      this.onQrScanned.emit({ valid: true, text });
   }
 
+
+
+  // private decodeQRCode(video: HTMLVideoElement) {
+  //   const codeReader = new BrowserQRCodeReader();
+  //   try {
+  //     codeReader.decodeFromVideoElement(video, (result) => {
+  //       if (result) {
+  //         this.beep.play();
+  //         const scanResult = this.scannedText(result.getText());
+  //         if (!scanResult.valid) {
+  //           this.onQrDidNotMatchParrent.emit();
+  //           return;
+  //         }
+  //         this.onQrScanned.emit(scanResult.text);
+  //       }
+  //     });
+  //   } catch {
+  //     this.onError.emit("Unknown error")
+  //   }
+  // }
+
+  private decodeFromVideoElementObservable(video: HTMLVideoElement): Observable<Result> {
+    return new Observable<Result>(observer => {
+      const codeReader = new BrowserQRCodeReader();
+      const listener = (result: Result | undefined) => {
+        if (result) {
+          observer.next(result);
+        }
+      };
+      codeReader.decodeFromVideoElement(video, listener);
+    });
+  }
+  //#endregion
 }
