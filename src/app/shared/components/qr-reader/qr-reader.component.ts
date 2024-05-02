@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
+import { environment } from '@environments/environment';
 import { BrowserQRCodeReader } from '@zxing/browser';
 import { Result } from '@zxing/library'
-import { Observable, map } from 'rxjs';
+import { Observable, debounceTime, map } from 'rxjs';
 
 export type QrResult = {
   valid: boolean,
@@ -51,6 +52,7 @@ export class QrReaderComponent implements OnInit, OnDestroy {
     await this.startCamera();
     this.decodeFromVideoElementObservable(this.video)
       .pipe(
+        debounceTime(environment.qrDefaultDelay * 500),
         map(video => video.getText()),
       )
       .subscribe(result => this.scannedText(result));
