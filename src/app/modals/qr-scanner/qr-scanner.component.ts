@@ -6,7 +6,6 @@ import { ModalsService } from '@services/modals.service';
 import { SnackService } from '@services/snack.service';
 import { QrReaderComponent, QrResult } from '@shared/components/qr-reader/qr-reader.component';
 import * as json from './qr-metadata.json';
-import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-qr-scanner',

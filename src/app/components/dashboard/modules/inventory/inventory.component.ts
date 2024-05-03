@@ -84,12 +84,15 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   }
 
   public async scanQr() {
-    const camera: MediaStream = await navigator.mediaDevices.getUserMedia({ video: true })
-    if (!camera) {
+    try {
+      const camera: MediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (camera) {
+        this.modalsService.showModal('qrScanner')
+      }
+
+    } catch (error) {
       this.messageService.showMessage(json.cameraNotavailable, 'warning');
-      return;
     }
-    this.modalsService.showModal('qrScanner');
   }
   public handlePageEvent(e: PageEvent) {
     const { pageSize } = e;
