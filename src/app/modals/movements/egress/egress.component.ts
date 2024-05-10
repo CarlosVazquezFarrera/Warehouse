@@ -114,7 +114,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
 
   public async completeEgress(): Promise<void> {
     if (this.formsInvalid) return;
-    const response = await this.messageService.confirmationMessage('Are you sure you want to continue?', 'Warning');
+    const response = await this.messageService.confirmationMessage('Are you sure you want to continue?');
     if (!response) return;
     await this.store.saveNewEgress();
     this.modalService.closeModal();

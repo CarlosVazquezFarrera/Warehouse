@@ -17,7 +17,7 @@ import { Platform } from '@angular/cdk/platform';
 })
 export class QrComponent {
 
-  private store = inject(DasboardStore);
+  public store = inject(DasboardStore);
   public platform = inject(Platform);
 
   public async download(): Promise<void> {

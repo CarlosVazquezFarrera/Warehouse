@@ -6,11 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { EgressComponent } from './egress/egress.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { QrComponent } from './qr/qr.component';
+import { EntryComponent } from './entry/entry.component';
 
 @Component({
   selector: 'app-movements',
   standalone: true,
-  imports: [ModalHeaderComponent, MatTabsModule, MatIconModule, EgressComponent, QrComponent, MatDialogModule],
+  imports: [ModalHeaderComponent, MatTabsModule, MatIconModule, EgressComponent, QrComponent, MatDialogModule, EntryComponent],
   templateUrl: './movements.component.html',
   styleUrl: './movements.component.scss'
 })

@@ -1,0 +1,29 @@
+  <section>
+    <h2>{{store.fullNameSupplySelected()}}</h2>
+    <form autocomplete="off" [formGroup]="form">
+      <mat-form-field class="w-100">
+        <mat-label>Quantity</mat-label>
+        <input type="number" matInput placeholder="Type the quantity" formControlName="quantity">
+        @if(quantity.touched && quantity.invalid){
+        <mat-error>{{errorQuantity()}}</mat-error>
+        }
+      </mat-form-field>
+      <p>
+        <em>
+          This entry will be save under the following agent:
+        </em>
+      </p>
+      <p>
+        <strong>
+          <em>
+            {{warehouseStore.fullName()}} - {{warehouseStore.agent.agentNumber()}}
+          </em>
+        </strong>
+      </p>
+
+    </form>
+    <footer>
+      <button [disabled]="!form.valid" mat-button (click)="accept()">Accept</button>
+    </footer>
+  </section>
+

@@ -1,5 +1,4 @@
 import { InjectionToken, computed, inject } from "@angular/core";
-import { Router } from "@angular/router";
 import { Agent } from "@models/DTO/agent";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { LoginService } from "@services/login.service";

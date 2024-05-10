@@ -5,6 +5,8 @@ import { MessageParams } from '../modals/models/messageParams';
 import { Observable, lastValueFrom } from 'rxjs';
 import { ConfirmationComponent } from '../modals/confirmation/confirmation.component';
 
+type title = 'Warning'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +20,7 @@ export class MessageService extends DialogBaseService<MessageComponent | Confirm
     this.dialogRef = this.dialog.open(MessageComponent, { ... this.config, data: dataMessage })
   }
 
-  async confirmationMessage(message: string, title?: string): Promise<boolean> {
+  async confirmationMessage(message: string, title: title = 'Warning'): Promise<boolean> {
     const dataMessage: MessageParams = {
       message,
       title: this.tittleText(title)

@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "quantity": {
+      "required": "Quantity is required",
+      "min": "Quantity must be at least one"
+    }
+  },
+  "messages": {
+    "acceptEntry": "Are you sure you want to continue?"
+  }
+}

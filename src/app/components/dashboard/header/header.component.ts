@@ -26,7 +26,7 @@ export class HeaderComponent {
     this.store.toggleMenu();
   }
   public async logOut(): Promise<void> {
-    const response = await this.messageService.confirmationMessage('Are you sure you want to log out?', 'Warning');
+    const response = await this.messageService.confirmationMessage('Are you sure you want to log out?');
     if (response) {
       this.sessionService.logOut();
       this.store.logOut();

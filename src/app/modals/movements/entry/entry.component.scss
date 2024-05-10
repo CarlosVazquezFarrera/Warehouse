@@ -1,0 +1,17 @@
+section {
+  min-height: 60dvh;
+  padding: 1% 24px;
+  h2 {
+    text-align: center;
+    color: black;
+  }
+  form{
+    p {
+      margin-top: 2%;
+    }
+  }
+  footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

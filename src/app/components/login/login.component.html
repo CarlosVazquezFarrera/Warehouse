@@ -18,9 +18,11 @@
         <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="passWord">
         <mat-icon matSuffix>password</mat-icon>
+        @if(passWord.touched && passWord.invalid){
         <mat-error>{{errorpassWord}}</mat-error>
+        }
       </mat-form-field>
-      <button  mat-raised-button color="primary" (click)="login()">
+      <button mat-raised-button color="primary" (click)="login()">
         Login
       </button>
     </section>

@@ -3,7 +3,7 @@
     "egress": {
       "required": "This is required",
       "max": "Insufficient stock",
-      "min": "Must be at least 1"
+      "min": "Must be at least one"
     },
     "petitioner": {
       "required": "This is required"
