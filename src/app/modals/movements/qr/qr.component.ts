@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { DasboardStore } from '@store/dashboard.store';
+import { DashboardStore } from '@store/dashboard.store';
 import { downloadHTMLElement } from '@shared/helper/download-file';
 import { printHTMLElement } from '@shared/helper/printer';
 import { Platform } from '@angular/cdk/platform';
@@ -17,7 +17,7 @@ import { Platform } from '@angular/cdk/platform';
 })
 export class QrComponent {
 
-  public store = inject(DasboardStore);
+  public store = inject(DashboardStore);
   public platform = inject(Platform);
 
   public async download(): Promise<void> {

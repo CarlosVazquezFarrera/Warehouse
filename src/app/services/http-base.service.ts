@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { environment } from "@environments/environment";
+import { PagedResponse } from "@models/custom/pagedResonse";
 import { lastValueFrom } from "rxjs";
 
 export abstract class HttpBase<T> {
@@ -14,8 +15,11 @@ export abstract class HttpBase<T> {
     return await lastValueFrom(this.http.get<T>(`${this.apiUrl}/?Id=${id}`));
   }
 
-  public async getAll<T>(): Promise<T> {
-    return await lastValueFrom(this.http.get<T>(this.apiUrl));
+  public async getAll<T>(): Promise<Array<T>> {
+    return await lastValueFrom(this.http.get<Array<T>>(this.apiUrl));
+  }
+  public async getPagedAll<T>(pageNumber = environment.pagination.defaultPageNumber, pageSize = environment.pagination.defaultPageSize): Promise<PagedResponse<T>> {
+    return await lastValueFrom(this.http.get<PagedResponse<T>>(`${this.apiUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`));
   }
 
   public async post<T, K>(body: K): Promise<T> {

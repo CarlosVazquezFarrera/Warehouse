@@ -14,7 +14,7 @@ import { Observable, map, startWith } from 'rxjs';
 import { RequiredAutoCompleteComponent } from '@shared/controls/required-auto-complete/required-auto-complete.component';
 import { AsyncPipe } from '@angular/common';
 import { Agent } from '@models/DTO/agent';
-import { DasboardStore } from '@store/dashboard.store';
+import { DashboardStore } from '@store/dashboard.store';
 import * as json from './egress-metadata.json';
 import { WarehouseStore } from '@store/warehouse.store';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -73,7 +73,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
   @ViewChild(MatStepper) stepper!: MatStepper;
 
   private fb = inject(FormBuilder);
-  public store = inject(DasboardStore);
+  public store = inject(DashboardStore);
   public warehouseStore = inject(WarehouseStore);
   private messageService = inject(MessageService);
   private modalService = inject(ModalsService);

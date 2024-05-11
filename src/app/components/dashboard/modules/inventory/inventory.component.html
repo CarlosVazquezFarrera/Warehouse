@@ -12,7 +12,7 @@
     <div class="w-100 search-row">
       <mat-form-field>
         <mat-label>Search</mat-label>
-        <input type="text" matInput placeholder="Type the Name or Supplier Part" [autocomplete]="false" formControlName="search">
+        <input type="text" matInput placeholder="Type the Name or Supplier Part" formControlName="search">
         @if (search.value) {
           <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
             <mat-icon>close</mat-icon>
@@ -26,9 +26,9 @@
       </button>
     </div>
   </form>
-    @if (store.inventoryMetadata.totalCount()> 0) {
+    @if (store.inventory.data().length > 0) {
     <div class="mat-elevation-z8 data">
-      <table mat-table [dataSource]="store.inventory()">
+      <table mat-table [dataSource]="store.inventory.data()">
 
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -54,7 +54,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="supplyClicked(row)"></tr>
       </table>
       <mat-paginator
-            [length]="store.inventoryMetadata.totalCount()"
+            [length]="store.inventory.metadata.totalCount()"
             (page)="handlePageEvent($event)"
         showFirstLastButtons aria-label="Select page of periodic elements">
       </mat-paginator>

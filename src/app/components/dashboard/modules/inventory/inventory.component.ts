@@ -9,7 +9,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Airport } from '@models/DTO/airport';
-import { DasboardStore } from '@store/dashboard.store';
+import { DashboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { debounceTime, merge } from 'rxjs';
@@ -18,7 +18,6 @@ import { ActivatedRoute } from '@angular/router';
 import { InventoryItem } from '@models/api/inventoryItem';
 import { MessageService } from '@services/message.service';
 import * as json from './inventory-metada.json';
-import { SnackService } from '@services/snack.service';
 
 @Component({
   selector: 'app-inventory',
@@ -58,12 +57,11 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   //#endregion
 
   //#region Properties
-  public store = inject(DasboardStore);
+  public store = inject(DashboardStore);
   private fb = inject(FormBuilder);
   private modalsService = inject(ModalsService);
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
-  private snackService = inject(SnackService);
 
   public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
   public ariports: Airport[] = [];

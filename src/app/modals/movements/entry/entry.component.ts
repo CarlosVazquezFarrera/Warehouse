@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { DasboardStore } from '@store/dashboard.store';
+import { DashboardStore } from '@store/dashboard.store';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -23,7 +23,7 @@ export class EntryComponent {
     ErrorMessageHandle(this.quantity, this.errorQuantity, json.errors.quantity)
   }
   //#region Properties
-  public store = inject(DasboardStore);
+  public store = inject(DashboardStore);
   public warehouseStore = inject(WarehouseStore);
   public fb = inject(FormBuilder);
   private messageService = inject(MessageService);

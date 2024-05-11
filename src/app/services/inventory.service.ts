@@ -18,7 +18,7 @@ export class InventoryService {
   private http: HttpClient = inject(HttpClient);
   private apiUrl: string;
 
-  public async getInventoryByAirport(id: string, search: string, pageNumber: number, pageSize: number) {
+  public async getInventoryByAirport(id: string, search: string, pageNumber = environment.pagination.defaultPageNumber, pageSize = environment.pagination.defaultPageSize) {
     return await lastValueFrom(this.http.get<PagedResponse<InventoryItem>>(`${this.apiUrl}?idAiport=${id}&search=${search}&pageNumber=${pageNumber}&pageSize=${pageSize}`));
   }
 
