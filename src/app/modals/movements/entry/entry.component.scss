@@ -1,6 +1,8 @@
+@use 'utils' as u;
 section {
   min-height: 60dvh;
   padding: 1% 24px;
+  @include u.form-padding();
   h2 {
     text-align: center;
     color: black;

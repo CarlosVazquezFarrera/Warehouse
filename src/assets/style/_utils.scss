@@ -20,3 +20,7 @@
   @include border($color);
   @include border-radius($radius)
 }
+
+@mixin form-padding() {
+  padding: 1% 24px;
+}

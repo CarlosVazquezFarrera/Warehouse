@@ -1,0 +1,24 @@
+<app-modal-header />
+<h2 mat-dialog-title>Create a new Supply</h2>
+<section>
+  <form [formGroup]="form" autocomplete="off">
+    <mat-form-field class="w-100">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput placeholder="Type the supply's name" formControlName="name">
+      @if(name.touched && name.invalid){
+      <mat-error>{{errorsName()}}</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>SupplierPart</mat-label>
+      <input type="text" matInput placeholder="Type the supply's SupplierPart" formControlName="supplierPart">
+      @if(name.touched && name.invalid){
+      <mat-error>{{errorSupplierPart()}}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+  <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="create()">
+    Create
+  </button>
+
+</section>

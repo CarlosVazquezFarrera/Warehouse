@@ -7,6 +7,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 import { DashboardStore } from '@store/dashboard.store';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
+import { ModalsService } from '@services/modals.service';
 
 
 @Component({
@@ -17,26 +18,36 @@ import { NoDataComponent } from '@shared/components/no-data/no-data.component';
   styleUrl: './supplies.component.scss'
 })
 export class SuppliesComponent implements OnInit {
-  async ngOnInit(): Promise<void> {
-    await this.store.loadProducts();
-  }
+  //#region Properties
   private fb = inject(FormBuilder);
   public store = inject(DashboardStore);
+  private modalService = inject(ModalsService);
   displayedColumns: string[] = ['name', 'supplierPart'];
   dataSource = []
   public form = this.fb.group({
     search: ['']
   });
+  //#endregion
 
+  //#region Methods
+  async ngOnInit(): Promise<void> {
+    await this.store.loadProducts();
+  }
+
+  public addSupply(): void {
+    this.modalService.showModal('addSupply');
+  }
 
   public async handlePageEvent(e: PageEvent) {
     const { pageSize } = e;
     const pageNumber = e.pageIndex + 1;
     await this.store.loadProducts(pageNumber, pageSize);
-    //this.store.getInventoryByAirport(this.airportId.value, this.search.value, pageNumber, pageSize);
   }
+  //#endregion
 
+  //#region Gets
   public get search(): AbstractControl {
     return this.form.get('search')!;
   }
+  //#endregion
 }

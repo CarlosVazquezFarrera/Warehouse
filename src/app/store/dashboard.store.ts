@@ -16,6 +16,7 @@ import { Entry } from "@models/DTO/entry";
 import { Product } from "@models/DTO/product";
 import { ProductService } from "@services/product.service";
 import { PagedResponse } from "@models/custom/pagedResonse";
+import { NewProduct } from "@models/types/newProduct";
 
 type DashBoard = {
   airport: Airport[],
@@ -157,8 +158,17 @@ export const DashboardStore = signalStore(
       };
       patchState(store, { inventory });
     },
-    async loadProducts( pageNumber?: number, pageSize?: number): Promise<void> {
+    async loadProducts(pageNumber?: number, pageSize?: number): Promise<void> {
       const products = await productService.getPagedAll<Product>(pageNumber, pageSize);
+      patchState(store, { products });
+    },
+    async createNewProduct(name: string, supplierPart: string): Promise<void> {
+      const newProduct: NewProduct = {
+        name,
+        supplierPart
+      }
+      await productService.post<Product, NewProduct>(newProduct);
+      const products = await productService.getPagedAll<Product>();
       patchState(store, { products });
     }
 

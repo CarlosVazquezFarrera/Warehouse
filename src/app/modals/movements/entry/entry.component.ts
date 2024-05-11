@@ -10,11 +10,12 @@ import * as json from './entry-metadata.json';
 import { WarehouseStore } from '@store/warehouse.store';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-entry',
   standalone: true,
-  imports: [MatInputModule, ReactiveFormsModule, MatButtonModule, MatDialogModule],
+  imports: [MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule,],
   templateUrl: './entry.component.html',
   styleUrl: './entry.component.scss'
 })

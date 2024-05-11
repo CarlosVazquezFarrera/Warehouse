@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
 import * as jsonErrors from './login-metadata.json';
 import { onlyNumbers } from '@validators/only-numbers';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
@@ -18,11 +17,10 @@ import { SessionService } from '@services/session.service';
   standalone: true,
   imports: [
     MatFormFieldModule,
-    MatButtonModule,
-    MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
-    JsonPipe
+    MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
