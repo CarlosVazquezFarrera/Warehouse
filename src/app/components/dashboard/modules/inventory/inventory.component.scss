@@ -7,11 +7,6 @@
     table {
       width: 100%;
     }
-    .mat-mdc-row:hover .mat-mdc-cell {
-      cursor: pointer;
-      background-color: v.$background-hover-table;
-    }
-
   }
   .no-data {
     display: flex;

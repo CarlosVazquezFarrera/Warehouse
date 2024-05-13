@@ -8,15 +8,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute } from '@angular/router';
+
 import { Airport } from '@models/DTO/airport';
 import { DashboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
-import { debounceTime, merge } from 'rxjs';
 import { environment } from '@environments/environment';
-import { ActivatedRoute } from '@angular/router';
 import { InventoryItem } from '@models/api/inventoryItem';
 import { MessageService } from '@services/message.service';
+
+import { debounceTime, merge } from 'rxjs';
 import * as json from './inventory-metada.json';
 
 @Component({

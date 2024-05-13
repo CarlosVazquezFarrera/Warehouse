@@ -4,10 +4,10 @@ import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { MovementsComponent } from '@modals/movements/movements.component';
 import { QrScannerComponent } from '@modals/qr-scanner/qr-scanner.component';
-import { AddSupplyComponent } from '@modals/add-supply/add-supply.component';
-type LateralModals = 'movements';
-type Modals = 'qrScanner' | 'addSupply';
-type AllowedModals = MovementsComponent | QrScannerComponent | AddSupplyComponent;
+import { SupplyComponent } from '@modals/supply/supply.component';
+type LateralModals = 'movements' | 'supply';
+type Modals = 'qrScanner' ;
+type AllowedModals = MovementsComponent | QrScannerComponent | SupplyComponent;
 @Injectable({
   providedIn: 'root'
 })
@@ -27,6 +27,9 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
       case 'movements':
         this.open(MovementsComponent, optionsDialogs);
         break;
+        case 'supply':
+        this.open(SupplyComponent, optionsDialogs);
+        break;
     }
   }
 
@@ -39,9 +42,6 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
     switch (modal) {
       case 'qrScanner':
         this.open(QrScannerComponent);
-        break;
-      case 'addSupply':
-        this.open(AddSupplyComponent);
         break;
     }
   }
