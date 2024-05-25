@@ -8,8 +8,8 @@ export abstract class HttpBase<T> {
   constructor(controller: string) {
     this.apiUrl = `${environment.baseApiUrl}${controller}`;
   }
-  private http: HttpClient = inject(HttpClient);
-  private apiUrl: string;
+  protected http: HttpClient = inject(HttpClient);
+  protected apiUrl: string;
 
   public async getById<T>(id: string): Promise<T> {
     return await lastValueFrom(this.http.get<T>(`${this.apiUrl}/?Id=${id}`));

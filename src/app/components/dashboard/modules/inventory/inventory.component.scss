@@ -1,33 +1,57 @@
 @use 'media-queries' as mq;
 @use 'variables' as v;
 @use 'utils' as u;
+
 .inventory-container {
   .data {
-    overflow-x:auto;
+    header {
+      padding: 1%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+
+      h2 {
+        margin: 0;
+        grid-column: 2;
+        justify-self: center;
+      }
+      button {
+        grid-column: 3;
+        justify-self: end;
+      }
+      //min-height: 5dvh;
+    }
+
     table {
       width: 100%;
     }
   }
+
   .no-data {
     display: flex;
     justify-content: center;
+
     .content {
       mat-icon {
         font-size: 50px;
       }
+
       display: grid;
       justify-items: center;
     }
   }
+
   .inventory-options {
     @include mq.lg() {
       display: flex;
       column-gap: 20px;
     }
-    .search-row{
+
+    .search-row {
       display: flex;
       justify-content: space-between;
       column-gap: 10px;
+
       mat-form-field {
         width: 100%;
       }

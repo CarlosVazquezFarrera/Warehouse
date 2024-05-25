@@ -14,52 +14,56 @@
         <mat-label>Search</mat-label>
         <input type="text" matInput placeholder="Type the Name or Supplier Part" formControlName="search">
         @if (search.value) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
-            <mat-icon>close</mat-icon>
-          </button>
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
         }
         <mat-icon matIconPrefix>search</mat-icon>
       </mat-form-field>
-      <button mat-fab color="primary" aria-label="Scan" (click)="scanQr()">
+      <button mat-fab color="primary" aria-label="Scan" (click)="scanQr()"
+      matTooltip="Scan Qr code">
         <mat-icon>qr_code_scanner</mat-icon>
       </button>
     </div>
   </form>
-    @if (store.inventory.data().length > 0) {
-    <div class="mat-elevation-z8 data">
-      <table mat-table [dataSource]="store.inventory.data()">
+  <div class="mat-elevation-z8 data">
+    <header>
+        <h2>Inventory</h2>
+        <button mat-mini-fab color="primary" aria-label="Add supply"
+        matTooltip="Create a new Supply"
+        (click)="addMissingProductComponent()">
+          <mat-icon>library_add</mat-icon>
+        </button>
+    </header>
 
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
+    <table mat-table [dataSource]="store.inventory.data()">
 
-        <ng-container matColumnDef="supplierPart">
-          <th mat-header-cell *matHeaderCellDef> Supplier Part </th>
-          <td mat-cell *matCellDef="let element"> {{element.supplierPart}} </td>
-        </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="currentQuantity">
-          <th mat-header-cell *matHeaderCellDef> Quantity </th>
-          <td mat-cell *matCellDef="let element"> {{element.currentQuantity}} </td>
-        </ng-container>
+      <ng-container matColumnDef="supplierPart">
+        <th mat-header-cell *matHeaderCellDef> Supplier Part </th>
+        <td mat-cell *matCellDef="let element"> {{element.supplierPart}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="airport">
-          <th mat-header-cell *matHeaderCellDef> Airport </th>
-          <td mat-cell *matCellDef="let element"> {{element.airport}} </td>
-        </ng-container>
+      <ng-container matColumnDef="currentQuantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let element"> {{element.currentQuantity}} </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="supplyClicked(row)"></tr>
-      </table>
-      <mat-paginator
-            [length]="store.inventory.metadata.totalCount()"
-            (page)="handlePageEvent($event)"
-        showFirstLastButtons aria-label="Select page of periodic elements">
-      </mat-paginator>
-    </div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="supplyClicked(row)"></tr>
+    </table>
+    @if (store.inventoryHasData()) {
+    <mat-paginator [length]="store.inventory.metadata.totalCount()" (page)="handlePageEvent($event)"
+      showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
     }
-    @else {
-      <app-no-data/>
-    }
+  </div>
+  @if (!store.inventoryHasData()) {
+  <app-no-data />
+  }
+
 </main>

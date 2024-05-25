@@ -8,6 +8,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { ActivatedRoute } from '@angular/router';
 
 import { Airport } from '@models/DTO/airport';
@@ -31,6 +33,7 @@ import * as json from './inventory-metada.json';
     FormsModule,
     MatTableModule,
     MatDividerModule,
+    MatTooltipModule,
     MatPaginatorModule,
     MatIconModule,
     MatButtonModule,
@@ -65,7 +68,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
 
-  public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity', 'airport'];
+  public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity'];
   public ariports: Airport[] = [];
 
   public form = this.fb.group({
@@ -107,6 +110,9 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     if (this.store.supplySelected.id() == '') return;
 
     this.modalsService.showLateralModal('movements');
+  }
+  public addMissingProductComponent(): void {
+    this.modalsService.showLateralModal('addMissingProduct');
   }
   //#endregion
 

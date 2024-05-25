@@ -21,11 +21,13 @@ import { NewProduct } from "@models/types/newProduct";
 type DashBoard = {
   airport: Airport[],
   agents: Agent[],
+  missingProduct: Product[],
   inventory: PagedResponse<InventoryItem>,
   newEgress: NewEgress,
   supplySelected: InventoryItem,
   products: PagedResponse<Product>,
-  selectedProduct: Product
+  selectedProduct: Product,
+  idAirportSelected: string
 }
 const initialNewEgress: NewEgress = {
   amountRemoved: 0,
@@ -67,7 +69,9 @@ const initialState: DashBoard = {
     data: [],
     metadata: initialMetadata
   },
-  selectedProduct: initialSelectedProduct
+  selectedProduct: initialSelectedProduct,
+  missingProduct: [],
+  idAirportSelected: ""
 }
 
 
@@ -87,8 +91,10 @@ export const DashboardStore = signalStore(
       patchState(store, { airport: airports })
     },
     async getInventoryByAirport(id: string, search: string = '', pageNumber?: number, pageSize?: number): Promise<void> {
+      patchState(store, { idAirportSelected: id });
       const inventory = await inventoryService.getInventoryByAirport(id, search, pageNumber, pageSize);
       patchState(store, { inventory });
+
     },
     async getAgents(): Promise<void> {
       const agents = await agentService.getAgents();
@@ -104,6 +110,11 @@ export const DashboardStore = signalStore(
     },
     setSupplySelected(supply: InventoryItem): void {
       const newEgress: NewEgress = { ...store.newEgress(), supplyId: supply.id }
+      // patchState(store, (state) => ({
+      //   ...state,
+      //   newEgress: newEgress,
+      //   supplySelected: supply
+      // }));
       patchState(store, { newEgress });
       patchState(store, { supplySelected: supply });
     },
@@ -202,10 +213,16 @@ export const DashboardStore = signalStore(
           metadata: { ...state.products.metadata }
         }
       }));
+    },
+    async loadMissingProductFromAirPort(): Promise<void> {
+      const idAirport = store.idAirportSelected();
+      const missingProduct = await productService.loadMissingProductsFromTheAirport(idAirport);
+      console.log(missingProduct)
+      patchState(store, { missingProduct });
     }
 
   })),
-  withComputed(({ newEgress, agents, supplySelected, selectedProduct }) => ({
+  withComputed(({ newEgress, agents, supplySelected, selectedProduct, inventory }) => ({
     petitionerSelected: computed(() => {
       const id = newEgress.petitionerId();
       const agent = agents().find(a => a.id == id);
@@ -224,6 +241,9 @@ export const DashboardStore = signalStore(
     }),
     newAgressValid: computed(() => {
       return newEgress.amountRemoved() != 0 && newEgress.petitionerId() != ''
+    }),
+    inventoryHasData: computed(() => {
+      return inventory.data().length > 0
     })
   }))
 
