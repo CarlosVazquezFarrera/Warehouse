@@ -217,7 +217,6 @@ export const DashboardStore = signalStore(
     async loadMissingProductFromAirPort(): Promise<void> {
       const idAirport = store.idAirportSelected();
       const missingProduct = await productService.loadMissingProductsFromTheAirport(idAirport);
-      console.log(missingProduct)
       patchState(store, { missingProduct });
     }
 

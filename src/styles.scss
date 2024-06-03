@@ -83,3 +83,7 @@ body {
 .not-allowed {
   cursor: not-allowed !important;
 }
+
+.mat-form-field.mat-form-field-invalid .mat-input-element {
+  border-color: red;
+}

@@ -11,7 +11,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Observable, map, startWith } from 'rxjs';
 
-import { RequiredAutoCompleteComponent } from '@shared/controls/required-auto-complete/required-auto-complete.component';
 import { AsyncPipe } from '@angular/common';
 import { Agent } from '@models/DTO/agent';
 import { DashboardStore } from '@store/dashboard.store';
@@ -40,10 +39,10 @@ import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
     MatAutocompleteModule,
     MatInputModule,
     MatDividerModule,
-    RequiredAutoCompleteComponent,
     AsyncPipe,
     MatTooltipModule,
-    MatDialogModule],
+    MatDialogModule
+  ],
   templateUrl: './egress.component.html',
   styleUrl: './egress.component.scss'
 })
