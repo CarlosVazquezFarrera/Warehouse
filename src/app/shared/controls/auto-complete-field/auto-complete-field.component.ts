@@ -1,12 +1,12 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { AfterViewInit, Component, Injector, OnChanges, OnInit, Optional, Self, SimpleChanges, ViewChild, forwardRef, inject, input } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Component, Injector, OnChanges, OnInit, SimpleChanges, forwardRef, input, signal } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
-import { Observable, Subject, distinctUntilChanged, filter, map, startWith } from 'rxjs';
-import { MatStepper } from '@angular/material/stepper';
+import { Observable, map, startWith } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { JsonType } from '@shared/utils/error-message-handle';
 
 export type typeField = 'text' | 'number'
 
@@ -36,29 +36,32 @@ export type typeField = 'text' | 'number'
 
 export class AutoCompleteFieldComponent implements ControlValueAccessor, OnChanges, OnInit {
   constructor(private injector: Injector) {
-    
   }
 
 
   data = input.required<Array<any>>();
   label = input.required<string>();
+
   placeholder = input<string>('Pick one');
   typeField = input<typeField>('number');
   idPropertyName = input('id');
   textPropertyName = input('name');
   suffixPropertyName = input('');
   textFilterProperty = input('');
+  jsonDataError = input();
+
   inputText = new FormControl<string>('');
-  public ngControl!: NgControl;
+  ngControl!: NgControl;
 
 
   filteredOptions!: Observable<any[]>;
 
-  private onChange = (value: string | null ) => { };
+  private onChange = (value: string | null) => { };
   private onTouch = () => { };
 
   ngOnInit(): void {
     this.ngControl = this.injector.get(NgControl, null)!;
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,10 +73,11 @@ export class AutoCompleteFieldComponent implements ControlValueAccessor, OnChang
     );
 
     const validators = this.ngControl.control?.validator;
-    if(!validators) return;
+    if (!validators) return;
 
     this.inputText.setValidators(validators);
     this.inputText.updateValueAndValidity();
+
 
   }
 
@@ -124,6 +128,16 @@ export class AutoCompleteFieldComponent implements ControlValueAccessor, OnChang
 
   public inputClicked(): void {
     this.onTouch();
+  }
+
+  public get errorMessages(): string {
+    const controlErros = this.ngControl.errors;
+    if (!controlErros) return '';
+    const errors = Object.keys(controlErros as object);
+    const error = errors[0];
+    const jsonError = this.jsonDataError() as JsonType;
+    if (!jsonError) return '';
+    return jsonError[error];
   }
 
 }

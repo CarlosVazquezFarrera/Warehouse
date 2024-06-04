@@ -3,16 +3,16 @@ import { merge } from "rxjs";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {  WritableSignal } from "@angular/core";
 
-class jsonType {
+export class JsonType {
   [key: string]: string;
 }
-export function ErrorMessageHandle(control: AbstractControl, signal: WritableSignal<string>, jsonfile: jsonType) {
+export function ErrorMessageHandle(control: AbstractControl, signal: WritableSignal<string>, jsonfile: any) {
   merge(control.statusChanges, control.valueChanges)
     .pipe(takeUntilDestroyed())
     .subscribe(() => signal.set(createErrorMessage(control, jsonfile)));
 }
 
-function createErrorMessage(control: AbstractControl, json: jsonType): string {
+function createErrorMessage(control: AbstractControl, json: JsonType): string {
   if (!control.errors) return '';
 
   const errors = Object.keys(control.errors as object);

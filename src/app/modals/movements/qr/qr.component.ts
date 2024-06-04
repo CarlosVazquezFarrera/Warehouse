@@ -21,7 +21,7 @@ export class QrComponent {
   public platform = inject(Platform);
 
   public async download(): Promise<void> {
-    await downloadHTMLElement('qr', this.store.supplySelected.name(), 'jpeg');
+    await downloadHTMLElement('qr', this.store.inventoryItemSelected.name(), 'jpeg');
   }
   public async print() {
     await printHTMLElement('qr');
@@ -29,7 +29,7 @@ export class QrComponent {
 
 
   public get dataQr(): string {
-    const id = this.store.supplySelected.id();
+    const id = this.store.inventoryItemSelected.id();
     return `IdSupply=${id}`;
   }
 }

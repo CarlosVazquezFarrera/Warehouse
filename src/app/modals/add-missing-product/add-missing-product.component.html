@@ -4,15 +4,17 @@
     <h2>Link a new supply</h2>
   </header>
   <form [formGroup]="form">
-    <app-auto-complete-field class="ng-invalid" placeholder="Type the Supplier Part" label="Product" textFilterProperty="supplierPart"
-      textPropertyName="name" suffixPropertyName="supplierPart" typeField="text" [data]="store.missingProduct()"
-      formControlName="product" />
+    <app-auto-complete-field class="ng-invalid" placeholder="Type the Supplier Part" label="Product"
+      textFilterProperty="supplierPart" textPropertyName="name" suffixPropertyName="supplierPart" typeField="text"
+      [data]="store.missingProduct()" formControlName="product" 
+      [jsonDataError]="jsonErrors.errors.product"/>
     <mat-form-field class="w-100">
       <mat-label>Type the quantity</mat-label>
       <input matInput placeholder="Initial quantity" type="number" formControlName="quantity">
+      <mat-error>{{errorQuantity()}}</mat-error>
     </mat-form-field>
   </form>
-  <button mat-raised-button color="primary w-100" (click)="save()">
+  <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="save()">
     Create
   </button>
 </section>

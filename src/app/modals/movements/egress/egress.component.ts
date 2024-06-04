@@ -87,7 +87,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     petitionerId: ['', Validators.required],
   });
   public egressForm = this.fb.group({
-    quantity: ['', [Validators.required, Validators.max(this.store.supplySelected.currentQuantity()), Validators.min(1)]]
+    quantity: ['', [Validators.required, Validators.max(this.store.inventoryItemSelected.currentQuantity()), Validators.min(1)]]
   });
   //#endregion
 

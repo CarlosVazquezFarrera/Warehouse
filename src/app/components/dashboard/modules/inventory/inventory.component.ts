@@ -79,7 +79,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
 
   //#region Methods
   public supplyClicked(item: InventoryItem): void {
-    this.store.setSupplySelected(item);
+    this.store.setInventyoryItemSelected(item);
     this.modalsService.showLateralModal('movements');
   }
   public clearSearch(): void {
@@ -107,7 +107,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     const idSupply = this.route.snapshot.paramMap.get('idSupply');
 
     if (!idSupply) return;
-    if (this.store.supplySelected.id() == '') return;
+    if (this.store.inventoryItemSelected.id() == '') return;
 
     this.modalsService.showLateralModal('movements');
   }

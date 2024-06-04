@@ -28,7 +28,7 @@ export class QrScannerComponent {
       return
     };
     await this.store.loadSupply(scan.text);
-    if (this.store.supplySelected.id() == '') return;
+    if (this.store.inventoryItemSelected.id() == '') return;
     this.modalsService.closeModal();
     this.modalsService.showLateralModal('movements');
   }

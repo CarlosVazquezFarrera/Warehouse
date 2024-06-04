@@ -1,0 +1,11 @@
+{
+    "errors": {
+        "quantity": {
+            "required": "This is required",
+            "min": "Must be at least one"
+        },
+        "product": {
+            "required": "This is required"
+        }
+    }
+}

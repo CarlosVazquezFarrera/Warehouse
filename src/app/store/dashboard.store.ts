@@ -17,6 +17,10 @@ import { Product } from "@models/DTO/product";
 import { ProductService } from "@services/product.service";
 import { PagedResponse } from "@models/custom/pagedResonse";
 import { NewProduct } from "@models/types/newProduct";
+import { NewSupply } from "@models/types/newSupply";
+import { NewProductLinked } from "@models/types/newProductLinked";
+import { Supply } from "@models/DTO/supply";
+import { SupplyService } from "@services/supply.service";
 
 type DashBoard = {
   airport: Airport[],
@@ -24,7 +28,7 @@ type DashBoard = {
   missingProduct: Product[],
   inventory: PagedResponse<InventoryItem>,
   newEgress: NewEgress,
-  supplySelected: InventoryItem,
+  inventoryItemSelected: InventoryItem,
   products: PagedResponse<Product>,
   selectedProduct: Product,
   idAirportSelected: string
@@ -43,7 +47,7 @@ const initialMetadata: Metadata = {
   hasPreviousPage: false,
   hasNextPage: false
 };
-const supplySelected: InventoryItem = {
+const inventoryItemSelected: InventoryItem = {
   id: "",
   name: "",
   airport: "",
@@ -64,7 +68,7 @@ const initialState: DashBoard = {
   },
   agents: [],
   newEgress: initialNewEgress,
-  supplySelected,
+  inventoryItemSelected,
   products: {
     data: [],
     metadata: initialMetadata
@@ -84,7 +88,8 @@ export const DashboardStore = signalStore(
     agentService = inject(AgentService),
     egressService = inject(EgressService),
     entryService = inject(EntryService),
-    productService = inject(ProductService)
+    productService = inject(ProductService),
+    supplyService = inject(SupplyService)
   ) => ({
     async getAiports(): Promise<void> {
       const airports = await airportService.getAll();
@@ -108,15 +113,15 @@ export const DashboardStore = signalStore(
       const newEgress: NewEgress = { ...store.newEgress(), amountRemoved }
       patchState(store, { newEgress })
     },
-    setSupplySelected(supply: InventoryItem): void {
-      const newEgress: NewEgress = { ...store.newEgress(), supplyId: supply.id }
+    setInventyoryItemSelected(inventyoryitem: InventoryItem): void {
+      const newEgress: NewEgress = { ...store.newEgress(), supplyId: inventyoryitem.id }
       // patchState(store, (state) => ({
       //   ...state,
       //   newEgress: newEgress,
       //   supplySelected: supply
       // }));
       patchState(store, { newEgress });
-      patchState(store, { supplySelected: supply });
+      patchState(store, { inventoryItemSelected: inventyoryitem });
     },
     newEgressRegistered(currentQuantity: number, supplyId: string): void {
       const data = store.inventory.data().map(i => {
@@ -152,16 +157,16 @@ export const DashboardStore = signalStore(
         }
       }));
     },
-    async loadSupply(IdSupply: string): Promise<void> {
-      const item = await inventoryService.getItemByAirportAndIdSupply(IdSupply);
+    async loadSupply(supplyId: string): Promise<void> {
+      const item = await inventoryService.getItemByAirportAndIdSupply(supplyId);
       if (!item) return;
       const newEgress: NewEgress = { ...store.newEgress(), supplyId: item.id }
       patchState(store, { newEgress });
-      patchState(store, { supplySelected: { ...item } });
+      patchState(store, { inventoryItemSelected: { ...item } });
     },
     async saveNewEntry(quantityIncoming: number): Promise<void> {
       const newEntry: NewEntry = {
-        supplyId: store.supplySelected.id(),
+        supplyId: store.inventoryItemSelected.id(),
         quantityIncoming
       }
       const savedEntry: Entry = await entryService.post<Entry, NewEntry>(newEntry);
@@ -218,21 +223,31 @@ export const DashboardStore = signalStore(
       const idAirport = store.idAirportSelected();
       const missingProduct = await productService.loadMissingProductsFromTheAirport(idAirport);
       patchState(store, { missingProduct });
+    },
+    async createNewProductLinked(newProductLinked: NewProductLinked): Promise<void> {
+      const airportId = store.idAirportSelected();
+      const newProduct: NewSupply = {
+        ...newProductLinked,
+        airportId
+      }
+      await supplyService.post<Supply, NewSupply>(newProduct);
+      const inventory = await inventoryService.getInventoryByAirport(airportId);
+      patchState(store, { inventory });
     }
 
   })),
-  withComputed(({ newEgress, agents, supplySelected, selectedProduct, inventory }) => ({
+  withComputed(({ newEgress, agents, inventoryItemSelected, selectedProduct, inventory }) => ({
     petitionerSelected: computed(() => {
       const id = newEgress.petitionerId();
       const agent = agents().find(a => a.id == id);
       return `${agent?.agentNumber} - ${agent?.name} ${agent?.lastName}`;
     }),
     fullNameSupplySelected: computed(() => {
-      const supplierPart = supplySelected.supplierPart?.();
+      const supplierPart = inventoryItemSelected.supplierPart?.();
       if (!supplierPart)
-        return supplySelected.name();
+        return inventoryItemSelected.name();
 
-      return `${supplySelected.name()} ${supplierPart}`
+      return `${inventoryItemSelected.name()} ${supplierPart}`
 
     }),
     isAproductSelected: computed(() => {

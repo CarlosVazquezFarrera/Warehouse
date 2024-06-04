@@ -2,11 +2,15 @@
   <mat-label>{{label()}}</mat-label>
   <input type="text" [placeholder]="placeholder()" aria-label="Number" matInput [formControl]="inputText"
     [matAutocomplete]="auto" (click)="inputClicked()">
-    @if (inputText.value !== '') {
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue()">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
+  @if (inputText.touched && inputText.invalid) {
+  <mat-error>{{errorMessages}}</mat-error>
+  }
+
+  @if (inputText.value !== '') {
+  <button matSuffix mat-icon-button aria-label="Clear" (click)="clearValue()">
+    <mat-icon>close</mat-icon>
+  </button>
+  }
   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayValueSelected.bind(this)">
     @for (option of filteredOptions | async; track option[idPropertyName()]) {
     <mat-option [value]=" option[idPropertyName()]" (onSelectionChange)="elementSelected( option[idPropertyName()])">

@@ -18,6 +18,9 @@
     }
 
     @include mq.sm() {
+      width: 75dvw;
+    }
+    @include mq.lg() {
       width: 90dvw;
     }
 
