@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector, inject } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { AgentInfo } from '@models/api/agentInfo';
-import { AgentLogin } from '@models/custom/agentLogin';
 import { environment } from '@environments/environment';
+import { AgentLoginCredentials } from '@models/types/agentLoginCredentials';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class LoginService {
 
 
   public async login(agentNumber: number, password: string): Promise<AgentInfo> {
-    const agentInfo: AgentLogin = {
+    const agentInfo: AgentLoginCredentials = {
       agentNumber,
       password
     }

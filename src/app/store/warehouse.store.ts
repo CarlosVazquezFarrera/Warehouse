@@ -1,26 +1,25 @@
 import { InjectionToken, computed, inject } from "@angular/core";
-import { Agent } from "@models/DTO/agent";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { LoginService } from "@services/login.service";
-import { AgentInfo } from '@models/api/agentInfo';
 import { SessionService } from "@services/session.service";
+import { AgentLogin } from "@models/types/agentLogin";
 
 type Warehouse = {
-  agent: Agent,
+  agent: AgentLogin,
   isOpen: boolean,
+  token: string
 }
 
 const initialState: Warehouse = {
   isOpen: false,
   agent: {
-    id: '',
     agentNumber: 0,
     shortName: '',
     name: '',
     lastName: '',
     email: '',
-    password: ''
-  }
+  },
+  token: ""
 };
 
 const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
@@ -30,7 +29,8 @@ const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
     if (agent) {
       const loggedInState: Warehouse = {
         isOpen: false,
-        agent
+        agent,
+        token: ""
       }
       return loggedInState;
     }
@@ -43,10 +43,14 @@ export const WarehouseStore = signalStore(
   { providedIn: 'root' },
   withState(() => inject(WarehouseState)),
   withMethods((store, loginService = inject(LoginService)) => ({
-    async login(agentNumber: number, passWord: string): Promise<AgentInfo> {
+    async login(agentNumber: number, passWord: string): Promise<void> {
       const agentInfo = await loginService.login(agentNumber, passWord);
-      patchState(store, { agent: agentInfo.agent});
-      return agentInfo;
+
+      patchState(store, (_) => ({
+        agent: agentInfo.agent,
+        token: agentInfo.token
+
+      }));
     },
     logOut(): void {
       patchState(store, initialState)

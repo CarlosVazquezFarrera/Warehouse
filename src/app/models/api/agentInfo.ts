@@ -1,6 +1,6 @@
-import { Agent } from "@models/DTO/agent"
+import { AgentLogin } from "@models/types/agentLogin"
 
 export interface AgentInfo {
-  agent: Agent
+  agent: AgentLogin
   token: string
 }

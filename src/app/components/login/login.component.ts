@@ -56,9 +56,11 @@ export class LoginComponent {
       this.formLogin.markAllAsTouched();
     if (this.formLogin.invalid)
       return;
-    const user = await this.store.login(this.emploeeNumber.value, this.passWord.value);
-    if (user) {
-      this.sessionService.login(user);
+    await this.store.login(this.emploeeNumber.value, this.passWord.value);
+    const user = this.store.agent();
+    const token = this.store.token();
+    if (user && token) {
+      this.sessionService.login(user, token);
       this.router.navigateByUrl(AppRoutes.dashboard.path);
     }
   }
