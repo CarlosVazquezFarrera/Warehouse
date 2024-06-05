@@ -38,8 +38,8 @@ export class LoginComponent {
 
   public formLogin = this.fb.group(
     {
-      emploeeNumber: ['303683', [Validators.required, Validators.minLength(6), onlyNumbers()]],
-      passWord: ['Lish2349', [Validators.required]]
+      emploeeNumber: ['', [Validators.required, Validators.minLength(6), onlyNumbers()]],
+      passWord: ['', [Validators.required]]
     },
   )
 
