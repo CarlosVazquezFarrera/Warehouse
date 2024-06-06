@@ -1,11 +1,11 @@
 import { InjectionToken, computed, inject } from "@angular/core";
+import { AgentBaseInfo } from "@models/types/agentBaseInfo";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { LoginService } from "@services/login.service";
 import { SessionService } from "@services/session.service";
-import { AgentLogin } from "@models/types/agentLogin";
 
 type Warehouse = {
-  agent: AgentLogin,
+  agent: AgentBaseInfo,
   isOpen: boolean,
   token: string
 }
@@ -18,6 +18,7 @@ const initialState: Warehouse = {
     name: '',
     lastName: '',
     email: '',
+    id: ""
   },
   token: ""
 };

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Agent } from '@models/DTO/agent';
-import { AgentLogin } from '@models/types/agentLogin';
+import { AgentBaseInfo } from '@models/types/agentBaseInfo';
 type SessionKey = 'token' | 'agent'
 
 @Injectable({
@@ -14,7 +14,7 @@ export class SessionService {
   }
   private currentUserIsloggedIn: boolean = false;
 
-  public login(agentInfo: AgentLogin, tokenInfo: string) {
+  public login(agentInfo: AgentBaseInfo, tokenInfo: string) {
     const agent: SessionKey = 'agent';
     sessionStorage.setItem(agent, JSON.stringify(agentInfo));
     const token: SessionKey = 'token'

@@ -1,6 +1,6 @@
-import { AgentLogin } from "@models/types/agentLogin"
+import { AgentBaseInfo } from "@models/types/agentBaseInfo"
 
 export interface AgentInfo {
-  agent: AgentLogin
+  agent: AgentBaseInfo
   token: string
 }

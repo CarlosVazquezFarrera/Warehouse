@@ -6,6 +6,9 @@
     opacity: 80%;
     width: 100%;
     height: auto;
+    @include mq.md(){
+      width: 75%;
+    }
     @include mq.lg(){
       width: 55%;
     }

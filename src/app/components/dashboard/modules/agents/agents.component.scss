@@ -1,0 +1,12 @@
+@use 'media-queries' as mq;
+
+table {
+    .name,
+    .lastName {
+        display: none;
+
+        @include mq.md() {
+            display:table-cell;  
+        }
+    }
+}

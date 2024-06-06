@@ -20,24 +20,21 @@
         }
         <mat-icon matIconPrefix>search</mat-icon>
       </mat-form-field>
-      <button mat-fab color="primary" aria-label="Scan" (click)="scanQr()"
-      matTooltip="Scan Qr code">
+      <button mat-fab color="primary" aria-label="Scan" (click)="scanQr()" matTooltip="Scan Qr code">
         <mat-icon>qr_code_scanner</mat-icon>
       </button>
     </div>
   </form>
   <div class="mat-elevation-z8 data">
     <header>
-        <h2>Inventory</h2>
-        <button mat-mini-fab color="primary" aria-label="Add supply"
-        matTooltip="Create a new Supply"
+      <h2>Inventory</h2>
+      <button mat-mini-fab color="primary" aria-label="Add supply" matTooltip="Create a new Supply"
         (click)="addMissingProductComponent()">
-          <mat-icon>library_add</mat-icon>
-        </button>
+        <mat-icon>library_add</mat-icon>
+      </button>
     </header>
 
     <table mat-table [dataSource]="store.inventory.data()">
-
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>

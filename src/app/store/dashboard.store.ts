@@ -1,5 +1,4 @@
 import { computed, inject } from "@angular/core";
-import { Agent } from "@models/DTO/agent";
 import { Airport } from "@models/DTO/airport"
 import { Egress } from "@models/DTO/egress";
 import { InventoryItem } from "@models/api/inventoryItem";
@@ -21,17 +20,19 @@ import { NewSupply } from "@models/types/newSupply";
 import { NewProductLinked } from "@models/types/newProductLinked";
 import { Supply } from "@models/DTO/supply";
 import { SupplyService } from "@services/supply.service";
+import { AgentBaseInfo } from "@models/types/agentBaseInfo";
 
 type DashBoard = {
   airport: Airport[],
-  agents: Agent[],
+  agents: AgentBaseInfo[],
   missingProduct: Product[],
   inventory: PagedResponse<InventoryItem>,
   newEgress: NewEgress,
   inventoryItemSelected: InventoryItem,
   products: PagedResponse<Product>,
   selectedProduct: Product,
-  idAirportSelected: string
+  idAirportSelected: string,
+  pagedAgents: PagedResponse<AgentBaseInfo>
 }
 const initialNewEgress: NewEgress = {
   amountRemoved: 0,
@@ -75,7 +76,11 @@ const initialState: DashBoard = {
   },
   selectedProduct: initialSelectedProduct,
   missingProduct: [],
-  idAirportSelected: ""
+  idAirportSelected: "",
+  pagedAgents: {
+    data: [],
+    metadata: initialMetadata
+  }
 }
 
 
@@ -102,8 +107,12 @@ export const DashboardStore = signalStore(
 
     },
     async getAgents(): Promise<void> {
-      const agents = await agentService.getAgents();
-      patchState(store, { agents })
+      const agents = await agentService.getAll<AgentBaseInfo>();
+      patchState(store, { agents });
+    },
+    async getPagedAgents(pageNumber?: number, pageSize?: number, search?: string, ): Promise<void> {
+      const pagedAgents = await agentService.getPagedAllWithSearch<AgentBaseInfo>(search, pageNumber, pageSize, "GetPagedAgents");
+      patchState(store, { pagedAgents })
     },
     setPetitionerId(petitionerId: string): void {
       const newEgress: NewEgress = { ...store.newEgress(), petitionerId }

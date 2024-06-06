@@ -80,6 +80,25 @@ body {
   background-color: v.$background-hover-table;
 }
 
+table {
+  width: 100%;
+}
 .not-allowed {
   cursor: not-allowed !important;
+}
+.table-header-with-button {
+  display: flex;
+  justify-content: flex-end;
+}
+.table-header-center {
+  display: flex;
+  justify-content: center;
+}
+
+.mt-3 {
+  margin-top: 3%;
+}
+
+.mat-elevation-z8{
+  overflow-x:auto;
 }

@@ -20,6 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
+import { AgentBaseInfo } from '@models/types/agentBaseInfo';
 
 
 @Component({
@@ -78,7 +79,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
   private modalService = inject(ModalsService);
   public tooltipFinal = json.tooltip.final;
 
-  filteredOptions!: Observable<Agent[]>;
+  filteredOptions!: Observable<AgentBaseInfo[]>;
 
   public errorPetitioner = json.errors.petitioner.required;
   public errorEgress = signal(json.errors.egress.required);
@@ -92,7 +93,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
   //#endregion
 
   //#region Methods
-  private filter(value: string): Agent[] {
+  private filter(value: string): AgentBaseInfo[] {
     const filterValue = value?.toLowerCase();
 
     return this.store.agents().filter(

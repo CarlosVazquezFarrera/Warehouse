@@ -1,11 +1,14 @@
-<section class="header">
+<section class="table-header-with-button">
   <button mat-mini-fab color="primary" aria-label="Add supply" (click)="addSupply()" matTooltip="Create a new Supply">
     <mat-icon>library_add</mat-icon>
   </button>
 </section>
-<main>
+<main class="mt-3">
   @if (store.products.data().length > 0) {
   <div class="mat-elevation-z8 data">
+    <header class="table-header-center">
+      <h2>Supplies</h2>
+    </header>
     <table mat-table [dataSource]="store.products.data()">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
