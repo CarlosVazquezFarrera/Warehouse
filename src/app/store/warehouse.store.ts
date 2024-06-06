@@ -13,7 +13,7 @@ type Warehouse = {
 const initialState: Warehouse = {
   isOpen: false,
   agent: {
-    agentNumber: 0,
+    agentNumber: '',
     shortName: '',
     name: '',
     lastName: '',
@@ -44,7 +44,7 @@ export const WarehouseStore = signalStore(
   { providedIn: 'root' },
   withState(() => inject(WarehouseState)),
   withMethods((store, loginService = inject(LoginService)) => ({
-    async login(agentNumber: number, passWord: string): Promise<void> {
+    async login(agentNumber: string, passWord: string): Promise<void> {
       const agentInfo = await loginService.login(agentNumber, passWord);
 
       patchState(store, (_) => ({

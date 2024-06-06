@@ -1,6 +1,6 @@
 export interface Agent {
   id: string
-  agentNumber: number
+  agentNumber: string
   shortName: string
   name: string
   lastName: string

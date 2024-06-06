@@ -11,6 +11,7 @@ import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { DashboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { MatIconModule } from '@angular/material/icon';
+import { Agent } from '@models/DTO/agent';
 
 @Component({
   selector: 'app-agent',
@@ -33,19 +34,21 @@ export class AgentComponent {
     ErrorMessageHandle(this.name, this.errorName, json.errors.name);
     ErrorMessageHandle(this.lastName, this.errorLastName, json.errors.lastName);
     ErrorMessageHandle(this.email, this.errorEmail, json.errors.email);
+
+    console.log(this.store.agentSelected());
   }
 
   //#region  Properties
   private fb = inject(FormBuilder);
-  private store = inject(DashboardStore);
+  public store = inject(DashboardStore);
   private modalsService = inject(ModalsService);
 
   public form = this.fb.group({
-    agentNumber: ['', [Validators.required, Validators.minLength(6), onlyNumbers()]],
-    shortName: ['', [Validators.required, Validators.minLength(2)]],
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    lastName: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.minLength(2), Validators.email]],
+    agentNumber: [this.store.agentSelected()?.agentNumber ?? '', [Validators.required, Validators.minLength(6), onlyNumbers()]],
+    shortName: [this.store.agentSelected()?.shortName ?? '', [Validators.required, Validators.minLength(2)]],
+    name: [this.store.agentSelected()?.name ?? '', [Validators.required, Validators.minLength(2)]],
+    lastName: [this.store.agentSelected()?.lastName ?? '', [Validators.required, Validators.minLength(2)]],
+    email: [this.store.agentSelected()?.email ?? '', [Validators.required, Validators.minLength(2), Validators.email]],
     password: [''],
   });
 
@@ -61,16 +64,19 @@ export class AgentComponent {
   //#region methods
   public async save(): Promise<void> {
     if (this.form.invalid) return;
-    const agent: NewAgent = {
-      agentNumber: this.agentNumber.value,
-      shortName: this.shortName.value,
-      name: this.name.value,
-      lastName: this.lastName.value,
-      email: this.email.value,
-      password: ''
-    }
-    await this.store.registerNewAgent(agent);
+    await this.store.registerNewAgent(this.agentData);
     this.modalsService.closeModal();
+  }
+
+  public async update(): Promise<void> {
+    if (this.form.invalid) return;
+    const agent: Agent = {
+      ...this.agentData,
+      id: this.store.agentSelected()?.id!
+    }
+    await this.store.updateAgent(agent);
+    this.modalsService.closeModal();
+
   }
   //#endregion
 
@@ -91,6 +97,32 @@ export class AgentComponent {
     return this.form.get('email')!;
   }
 
+  public get agentNumberValue(): string {
+    return this.agentNumber.value;
+  }
+  public get shortNameValue(): string {
+    return this.shortName.value;
+  }
+  public get nameValue(): string {
+    return this.name.value;
+  }
+  public get lastNameValue(): string {
+    return this.lastName.value;
+  }
+  public get emailValue(): string {
+    return this.email.value;;
+  }
+  private get agentData(): NewAgent {
+    const agent: NewAgent = {
+      agentNumber: this.agentNumberValue,
+      shortName: this.shortNameValue,
+      name: this.nameValue,
+      lastName: this.lastNameValue,
+      email: this.emailValue,
+      password: ''
+    }
+    return agent;
+  }
   //#endregion
 
 }

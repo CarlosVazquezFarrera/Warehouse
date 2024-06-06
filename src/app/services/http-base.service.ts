@@ -37,7 +37,7 @@ export abstract class HttpBase<T> {
     return await lastValueFrom(this.http.post<T>(this.apiUrl, body));
   }
 
-  public async put<T>(body: T): Promise<T> {
+  public async put<T, K>(body: K): Promise<T> {
     return await lastValueFrom(this.http.put<T>(this.apiUrl, body));
   }
 

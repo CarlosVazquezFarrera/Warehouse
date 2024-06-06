@@ -34,7 +34,8 @@ type DashBoard = {
   products: PagedResponse<Product>,
   selectedProduct: Product,
   idAirportSelected: string,
-  pagedAgents: PagedResponse<AgentBaseInfo>
+  pagedAgents: PagedResponse<AgentBaseInfo>,
+  idAgentSelected: string
 }
 const initialNewEgress: NewEgress = {
   amountRemoved: 0,
@@ -82,7 +83,8 @@ const initialState: DashBoard = {
   pagedAgents: {
     data: [],
     metadata: initialMetadata
-  }
+  },
+  idAgentSelected: ""
 }
 
 
@@ -98,6 +100,7 @@ export const DashboardStore = signalStore(
     productService = inject(ProductService),
     supplyService = inject(SupplyService)
   ) => ({
+    //#region Airport
     async getAiports(): Promise<void> {
       const airports = await airportService.getAll();
       patchState(store, { airport: airports })
@@ -108,6 +111,9 @@ export const DashboardStore = signalStore(
       patchState(store, { inventory });
 
     },
+    //#endregion
+
+    //#region Agents
     async getAgents(): Promise<void> {
       const agents = await agentService.getAll<AgentBaseInfo>();
       patchState(store, { agents });
@@ -126,37 +132,30 @@ export const DashboardStore = signalStore(
       const newEgress: NewEgress = { ...store.newEgress(), petitionerId }
       patchState(store, { newEgress })
     },
-    setRemovedAmount(amountRemoved: number): void {
-      const newEgress: NewEgress = { ...store.newEgress(), amountRemoved }
-      patchState(store, { newEgress })
+
+    setAgentId(idAgent: string): void {
+      patchState(store, { idAgentSelected: idAgent })
     },
-    setInventyoryItemSelected(inventyoryitem: InventoryItem): void {
-      const newEgress: NewEgress = { ...store.newEgress(), supplyId: inventyoryitem.id }
-      // patchState(store, (state) => ({
-      //   ...state,
-      //   newEgress: newEgress,
-      //   supplySelected: supply
-      // }));
-      patchState(store, { newEgress });
-      patchState(store, { inventoryItemSelected: inventyoryitem });
-    },
-    newEgressRegistered(currentQuantity: number, supplyId: string): void {
-      const data = store.inventory.data().map(i => {
-        if (i.id == supplyId) {
-          const newTotal = i.currentQuantity - currentQuantity;
-          const newEgress: InventoryItem = { ...i, currentQuantity: newTotal }
-          return newEgress;
+    async updateAgent(agent: Agent): Promise<void> {
+      const updateAgent = await agentService.put<AgentBaseInfo, Agent>(agent);
+
+      const agents = store.pagedAgents.data().map(a => {
+        if (a.id == updateAgent.id) {
+          return { ...updateAgent };
         }
-        return i;
+        return a;
       });
+
       patchState(store, (state) => ({
-        inventory: {
-          data,
-          metadata: { ...state.inventory.metadata }
+        pagedAgents: {
+          data: agents,
+          metadata: { ...state.pagedAgents.metadata }
         }
       }));
-
     },
+    //#endregion
+
+    //#region Egress
     async saveNewEgress() {
       const egress: Egress = await egressService.post<Egress, NewEgress>(store.newEgress())
       const data = store.inventory.data().map(i => {
@@ -174,6 +173,10 @@ export const DashboardStore = signalStore(
         }
       }));
     },
+
+    //#endregion
+
+    //#region  Inventory
     async loadSupply(supplyId: string): Promise<void> {
       const item = await inventoryService.getItemByAirportAndIdSupply(supplyId);
       if (!item) return;
@@ -181,6 +184,19 @@ export const DashboardStore = signalStore(
       patchState(store, { newEgress });
       patchState(store, { inventoryItemSelected: { ...item } });
     },
+    async createNewProductLinked(newProductLinked: NewProductLinked): Promise<void> {
+      const airportId = store.idAirportSelected();
+      const newProduct: NewSupply = {
+        ...newProductLinked,
+        airportId
+      }
+      await supplyService.post<Supply, NewSupply>(newProduct);
+      const inventory = await inventoryService.getInventoryByAirport(airportId);
+      patchState(store, { inventory });
+    },
+    //#endregion
+
+    //#region Entry
     async saveNewEntry(quantityIncoming: number): Promise<void> {
       const newEntry: NewEntry = {
         supplyId: store.inventoryItemSelected.id(),
@@ -201,6 +217,9 @@ export const DashboardStore = signalStore(
         }
       }));
     },
+    //#endregion
+
+    //#region  Products
     async loadProducts(pageNumber?: number, pageSize?: number): Promise<void> {
       const products = await productService.getPagedAll<Product>(pageNumber, pageSize);
       patchState(store, { products });
@@ -221,7 +240,7 @@ export const DashboardStore = signalStore(
       patchState(store, { selectedProduct: { ...initialSelectedProduct } });
     },
     async updateSelectedProduct(oldProduct: Product): Promise<void> {
-      const product = await productService.put<Product>(oldProduct);
+      const product = await productService.put<Product, Product>(oldProduct);
       const products = store.products.data().map(p => {
         if (p.id == product.id) {
           return product;
@@ -241,23 +260,45 @@ export const DashboardStore = signalStore(
       const missingProduct = await productService.loadMissingProductsFromTheAirport(idAirport);
       patchState(store, { missingProduct });
     },
-    async createNewProductLinked(newProductLinked: NewProductLinked): Promise<void> {
-      const airportId = store.idAirportSelected();
-      const newProduct: NewSupply = {
-        ...newProductLinked,
-        airportId
-      }
-      await supplyService.post<Supply, NewSupply>(newProduct);
-      const inventory = await inventoryService.getInventoryByAirport(airportId);
-      patchState(store, { inventory });
-    },
+    //#endregion 
 
+    //#region  Egress
+    setRemovedAmount(amountRemoved: number): void {
+      const newEgress: NewEgress = { ...store.newEgress(), amountRemoved }
+      patchState(store, { newEgress })
+    },
+    setInventyoryItemSelected(inventyoryitem: InventoryItem): void {
+      const newEgress: NewEgress = { ...store.newEgress(), supplyId: inventyoryitem.id }
+      patchState(store, { newEgress });
+      patchState(store, { inventoryItemSelected: inventyoryitem });
+    },
+    newEgressRegistered(currentQuantity: number, supplyId: string): void {
+      const data = store.inventory.data().map(i => {
+        if (i.id == supplyId) {
+          const newTotal = i.currentQuantity - currentQuantity;
+          const newEgress: InventoryItem = { ...i, currentQuantity: newTotal }
+          return newEgress;
+        }
+        return i;
+      });
+      patchState(store, (state) => ({
+        inventory: {
+          data,
+          metadata: { ...state.inventory.metadata }
+        }
+      }));
+
+    }
+    //#endregion
   })),
-  withComputed(({ newEgress, agents, inventoryItemSelected, selectedProduct, inventory }) => ({
+  withComputed(({ newEgress, agents, inventoryItemSelected, selectedProduct, inventory, pagedAgents, idAgentSelected }) => ({
     petitionerSelected: computed(() => {
       const id = newEgress.petitionerId();
       const agent = agents().find(a => a.id == id);
       return `${agent?.agentNumber} - ${agent?.name} ${agent?.lastName}`;
+    }),
+    agentSelected: computed(() => {
+      return pagedAgents.data().find(a => a.id === idAgentSelected())
     }),
     fullNameSupplySelected: computed(() => {
       const supplierPart = inventoryItemSelected.supplierPart?.();

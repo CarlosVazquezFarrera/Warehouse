@@ -9,6 +9,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { environment } from '@environments/environment';
+import { AgentBaseInfo } from '@models/types/agentBaseInfo';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { DashboardStore } from '@store/dashboard.store';
@@ -59,6 +60,10 @@ export class AgentsComponent implements OnInit {
     this.search.setValue('')
   }
   public addAgent(): void {
+    this.modalsService.showLateralModal('agent');
+  }
+  public editAgent(agentId: string): void {
+    this.store.setAgentId(agentId);
     this.modalsService.showLateralModal('agent');
   }
   //#endregion

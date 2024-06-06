@@ -19,7 +19,7 @@ export class LoginService {
 
 
 
-  public async login(agentNumber: number, password: string): Promise<AgentInfo> {
+  public async login(agentNumber: string, password: string): Promise<AgentInfo> {
     const agentInfo: AgentLoginCredentials = {
       agentNumber,
       password

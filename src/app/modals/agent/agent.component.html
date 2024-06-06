@@ -48,7 +48,15 @@
         </mat-form-field>
 
     </form>
+    @if (store.agentSelected()) {
+    <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="update()">
+        Update
+    </button>
+    }
+    @else {
     <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="save()">
         Save
     </button>
+    }
+
 </section>
