@@ -16,8 +16,15 @@
       <!-- Password -->
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="passWord">
-        <mat-icon matSuffix>password</mat-icon>
+        <!-- <input matInput type="password" formControlName="passWord">
+        <mat-icon matSuffix>password</mat-icon> -->
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="passWord" autocomplete="password">
+        <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+
+        <!-- <input matInput [type]="hide ? 'password' : 'text'" formControlName="passWord" (click)="clickEvent($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> -->
         @if(passWord.touched && passWord.invalid){
         <mat-error>{{errorpassWord}}</mat-error>
         }

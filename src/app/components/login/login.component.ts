@@ -34,6 +34,7 @@ export class LoginComponent {
   private store = inject(WarehouseStore);
   private router = inject(Router);
   private sessionService = inject(SessionService);
+  public hide = true;
 
 
   public formLogin = this.fb.group(
@@ -63,6 +64,11 @@ export class LoginComponent {
       this.sessionService.login(user, token);
       this.router.navigateByUrl(AppRoutes.dashboard.path);
     }
+  }
+
+  clickEvent(event: MouseEvent) {
+    this.hide = !this.hide;
+    event.stopPropagation();
   }
   //#endregion
 }
