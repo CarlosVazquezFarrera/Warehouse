@@ -1,0 +1,13 @@
+@use 'media-queries' as mq;
+section {
+    padding: 1% 2%;
+}
+.row-form {
+    display: flex;
+    flex-direction: column;
+   @include mq.md() {
+    flex-direction: row;
+    column-gap: 2%;
+   } 
+
+}

@@ -1,0 +1,26 @@
+{
+    "errors": {
+        "agentNumber": {
+            "required": "The Agent number is required",
+            "minlength": "The Agent number must be at least 6 characters long",
+            "onlyNumbers": "The Agent number must be numbers only"
+        },
+        "shortName": {
+            "required": "The Short name is required",
+            "minlength": "The Short name must be at least 2 characters long"
+        },
+        "name": {
+            "required": "The Name is required",
+            "minlength": "The Name must be at least 2 characters long"
+        },
+        "lastName": {
+            "required": "The Last name name is required",
+            "minlength": "The Last name must be at least 2 characters long"
+        },
+        "email": {
+            "required": "The Email is required",
+            "minlength": "The Email must be at least 2 characters long",
+            "email": "This must be an email"
+        }
+    }
+}

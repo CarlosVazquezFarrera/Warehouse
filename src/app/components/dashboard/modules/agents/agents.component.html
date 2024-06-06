@@ -1,3 +1,16 @@
+<form>
+    <mat-form-field class="w-100">
+        <mat-label>Search</mat-label>
+        <input type="text" matInput placeholder="Type the Name or Agent Number" [formControl]="search">
+        @if (search.value) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSerach()">
+            <mat-icon>close</mat-icon>
+        </button>
+        }
+        <mat-icon matIconPrefix>search</mat-icon>
+    </mat-form-field>
+</form>
+
 <section class="table-header-with-button">
     <button mat-mini-fab color="primary" aria-label="Add supply" (click)="addAgent()" matTooltip="Add a new agent">
         <mat-icon>library_add</mat-icon>
@@ -23,7 +36,7 @@
                 <td class="name" mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
             <ng-container matColumnDef="lastName">
-                <th class="lastName" mat-header-cell *matHeaderCellDef> LastName </th>
+                <th class="lastName" mat-header-cell *matHeaderCellDef> Last Name </th>
                 <td class="lastName" mat-cell *matCellDef="let element"> {{element.lastName}} </td>
             </ng-container>
             <ng-container matColumnDef="actions">

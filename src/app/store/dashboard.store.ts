@@ -21,6 +21,8 @@ import { NewProductLinked } from "@models/types/newProductLinked";
 import { Supply } from "@models/DTO/supply";
 import { SupplyService } from "@services/supply.service";
 import { AgentBaseInfo } from "@models/types/agentBaseInfo";
+import { NewAgent } from "@models/types/newAgent";
+import { Agent } from "@models/DTO/agent";
 
 type DashBoard = {
   airport: Airport[],
@@ -110,10 +112,16 @@ export const DashboardStore = signalStore(
       const agents = await agentService.getAll<AgentBaseInfo>();
       patchState(store, { agents });
     },
-    async getPagedAgents(pageNumber?: number, pageSize?: number, search?: string, ): Promise<void> {
+    async getPagedAgents(pageNumber?: number, pageSize?: number, search?: string,): Promise<void> {
       const pagedAgents = await agentService.getPagedAllWithSearch<AgentBaseInfo>(search, pageNumber, pageSize, "GetPagedAgents");
       patchState(store, { pagedAgents })
     },
+    async registerNewAgent(agent: NewAgent): Promise<void> {
+      await agentService.post<AgentBaseInfo, NewAgent>(agent);
+      const pagedAgents = await agentService.getPagedAllWithSearch<AgentBaseInfo>(undefined, undefined, undefined, "GetPagedAgents");
+      patchState(store, { pagedAgents })
+    },
+
     setPetitionerId(petitionerId: string): void {
       const newEgress: NewEgress = { ...store.newEgress(), petitionerId }
       patchState(store, { newEgress })
@@ -242,7 +250,7 @@ export const DashboardStore = signalStore(
       await supplyService.post<Supply, NewSupply>(newProduct);
       const inventory = await inventoryService.getInventoryByAirport(airportId);
       patchState(store, { inventory });
-    }
+    },
 
   })),
   withComputed(({ newEgress, agents, inventoryItemSelected, selectedProduct, inventory }) => ({

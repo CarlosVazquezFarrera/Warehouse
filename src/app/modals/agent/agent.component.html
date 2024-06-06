@@ -1,0 +1,54 @@
+<app-modal-header />
+<section>
+    <header>
+        <h2>Agent</h2>
+    </header>
+    <form [formGroup]="form">
+        <div class="row-form">
+            <mat-form-field class="w-100">
+                <mat-label>Agent Number</mat-label>
+                <input matInput placeholder="Agent number" type="text" formControlName="agentNumber">
+                @if(agentNumber.touched && agentNumber.invalid){
+                <mat-error>{{errorAgentNumber()}}</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+                <mat-label>Short Name</mat-label>
+                <input matInput placeholder="Short name's agent" type="text" formControlName="shortName">
+                @if(shortName.touched && shortName.invalid){
+                <mat-error>{{errorShortName()}}</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <div class="row-form">
+            <mat-form-field class="w-100">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name's agent" type="text" formControlName="name">
+                @if(name.touched && name.invalid){
+                <mat-error>{{errorName()}}</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Last Name's agent" type="text" formControlName="lastName">
+                @if(lastName.touched && lastName.invalid){
+                <mat-error>{{errorLastName()}}</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <mat-form-field class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email's agent" type="email" formControlName="email">
+            @if(email.touched && email.invalid){
+            <mat-error>{{errorEmail()}}</mat-error>
+            }
+        </mat-form-field>
+
+    </form>
+    <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="save()">
+        Save
+    </button>
+</section>

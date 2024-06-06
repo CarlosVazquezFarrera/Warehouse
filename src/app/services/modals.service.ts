@@ -6,9 +6,10 @@ import { MovementsComponent } from '@modals/movements/movements.component';
 import { QrScannerComponent } from '@modals/qr-scanner/qr-scanner.component';
 import { SupplyComponent } from '@modals/supply/supply.component';
 import { AddMissingProductComponent } from '@modals/add-missing-product/add-missing-product.component';
-type LateralModals = 'movements' | 'supply' | 'addMissingProduct';
-type Modals = 'qrScanner' ;
-type AllowedModals = MovementsComponent | QrScannerComponent | SupplyComponent | AddMissingProductComponent;
+import { AgentComponent } from '@modals/agent/agent.component';
+type LateralModals = 'movements' | 'supply' | 'addMissingProduct' | 'agent';
+type Modals = 'qrScanner';
+type AllowedModals = MovementsComponent | QrScannerComponent | SupplyComponent | AddMissingProductComponent | AgentComponent;
 @Injectable({
   providedIn: 'root'
 })
@@ -17,28 +18,33 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
 
 
   public showLateralModal(modal: LateralModals): void {
-    const optionsDialogs: MatDialogConfig = {
-      position: {
-        top: '0',
-        right: '0',
-      },
-      panelClass: 'modal-lateral'
-    }
+   
     switch (modal) {
       case 'movements':
-        this.open(MovementsComponent, optionsDialogs);
+        this.open(MovementsComponent);
         break;
-        case 'supply':
-        this.open(SupplyComponent, optionsDialogs);
+      case 'supply':
+        this.open(SupplyComponent);
         break;
-        case 'addMissingProduct':
-          this.open(AddMissingProductComponent, optionsDialogs);
+      case 'addMissingProduct':
+        this.open(AddMissingProductComponent);
         break;
+      case 'agent':
+        this.open(AgentComponent);
+      break;
     }
   }
 
   private open(componente: ComponentType<AllowedModals>, config?: MatDialogConfig): void {
-    const dialog = this.dialog.open(componente, { ... this.config, ...config });
+    let lateralModalConfig: MatDialogConfig = {
+      position: {
+        top: '0',
+        right: '0',
+      },
+      panelClass: 'modal-lateral',
+      ...config
+    }
+    const dialog = this.dialog.open(componente, { ... this.config, ...lateralModalConfig });
     this.modals.push(dialog);
   }
 
