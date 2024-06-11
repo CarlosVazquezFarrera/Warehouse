@@ -134,7 +134,10 @@ export const DashboardStore = signalStore(
     },
 
     setAgentId(idAgent: string): void {
-      patchState(store, { idAgentSelected: idAgent })
+      patchState(store, { idAgentSelected: idAgent });
+    },
+    clearAgentId(): void {
+      patchState(store, { idAgentSelected: '' });
     },
     async updateAgent(agent: Agent): Promise<void> {
       const updateAgent = await agentService.put<AgentBaseInfo, Agent>(agent);

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,15 +27,16 @@ import { Agent } from '@models/DTO/agent';
   templateUrl: './agent.component.html',
   styleUrl: './agent.component.scss'
 })
-export class AgentComponent {
+export class AgentComponent implements OnDestroy {
   constructor() {
     ErrorMessageHandle(this.agentNumber, this.errorAgentNumber, json.errors.agentNumber);
     ErrorMessageHandle(this.shortName, this.errorShortName, json.errors.shortName);
     ErrorMessageHandle(this.name, this.errorName, json.errors.name);
     ErrorMessageHandle(this.lastName, this.errorLastName, json.errors.lastName);
     ErrorMessageHandle(this.email, this.errorEmail, json.errors.email);
-
-    console.log(this.store.agentSelected());
+  }
+  ngOnDestroy(): void {
+    this.store.clearAgentId();
   }
 
   //#region  Properties
