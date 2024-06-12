@@ -11,11 +11,20 @@ import { WarehouseStore } from '@store/warehouse.store';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { DatePipe } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-entry',
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule,],
+  imports: [MatButtonModule, 
+    MatDialogModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    ReactiveFormsModule,
+    MatDividerModule,
+    DatePipe
+  ],
   templateUrl: './entry.component.html',
   styleUrl: './entry.component.scss'
 })
@@ -37,6 +46,7 @@ export class EntryComponent {
   });
 
   public quantity: AbstractControl = this.form.get('quantity')!;
+  public now = new Date();
   //#endregion
 
   //#region Methods

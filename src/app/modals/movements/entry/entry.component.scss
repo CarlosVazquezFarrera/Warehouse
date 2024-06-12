@@ -1,17 +1,64 @@
 @use 'utils' as u;
-section {
+@use 'media-queries' as mq;
+
+main {
   min-height: 60dvh;
   padding: 1% 24px;
   @include u.form-padding();
+
   h2 {
-    text-align: center;
-    color: black;
+    &.header {
+      text-align: center;
+    }
   }
-  form{
+
+  form {
     p {
       margin-top: 2%;
     }
+
+    &.entry-form {
+      .mobile-text {
+        display: none;
+
+        @include mq.md() {
+          display: unset;
+        }
+      }
+
+      .details {
+
+        .responsible,
+        .date {
+          p strong {
+            font-weight: normal;
+
+            @include mq.md() {
+              font-weight: bold;
+            }
+          }
+        }
+
+
+        @include mq.md() {
+          margin-top: 10px;
+          display: grid;
+          grid-template-areas: 'responsible date';
+          column-gap: 5%;
+
+          .responsible {
+            grid-area: responsible;
+          }
+
+          .date {
+            grid-area: date;
+          }
+        }
+
+      }
+    }
   }
+
   footer {
     display: flex;
     justify-content: flex-end;

@@ -45,6 +45,7 @@
       @if(store.newAgressValid()){
       <div class="completed">
         <div class="details">
+
           <section class="supply">
             <h2>Supply</h2>
             <mat-divider />
@@ -79,6 +80,16 @@
               </em></p>
           </section>
 
+          <section class="date">
+            <h2>Date of egress</h2>
+            <mat-divider />
+            <p class="tittle-tablet-desktop"><em>This egress will be saved with the following date</em></p>
+            <p class="tittle-mobile"><em>Date</em></p>
+            <p class="text-bold"><em>
+                {{now | date: 'fullDate'}}
+              </em></p>
+          </section>
+
 
         </div>
       </div>
@@ -92,13 +103,8 @@
 
     <div class="footer-egress">
       <button mat-button matStepperPrevious>Back</button>
-      <button [class.cursor-not-allowed]="formsInvalid"
-              mat-button
-              [disabled]="!store.newAgressValid()"
-              cdkFocusInitial
-              [matTooltip]="tooltipFinal"
-              [matTooltipDisabled]="!formsInvalid"
-        (click)="completeEgress()">Accept</button>
+      <button [class.cursor-not-allowed]="formsInvalid" mat-button [disabled]="!store.newAgressValid()" cdkFocusInitial
+        [matTooltip]="tooltipFinal" [matTooltipDisabled]="!formsInvalid" (click)="completeEgress()">Accept</button>
     </div>
   </mat-step>
 </mat-stepper>

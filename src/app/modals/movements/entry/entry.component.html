@@ -1,29 +1,53 @@
-  <section>
-    <h2>{{store.fullNameSupplySelected()}}</h2>
-    <form autocomplete="off" [formGroup]="form">
-      <mat-form-field class="w-100">
-        <mat-label>Quantity</mat-label>
-        <input type="number" matInput placeholder="Type the quantity" formControlName="quantity">
-        @if(quantity.touched && quantity.invalid){
-        <mat-error>{{errorQuantity()}}</mat-error>
-        }
-      </mat-form-field>
-      <p>
-        <em>
-          This entry will be save under the following agent:
-        </em>
-      </p>
-      <p>
-        <strong>
+<main>
+  <h2 class="header">{{store.fullNameSupplySelected()}}</h2>
+  <form class="entry-form" autocomplete="off" [formGroup]="form">
+    <mat-form-field class="w-100">
+      <mat-label>Quantity</mat-label>
+      <input type="number" matInput placeholder="Type the quantity" formControlName="quantity">
+      @if(quantity.touched && quantity.invalid){
+      <mat-error>{{errorQuantity()}}</mat-error>
+      }
+    </mat-form-field>
+    <mat-divider />
+    <section class="details">
+      <div class="responsible">
+        <h2>Agent</h2>
+        <p class="mobile-text">
           <em>
-            {{warehouseStore.fullName()}} - {{warehouseStore.agent.agentNumber()}}
+            Responsible agent
           </em>
-        </strong>
-      </p>
+        </p>
+        <p>
+          <strong>
+            <em>
+              {{warehouseStore.fullName()}} - {{warehouseStore.agent.agentNumber()}}
+            </em>
+          </strong>
+        </p>
 
-    </form>
-    <footer>
-      <button [disabled]="!form.valid" mat-button (click)="accept()">Accept</button>
-    </footer>
-  </section>
+      </div>
+      <div class="date">
+        <h2>Date of entry</h2>
+        <p class="mobile-text">
+          <em>
+            This will be saved with this date
+          </em>
+        </p>
+        <p>
+          <strong>
+            <em>
+              {{now | date : 'fullDate'}}
+            </em>
+          </strong>
+        </p>
+      </div>
 
+
+    </section>
+
+
+  </form>
+  <footer>
+    <button [disabled]="!form.valid" mat-button (click)="accept()">Accept</button>
+  </footer>
+</main>

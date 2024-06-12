@@ -11,7 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Observable, map, startWith } from 'rxjs';
 
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Agent } from '@models/DTO/agent';
 import { DashboardStore } from '@store/dashboard.store';
 import * as json from './egress-metadata.json';
@@ -42,7 +42,8 @@ import { AgentBaseInfo } from '@models/types/agentBaseInfo';
     MatDividerModule,
     AsyncPipe,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    DatePipe
   ],
   templateUrl: './egress.component.html',
   styleUrl: './egress.component.scss'
@@ -78,6 +79,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
   private messageService = inject(MessageService);
   private modalService = inject(ModalsService);
   public tooltipFinal = json.tooltip.final;
+  public now = new Date();
 
   filteredOptions!: Observable<AgentBaseInfo[]>;
 

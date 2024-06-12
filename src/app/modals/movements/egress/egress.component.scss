@@ -28,19 +28,25 @@ main.confirmation {
 
       @include mq.md() {
         display: grid;
-        grid-template-areas: 'petitioner approver' 'supply supply';
+        grid-template-areas: 'petitioner approver' 'supply supply' 'date date' ;
         column-gap: 5px;
         row-gap: 15px;
       }
 
-      section h2,mat-divider {
-        display: none;
-
-        @include mq.sm() {
-          display: block;
+      section {
+        mat-divider {
+          margin-bottom: 10px;
         }
-
+        h2,mat-divider {
+          display: none;
+  
+          @include mq.sm() {
+            display: block;
+          }
+  
+        }
       }
+     
 
       section {
         .tittle-mobile {
@@ -54,6 +60,12 @@ main.confirmation {
           @include mq.md() {
             display: block;
           }
+        }
+
+      }
+      .date {
+        @include mq.md() {
+          grid-area: date;
         }
 
       }
@@ -87,7 +99,7 @@ main.confirmation {
     }
   }
 
-  section div {
-    padding-top: 10px;
-  }
+  // section div {
+  //   padding-top: 10px;
+  // }
 }
