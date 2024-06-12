@@ -86,13 +86,13 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     this.search.patchValue('');
   }
 
-  public async scanQr() {
+  public scanQr() {
     try {
-      const camera: MediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (camera) {
-        this.modalsService.showModal('qrScanner')
-      }
-
+      navigator.mediaDevices.getUserMedia({ video: true }).then(camera => {
+        if (camera) {
+          this.modalsService.showModal('qrScanner')
+        }
+      })
     } catch (error) {
       this.messageService.showMessage(json.cameraNotavailable, 'warning');
     }

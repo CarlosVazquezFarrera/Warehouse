@@ -18,33 +18,32 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
 
 
   public showLateralModal(modal: LateralModals): void {
-   
-    switch (modal) {
-      case 'movements':
-        this.open(MovementsComponent);
-        break;
-      case 'supply':
-        this.open(SupplyComponent);
-        break;
-      case 'addMissingProduct':
-        this.open(AddMissingProductComponent);
-        break;
-      case 'agent':
-        this.open(AgentComponent);
-      break;
-    }
-  }
-
-  private open(componente: ComponentType<AllowedModals>, config?: MatDialogConfig): void {
     let lateralModalConfig: MatDialogConfig = {
       position: {
         top: '0',
         right: '0',
       },
       panelClass: 'modal-lateral',
-      ...config
     }
-    const dialog = this.dialog.open(componente, { ... this.config, ...lateralModalConfig });
+   
+    switch (modal) {
+      case 'movements':
+        this.open(MovementsComponent, lateralModalConfig);
+        break;
+      case 'supply':
+        this.open(SupplyComponent, lateralModalConfig);
+        break;
+      case 'addMissingProduct':
+        this.open(AddMissingProductComponent, lateralModalConfig);
+        break;
+      case 'agent':
+        this.open(AgentComponent, lateralModalConfig);
+      break;
+    }
+  }
+
+  private open(componente: ComponentType<AllowedModals>, config?: MatDialogConfig): void {
+    const dialog = this.dialog.open(componente, { ... this.config, ...config });
     this.modals.push(dialog);
   }
 
