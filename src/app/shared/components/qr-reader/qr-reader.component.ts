@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, inject, input, output } from '@angular/core';
 import { environment } from '@environments/environment';
 import { BrowserQRCodeReader } from '@zxing/browser';
 import { Result } from '@zxing/library'
 import { Observable, debounceTime, distinctUntilChanged, map } from 'rxjs';
+import QrScanner from 'qr-scanner';
+import { ModalsService } from '@services/modals.service';
 
 export type QrResult = {
   valid: boolean,
@@ -15,18 +17,20 @@ export type QrResult = {
   templateUrl: './qr-reader.component.html',
   styleUrl: './qr-reader.component.scss'
 })
-export class QrReaderComponent implements OnInit, OnDestroy {
+export class QrReaderComponent implements AfterViewInit, OnDestroy {
+
 
   //#region Properties
-  private stream!: MediaStream;
-  private video!: HTMLVideoElement;
   private beep = new Audio("/assets/audio/beep.mp3");
+  private video!: HTMLVideoElement;
+  private modalService = inject(ModalsService);
   //#endregion
 
   //#region Inputs
   patternMatch = input<string>();
   indexPatternMatch = input<number>(0);
   deplay = input<number>(5);
+  private qrScanner: QrScanner | undefined;
   //#endregion
 
   //#region Outputs
@@ -36,38 +40,28 @@ export class QrReaderComponent implements OnInit, OnDestroy {
   //#endregion
 
   //#region Methods
-  async ngOnInit(): Promise<void> {
-    await this.startReading();
+  ngAfterViewInit(): void {
+    this.video = document.getElementById('video') as HTMLVideoElement;
+    this.qrScanner = new QrScanner(this.video , result => {
+      this.qrScanned(result);
+    }, {
+      highlightScanRegion: true,
+      highlightCodeOutline: true,
+      maxScansPerSecond: 10
+    });
+
+    this.qrScanner.start().catch(err => {
+      console.error('Error starting QR scanner:', err);
+    });
   }
+
 
   ngOnDestroy(): void {
-    this.stop();
+    this.stopScanner();
   }
 
-  private stop(): void {
-    this.stream.getTracks().forEach(t => t.stop());
-  }
-
-  public async startReading(): Promise<void> {
-    await this.startCamera();
-    this.decodeFromVideoElementObservable(this.video)
-      .pipe(
-        map(video => video?.getText()),
-        distinctUntilChanged(),
-        debounceTime(environment.qrDefaultDelay)
-      )
-      .subscribe(result => this.scannedText(result));
-  }
-
-  private async startCamera(): Promise<void> {
-    this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-    this.video = document.getElementById('video') as HTMLVideoElement;
-    this.video.srcObject = this.stream;
-    this.video.play();
-  }
-
-  private scannedText(text: string | undefined): void {
-    if (!text) return;
+  private async qrScanned(result: QrScanner.ScanResult) {
+    const text = result.data;
     this.beep.play();
     if (this.patternMatch()) {
       const regexPatter = new RegExp(this.patternMatch()!);
@@ -81,17 +75,34 @@ export class QrReaderComponent implements OnInit, OnDestroy {
     }
     else
       this.onQrScanned.emit({ valid: true, text });
+
+    this.stopScanner();
   }
 
+  private stopScanner(): void {
 
-  private decodeFromVideoElementObservable(video: HTMLVideoElement): Observable<Result> {
-    return new Observable<Result>(observer => {
-      const codeReader = new BrowserQRCodeReader();
-      const listener = (result: Result | undefined) => {
-          observer.next(result);
-      };
-      codeReader.decodeFromVideoElement(video, listener);
-    });
+
+    if (this.qrScanner) {
+      this.qrScanner.stop();
+      if (this.video && this.video.srcObject) {
+        const stream = this.video.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        this.video.srcObject = null;
+      }
+      
+      this.qrScanner.destroy();
+      this.qrScanner = undefined;
+    }
+
+    // const cameras = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    // cameras.getTracks().forEach(t => t.stop());
+
+    // const videoElem = document.getElementById('video') as HTMLVideoElement;
+    // if (videoElem && videoElem.srcObject) {
+    //   const stream = videoElem.srcObject as MediaStream;
+    //   stream.getTracks().forEach(track => track.stop());
+    //   videoElem.srcObject = null;
+    // }
   }
   //#endregion
 }
