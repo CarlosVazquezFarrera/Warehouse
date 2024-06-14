@@ -59,7 +59,7 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
     this.qrScanner = new QrScanner(videoElem, result => this.setResult(result), {
       highlightScanRegion: true,
       highlightCodeOutline: true,
-      preferredCamera: "environment"
+      preferredCamera: "user"
     });
 
     try {
