@@ -59,6 +59,7 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
     this.qrScanner = new QrScanner(videoElem, result => this.setResult(result), {
       highlightScanRegion: true,
       highlightCodeOutline: true,
+      preferredCamera: "environment"
     });
 
     try {
@@ -71,8 +72,9 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
 
 
       await this.qrScanner.start();
-      // const cameras = await QrScanner.listCameras(true);
-      // await this.qrScanner?.setCamera(cameras.at(0)?.id!)
+      const cameras = await QrScanner.listCameras(true);
+      console.log(cameras)
+      // await this.qrScanner?.setCamera()
     }
     catch {
 
