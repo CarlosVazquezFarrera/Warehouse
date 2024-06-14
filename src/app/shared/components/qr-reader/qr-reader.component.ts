@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, inject, input, output } from '@angular/core';
 import QrScanner from 'qr-scanner';
 import { ModalsService } from '@services/modals.service';
+import { MessageService } from '@services/message.service';
 
 export type QrResult = {
   valid: boolean,
@@ -20,13 +21,16 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
   private beep = new Audio("/assets/audio/beep.mp3");
   private video!: HTMLVideoElement;
   private modalService = inject(ModalsService);
+  private messageService = inject(MessageService);
+  private qrScanner: QrScanner | undefined;
+
   //#endregion
 
   //#region Inputs
   patternMatch = input<string>();
   indexPatternMatch = input<number>(0);
   deplay = input<number>(5);
-  private qrScanner: QrScanner | undefined;
+
   //#endregion
 
   //#region Outputs
@@ -37,18 +41,42 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
 
   //#region Methods
   ngAfterViewInit(): void {
-    this.video = document.getElementById('video') as HTMLVideoElement;
-    this.qrScanner = new QrScanner(this.video , result => {
-      this.qrScanned(result);
-    }, {
-      highlightScanRegion: true,
-      highlightCodeOutline: true,
-      preferredCamera: 'environment'
-    });
+    this.startCamera();
+  }
 
-    this.qrScanner.start().catch(err => {
-      console.error('Error starting QR scanner:', err);
-    });
+  private async startCamera(): Promise<void> {
+    this.video = document.getElementById('video') as HTMLVideoElement;
+    try {
+      const hasCamera = await QrScanner.hasCamera();
+      if (!hasCamera) {
+        this.modalService.closeModal();
+        this.messageService.showMessage('No camera found');
+        return
+      }
+
+      const constraints = {
+        video: {
+          facingMode: 'environment'
+        }
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      this.video.srcObject = stream;
+      this.video.play();
+
+      this.qrScanner = new QrScanner(this.video, result => {
+        this.qrScanned(result);
+      }, {
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+        maxScansPerSecond: 10
+      });
+
+      await this.qrScanner.start();
+
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+    }
   }
 
 
@@ -85,7 +113,7 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
         stream.getTracks().forEach(track => track.stop());
         this.video.srcObject = null;
       }
-      
+
       this.qrScanner.destroy();
       this.qrScanner = undefined;
     }
