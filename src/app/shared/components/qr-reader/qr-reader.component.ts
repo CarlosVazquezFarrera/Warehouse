@@ -71,8 +71,8 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
 
 
       await this.qrScanner.start();
-      const cameras = await QrScanner.listCameras(true);
-      await this.qrScanner?.setCamera(cameras.at(0)?.id!)
+      // const cameras = await QrScanner.listCameras(true);
+      // await this.qrScanner?.setCamera(cameras.at(0)?.id!)
     }
     catch {
 
