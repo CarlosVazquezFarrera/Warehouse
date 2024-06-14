@@ -10,7 +10,7 @@ import * as json from './qr-metadata.json';
 @Component({
   selector: 'app-qr-scanner',
   standalone: true,
-  imports: [ModalHeaderComponent, MatDialogModule,  QrReaderComponent],
+  imports: [ModalHeaderComponent, MatDialogModule, QrReaderComponent],
   templateUrl: './qr-scanner.component.html',
   styleUrl: './qr-scanner.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,13 +23,14 @@ export class QrScannerComponent {
 
 
   public async qrDetected(scan: QrResult) {
-    if (!scan.valid)  {
+    if (!scan.valid) {
       this.snackService.showAutoCloseMessage(json.qrInvalid);
       return
     };
-    await this.store.loadSupply(scan.text);
-    if (this.store.inventoryItemSelected.id() == '') return;
-    this.modalsService.closeModal();
-    this.modalsService.showLateralModal('movements');
+    this.store.loadSupply(scan.text).then(() => {
+      if (this.store.inventoryItemSelected.id() == '') return;
+      this.modalsService.closeModal();
+      this.modalsService.showLateralModal('movements');
+    })
   }
 }

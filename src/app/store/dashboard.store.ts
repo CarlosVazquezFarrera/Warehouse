@@ -182,7 +182,6 @@ export const DashboardStore = signalStore(
     //#region  Inventory
     async loadSupply(supplyId: string): Promise<void> {
       const item = await inventoryService.getItemByAirportAndIdSupply(supplyId);
-      if (!item) return;
       const newEgress: NewEgress = { ...store.newEgress(), supplyId: item.id }
       patchState(store, { newEgress });
       patchState(store, { inventoryItemSelected: { ...item } });

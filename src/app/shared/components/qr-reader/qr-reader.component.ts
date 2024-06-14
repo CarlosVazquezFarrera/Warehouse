@@ -1,8 +1,4 @@
 import { AfterViewInit, Component, OnDestroy, inject, input, output } from '@angular/core';
-import { environment } from '@environments/environment';
-import { BrowserQRCodeReader } from '@zxing/browser';
-import { Result } from '@zxing/library'
-import { Observable, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import QrScanner from 'qr-scanner';
 import { ModalsService } from '@services/modals.service';
 
@@ -47,7 +43,7 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
     }, {
       highlightScanRegion: true,
       highlightCodeOutline: true,
-      maxScansPerSecond: 10
+      preferredCamera: 'environment'
     });
 
     this.qrScanner.start().catch(err => {
