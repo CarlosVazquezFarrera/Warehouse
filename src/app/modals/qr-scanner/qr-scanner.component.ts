@@ -27,10 +27,13 @@ export class QrScannerComponent {
       this.snackService.showAutoCloseMessage(json.qrInvalid);
       return
     };
-    this.store.loadSupply(scan.text).then(() => {
-      if (this.store.inventoryItemSelected.id() == '') return;
-      this.modalsService.closeModal();
-      this.modalsService.showLateralModal('movements');
-    })
+
+    await this.store.loadSupply(scan.text);
+    
+    // .then(() => {
+    //   if (this.store.inventoryItemSelected.id() == '') return;
+    //   this.modalsService.closeModal();
+    //   this.modalsService.showLateralModal('movements');
+    // })
   }
 }

@@ -180,11 +180,21 @@ export const DashboardStore = signalStore(
     //#endregion
 
     //#region  Inventory
+
+    clearInventoryItemSelected(): void {
+      patchState(store, (_) => ({
+        newEgress: initialNewEgress,
+        inventoryItemSelected: inventoryItemSelected
+      }))
+    },
     async loadSupply(supplyId: string): Promise<void> {
-      const item = await inventoryService.getItemByAirportAndIdSupply(supplyId);
+      const item: InventoryItem = await inventoryService.getItemByAirportAndIdSupply(supplyId);
       const newEgress: NewEgress = { ...store.newEgress(), supplyId: item.id }
-      patchState(store, { newEgress });
-      patchState(store, { inventoryItemSelected: { ...item } });
+
+      patchState(store, (_) => ({
+        newEgress: newEgress,
+        inventoryItemSelected: item
+      }));
     },
     async createNewProductLinked(newProductLinked: NewProductLinked): Promise<void> {
       const airportId = store.idAirportSelected();
@@ -309,6 +319,9 @@ export const DashboardStore = signalStore(
 
       return `${inventoryItemSelected.name()} ${supplierPart}`
 
+    }),
+    isinventoryItemSelected: computed(() => {
+      return inventoryItemSelected.id() !== '';
     }),
     isAproductSelected: computed(() => {
       return selectedProduct.id() === ''
