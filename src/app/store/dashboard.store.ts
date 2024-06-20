@@ -35,7 +35,8 @@ type DashBoard = {
   selectedProduct: Product,
   idAirportSelected: string,
   pagedAgents: PagedResponse<AgentBaseInfo>,
-  idAgentSelected: string
+  idAgentSelected: string,
+  idSupplyScanned: string
 }
 const initialNewEgress: NewEgress = {
   amountRemoved: 0,
@@ -84,7 +85,8 @@ const initialState: DashBoard = {
     data: [],
     metadata: initialMetadata
   },
-  idAgentSelected: ""
+  idAgentSelected: "",
+  idSupplyScanned: ""
 }
 
 
@@ -133,7 +135,7 @@ export const DashboardStore = signalStore(
       patchState(store, { newEgress })
     },
 
-    setAgentId(idAgent: string): void {
+    setIdAgent(idAgent: string): void {
       patchState(store, { idAgentSelected: idAgent });
     },
     clearAgentId(): void {
@@ -180,15 +182,17 @@ export const DashboardStore = signalStore(
     //#endregion
 
     //#region  Inventory
-
+    setIdSupplyScanned(idSupplyScanned: string): void {
+      patchState(store, { idSupplyScanned });
+    },
     clearInventoryItemSelected(): void {
       patchState(store, (_) => ({
         newEgress: initialNewEgress,
         inventoryItemSelected: inventoryItemSelected
       }))
     },
-    async loadSupply(supplyId: string): Promise<void> {
-      const item: InventoryItem = await inventoryService.getItemByAirportAndIdSupply(supplyId);
+    async loadSupply(): Promise<void> {
+      const item: InventoryItem = await inventoryService.getItemByAirportAndIdSupply(store.idSupplyScanned());
       const newEgress: NewEgress = { ...store.newEgress(), supplyId: item.id }
 
       patchState(store, (_) => ({
@@ -320,7 +324,7 @@ export const DashboardStore = signalStore(
       return `${inventoryItemSelected.name()} ${supplierPart}`
 
     }),
-    isinventoryItemSelected: computed(() => {
+    isinventoryItemLoaded: computed(() => {
       return inventoryItemSelected.id() !== '';
     }),
     isAproductSelected: computed(() => {

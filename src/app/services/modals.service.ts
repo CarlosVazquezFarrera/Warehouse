@@ -42,16 +42,16 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
     }
   }
 
-  private open(componente: ComponentType<AllowedModals>, config?: MatDialogConfig): void {
+  private open(componente: ComponentType<AllowedModals>, config?: MatDialogConfig): MatDialogRef<AllowedModals> {
     const dialog = this.dialog.open(componente, { ... this.config, ...config });
     this.modals.push(dialog);
+    return dialog;
   }
 
-  public showModal(modal: Modals): void {
+  public showModal(modal: Modals): MatDialogRef<AllowedModals> {
     switch (modal) {
       case 'qrScanner':
-        this.open(QrScannerComponent);
-        break;
+       return this.open(QrScannerComponent);
     }
   }
 

@@ -63,7 +63,7 @@ export class AgentsComponent implements OnInit {
     this.modalsService.showLateralModal('agent');
   }
   public editAgent(agentId: string): void {
-    this.store.setAgentId(agentId);
+    this.store.setIdAgent(agentId);
     this.modalsService.showLateralModal('agent');
   }
   //#endregion

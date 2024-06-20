@@ -18,10 +18,8 @@ import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { environment } from '@environments/environment';
 import { InventoryItem } from '@models/api/inventoryItem';
-import { MessageService } from '@services/message.service';
 
-import { debounceTime, merge } from 'rxjs';
-import * as json from './inventory-metada.json';
+import { debounceTime, lastValueFrom, merge } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -66,7 +64,6 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   private fb = inject(FormBuilder);
   private modalsService = inject(ModalsService);
   private route = inject(ActivatedRoute);
-  private messageService = inject(MessageService);
 
   public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity'];
   public ariports: Airport[] = [];
@@ -86,24 +83,11 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     this.search.patchValue('');
   }
 
-  public async scanQr() {
-    // try {
-    //   navigator.mediaDevices.getUserMedia({ video: true }).then(camera => {
-    //     if (camera) {
-    //       this.modalsService.showModal('qrScanner')
-    //     }
-    //   })
-    // } catch (error) {
-    //   this.messageService.showMessage(json.cameraNotavailable, 'warning');
-    // }
-    console.log(this.store.inventoryItemSelected())
-
-    await this.store.loadSupply('07bedc1f-4e4b-4166-a9da-cffdf028a66a');
-    if (!this.store.isinventoryItemSelected()) return
-
-    console.log(this.store.inventoryItemSelected())
+  public async scanQr(): Promise<void> {
+    await lastValueFrom(this.modalsService.showModal('qrScanner').afterClosed());
+    if (this.store.idSupplyScanned() === '') return;
+    await this.store.loadSupply();
     this.modalsService.showLateralModal('movements');
-
   }
   public handlePageEvent(e: PageEvent) {
     const { pageSize } = e;

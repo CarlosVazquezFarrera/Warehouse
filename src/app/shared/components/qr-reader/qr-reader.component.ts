@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject, input, output } from '@angular/core';
 import QrScanner from 'qr-scanner';
-import { ModalsService } from '@services/modals.service';
 import { MessageService } from '@services/message.service';
 
 export type QrResult = {
@@ -18,7 +17,6 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
 
   //#region Properties
   private beep = new Audio("/assets/audio/beep.mp3");
-  private modalService = inject(ModalsService);
   private messageService = inject(MessageService);
   private qrScanner: QrScanner | undefined;
 
@@ -46,43 +44,47 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.qrScanner?.stop();
+    this.stopScanner();
   }
 
 
   setResult(result: QrScanner.ScanResult) {
+    const text = result.data;
+    this.beep.play();
+    if (this.patternMatch()) {
+      const regexPatter = new RegExp(this.patternMatch()!);
+      const match = text.match(regexPatter);
+      if (!match) {
+        this.onQrScanned.emit({ valid: false, text });
+        return;
+      }
+      const matchResult = match[this.indexPatternMatch()];
+      this.onQrScanned.emit({ valid: true, text: matchResult })
+    }
+    else
+      this.onQrScanned.emit({ valid: true, text });
 
+    this.stopScanner();
   }
 
-  async initScanner() {
+  async initScanner(): Promise<void> {
+    const hasCamera = await QrScanner.hasCamera();
+
+    if (!hasCamera) {
+      this.messageService.showMessage('Camera not found');
+      return;
+    }
     const videoElem = this.video.nativeElement;
     this.qrScanner = new QrScanner(videoElem, result => this.setResult(result), {
       highlightScanRegion: true,
       highlightCodeOutline: true,
       maxScansPerSecond: 10
     });
+    await this.qrScanner.start();
+  }
 
-    try {
-      const hasCamera = await QrScanner.hasCamera();
-
-      if (!hasCamera) {
-        this.messageService.showMessage('Camera not found');
-        return;
-      }
-
-
-      await this.qrScanner.start();
-      const cameras = await QrScanner.listCameras(true);
-      console.log(cameras);
-      if(!cameras || cameras.length < 0) return;
-      const backCamera = cameras.find(c => c.label.includes("back"));      
-      if (!backCamera) return;
-      console.log(backCamera)
-      await this.qrScanner?.setCamera(backCamera.id);
-    }
-    catch {
-
-    }
+  private stopScanner(): void {
+    this.qrScanner?.stop();
   }
 
   //#endregion
