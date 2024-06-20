@@ -87,6 +87,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     await lastValueFrom(this.modalsService.showModal('qrScanner').afterClosed());
     if (this.store.idSupplyScanned() === '') return;
     await this.store.loadSupply();
+    this.store.clearIdSupplyScanned();
     this.modalsService.showLateralModal('movements');
   }
   public handlePageEvent(e: PageEvent) {

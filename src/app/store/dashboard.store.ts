@@ -185,6 +185,9 @@ export const DashboardStore = signalStore(
     setIdSupplyScanned(idSupplyScanned: string): void {
       patchState(store, { idSupplyScanned });
     },
+    clearIdSupplyScanned(): void {
+      patchState(store, { idSupplyScanned: '' })
+    },
     clearInventoryItemSelected(): void {
       patchState(store, (_) => ({
         newEgress: initialNewEgress,
