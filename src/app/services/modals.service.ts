@@ -7,9 +7,19 @@ import { QrScannerComponent } from '@modals/qr-scanner/qr-scanner.component';
 import { SupplyComponent } from '@modals/supply/supply.component';
 import { AddMissingProductComponent } from '@modals/add-missing-product/add-missing-product.component';
 import { AgentComponent } from '@modals/agent/agent.component';
-type LateralModals = 'movements' | 'supply' | 'addMissingProduct' | 'agent';
+import { AdminAgentComponent } from '@modals/admin-agent/admin-agent.component';
+
+type LateralModals = 'movements' | 'supply' | 'addMissingProduct' | 'agent' | 'admin-agent';
 type Modals = 'qrScanner';
-type AllowedModals = MovementsComponent | QrScannerComponent | SupplyComponent | AddMissingProductComponent | AgentComponent;
+
+type AllowedModals = 
+MovementsComponent | 
+QrScannerComponent | 
+SupplyComponent | 
+AddMissingProductComponent | 
+AgentComponent | 
+AdminAgentComponent;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -39,6 +49,9 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
       case 'agent':
         this.open(AgentComponent, lateralModalConfig);
       break;
+      case 'admin-agent':
+        this.open(AdminAgentComponent, lateralModalConfig);
+        break;
     }
   }
 

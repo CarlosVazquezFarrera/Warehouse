@@ -1,5 +1,5 @@
 type Parents = 'dashboard';
-type DashboardChilden = 'inventory' | 'supplies' | 'agents';
+type DashboardChildren = 'inventory' | 'supplies' | 'agents' | 'admin';
 const dashboard: string = 'dashboard';
 export const AppRoutes = {
   login: 'login',
@@ -8,12 +8,13 @@ export const AppRoutes = {
     children: {
       inventory: 'inventory',
       supplies: 'supplies',
-      agents: 'agents'
-    }
+      agents: 'agents',
+      admin: 'admin'
+    } as Record<DashboardChildren, string>
   }
 }
 
-export function getChildRoutePath(parentPath: Parents, childRoute: DashboardChilden): string {
+export function getChildRoutePath(parentPath: Parents, childRoute: DashboardChildren): string {
   const parent = AppRoutes[parentPath];
   if (!parent.hasOwnProperty('path') || !parent.hasOwnProperty('children'))
     throw new Error('This is not a valid Parent');

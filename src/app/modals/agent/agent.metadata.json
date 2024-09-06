@@ -5,10 +5,6 @@
             "minlength": "The Agent number must be at least 6 characters long",
             "onlyNumbers": "The Agent number must be numbers only"
         },
-        "shortName": {
-            "required": "The Short name is required",
-            "minlength": "The Short name must be at least 2 characters long"
-        },
         "name": {
             "required": "The Name is required",
             "minlength": "The Name must be at least 2 characters long"

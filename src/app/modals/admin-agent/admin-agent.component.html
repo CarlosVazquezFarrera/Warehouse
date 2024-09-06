@@ -1,0 +1,39 @@
+<app-modal-header />
+
+<mat-tab-group>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon>key</mat-icon>
+            Password
+        </ng-template>
+        <section class="px-3">
+            <div class="photo">
+                <img class="agent-united-logo" src="assets/united-logo.png">
+            </div>
+            <mat-form-field class="w-100 password">
+                <mat-label>Enter agent's password</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="password" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if(password.touched && password.invalid){
+                <mat-error>{{errorsPassword()}}</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-raised-button class="w-100 set-password-button" color="primary" [disabled]="password.invalid"
+            (click)="setPassword()">
+                Set Password
+            </button>
+        </section>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon>subject</mat-icon>
+            Permissions
+        </ng-template>
+        Content 2
+    </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,9 @@
+{
+    "errors": {
+        "password": {
+            "required": "This field is required",
+            "minlength": "Password must be at least 5 characters long",
+            "pattern": "Password must have at least one lowercase and uppercase letter, one number, and one special character"
+        }
+    }
+}

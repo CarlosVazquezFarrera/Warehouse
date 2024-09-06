@@ -41,6 +41,7 @@ export abstract class HttpBase<T> {
     return await lastValueFrom(this.http.put<T>(this.apiUrl, body));
   }
 
+
   public async delete<T>(id: string): Promise<T> {
     return await lastValueFrom(this.http.delete<T>(this.apiUrl));
   }

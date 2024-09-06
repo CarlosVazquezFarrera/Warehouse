@@ -6,12 +6,13 @@ import { MatInputModule } from '@angular/material/input';
 import { NewAgent } from '@models/types/newAgent';
 import { ModalHeaderComponent } from '@shared/components/modal-header/modal-header.component';
 import { onlyNumbers } from '@validators/only-numbers';
-import * as json from './agent.json';
+import * as json from './agent.metadata.json';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { DashboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Agent } from '@models/DTO/agent';
+import { filter, merge, tap } from 'rxjs';
 
 @Component({
   selector: 'app-agent',
@@ -30,10 +31,16 @@ import { Agent } from '@models/DTO/agent';
 export class AgentComponent implements OnDestroy {
   constructor() {
     ErrorMessageHandle(this.agentNumber, this.errorAgentNumber, json.errors.agentNumber);
-    ErrorMessageHandle(this.shortName, this.errorShortName, json.errors.shortName);
     ErrorMessageHandle(this.name, this.errorName, json.errors.name);
     ErrorMessageHandle(this.lastName, this.errorLastName, json.errors.lastName);
     ErrorMessageHandle(this.email, this.errorEmail, json.errors.email);
+    merge(this.name.valueChanges, this.lastName.valueChanges)
+      .pipe(
+        filter(value => value.trim() !== '')
+      ).subscribe(_ => {
+        this.generateShortName();
+        this.generatUnitedEmail();
+      });
   }
   ngOnDestroy(): void {
     this.store.clearAgentId();
@@ -46,7 +53,7 @@ export class AgentComponent implements OnDestroy {
 
   public form = this.fb.group({
     agentNumber: [this.store.agentSelected()?.agentNumber ?? '', [Validators.required, Validators.minLength(6), onlyNumbers()]],
-    shortName: [this.store.agentSelected()?.shortName ?? '', [Validators.required, Validators.minLength(2)]],
+    shortName: [{ value: this.store.agentSelected()?.shortName ?? '', disabled: true }, [Validators.required, Validators.minLength(2)]],
     name: [this.store.agentSelected()?.name ?? '', [Validators.required, Validators.minLength(2)]],
     lastName: [this.store.agentSelected()?.lastName ?? '', [Validators.required, Validators.minLength(2)]],
     email: [this.store.agentSelected()?.email ?? '', [Validators.required, Validators.minLength(2), Validators.email]],
@@ -56,7 +63,6 @@ export class AgentComponent implements OnDestroy {
   public search = new FormControl();
 
   public errorAgentNumber = signal(json.errors.agentNumber.required);
-  public errorShortName = signal(json.errors.shortName.required);
   public errorName = signal(json.errors.name.required);
   public errorLastName = signal(json.errors.lastName.required);
   public errorEmail = signal(json.errors.email.required);
@@ -78,6 +84,14 @@ export class AgentComponent implements OnDestroy {
     await this.store.updateAgent(agent);
     this.modalsService.closeModal();
 
+  }
+
+  private generateShortName(): void {
+    this.shortName.setValue(`${this.nameValue.at(0)?.toUpperCase()}.${this.lastNameValue.toLocaleUpperCase()}`);
+  }
+
+  private generatUnitedEmail(): void {
+    this.email.setValue(`${this.nameValue.toLowerCase()}.${this.lastNameValue.toLowerCase()}@united.com`);
   }
   //#endregion
 

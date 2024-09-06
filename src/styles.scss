@@ -31,6 +31,7 @@ body {
 .w-100 {
   width: 100%;
 }
+
 .w-50 {
   width: 50%;
 }
@@ -86,13 +87,16 @@ body {
 table {
   width: 100%;
 }
+
 .not-allowed {
   cursor: not-allowed !important;
 }
+
 .table-header-with-button {
   display: flex;
   justify-content: flex-end;
 }
+
 .table-header-center {
   display: flex;
   justify-content: center;
@@ -102,6 +106,11 @@ table {
   margin-top: 3%;
 }
 
-.mat-elevation-z8{
-  overflow-x:auto;
+.mat-elevation-z8 {
+  overflow-x: auto;
+  margin-bottom: 2%;
+}
+
+.px-3 {
+  padding: 3%;
 }
