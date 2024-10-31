@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpBase } from './http-base.service';
 import { Product } from '@models/DTO/product';
 import { lastValueFrom } from 'rxjs';
+import { NewProduct } from '@models/types/newProduct';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService extends HttpBase<Product> {
+export class ProductService extends HttpBase<Product, NewProduct> {
   constructor() {
     super("Product");
   }

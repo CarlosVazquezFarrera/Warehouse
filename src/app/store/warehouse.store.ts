@@ -13,12 +13,13 @@ type Warehouse = {
 const initialState: Warehouse = {
   isOpen: false,
   agent: {
-    agentNumber: '',
-    shortName: '',
-    name: '',
-    lastName: '',
-    email: '',
-    id: ""
+    agentNumber: "",
+    shortName: "",
+    name: "",
+    lastName: "",
+    email: "",
+    id: "",
+    airportId: ""
   },
   token: ""
 };

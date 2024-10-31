@@ -20,9 +20,9 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
     lodingDisplayed = true;
   }
   let headers = new HttpHeaders()
-  .set('Content-Type', 'application/json');
+    .set('Content-Type', 'application/json');
   if (sessionService.isLoggedIn) {
-    headers = headers.append('Authorization',`Bearer ${sessionService.token}`);
+    headers = headers.append('Authorization', `Bearer ${sessionService.token}`);
   }
 
   const clonReq = req.clone({
@@ -39,7 +39,6 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       }
     }),
     catchError((error: HttpErrorResponse) => {
-      console.log(error)
       if (error.status === 0) {
         anyError = true;
         messageService.showMessage('Server error. Contact support');

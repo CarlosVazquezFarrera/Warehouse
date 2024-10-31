@@ -1,10 +1,11 @@
-export interface Egress {
-  id: string;
+import { BaseDTO } from "./baseDTO";
+
+export interface Egress extends BaseDTO {
   amountRemoved: number;
   quantityBefore: number;
   quantityAfter: number;
   date: string | null;
   petitionerId: string;
   approverId: string;
-  supplyId: string;
+  productId: string;
 }

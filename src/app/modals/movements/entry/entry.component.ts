@@ -1,29 +1,23 @@
 import { Component, inject, signal } from '@angular/core';
 import { DashboardStore } from '@store/dashboard.store';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import * as json from './entry-metadata.json';
 import { WarehouseStore } from '@store/warehouse.store';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { DatePipe } from '@angular/common';
-import { MatDividerModule } from '@angular/material/divider';
+import { FormModule } from '@shared/modules/form.module';
+import { MaterialModule } from '@shared/modules/material.module';
 
 @Component({
   selector: 'app-entry',
   standalone: true,
-  imports: [MatButtonModule, 
-    MatDialogModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
+  imports: [
+    FormModule,
+    MaterialModule,
+    DatePipe,
     ReactiveFormsModule,
-    MatDividerModule,
-    DatePipe
   ],
   templateUrl: './entry.component.html',
   styleUrl: './entry.component.scss'

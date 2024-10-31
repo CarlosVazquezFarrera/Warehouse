@@ -1,45 +1,69 @@
-<app-modal-header />
+<app-modal-header header="Agent" />
 <section>
-    <header>
-        <h2>Agent</h2>
-    </header>
     <form [formGroup]="form">
         <div class="row-form">
             <mat-form-field class="w-100">
                 <mat-label>Name</mat-label>
-                <input matInput placeholder="Name's agent" type="text" formControlName="name">
-                @if(name.touched && name.invalid){
+                <input matInput placeholder="Name's agent" type="text" formControlName="name" appCapitalizeFirst>
                 <mat-error>{{errorName()}}</mat-error>
-                }
+                <mat-icon matPrefix>person</mat-icon>
             </mat-form-field>
 
             <mat-form-field class="w-100">
                 <mat-label>Last Name</mat-label>
-                <input matInput placeholder="Last Name's agent" type="text" formControlName="lastName">
-                @if(lastName.touched && lastName.invalid){
+                <input matInput placeholder="Last Name's agent" type="text" formControlName="lastName"
+                    appCapitalizeFirst>
                 <mat-error>{{errorLastName()}}</mat-error>
-                }
+                <mat-icon matPrefix>person</mat-icon>
             </mat-form-field>
         </div>
-        <mat-form-field class="w-100">
-            <mat-label>Short Name</mat-label>
-            <input matInput placeholder="Short name's agent" type="text" formControlName="shortName">
-        </mat-form-field>
-        <mat-form-field class="w-100">
-            <mat-label>Agent Number</mat-label>
-            <input matInput placeholder="Agent number" type="text" formControlName="agentNumber">
-            @if(agentNumber.touched && agentNumber.invalid){
-            <mat-error>{{errorAgentNumber()}}</mat-error>
-            }
-        </mat-form-field>
 
+        <div class="row-form">
+
+            <mat-form-field class="w-100">
+                <mat-label>Short Name</mat-label>
+                <input matInput placeholder="Short name's agent" type="text" formControlName="shortName">
+                <mat-icon matPrefix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+                <mat-label>Agent Number</mat-label>
+                <input matInput placeholder="Agent number" type="text" formControlName="agentNumber">
+                <mat-error>{{errorAgentNumber()}}</mat-error>
+                <mat-icon matPrefix>pin</mat-icon>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field class="w-100">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password's agent" [type]="hide() ? 'password' : 'text'"
+                formControlName="password">
+            <mat-error>{{errorPassword()}}</mat-error>
+            <mat-icon matPrefix>password</mat-icon>
+            <button mat-icon-button matSuffix (click)="clickEvent($event)" 
+            [attr.aria-label]="'Hide password'"
+            [disabled]="store.agentSelected()?.id"
+                [attr.aria-pressed]="hide()">
+                <mat-icon >{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
 
         <mat-form-field class="w-100">
             <mat-label>Email</mat-label>
             <input matInput placeholder="Email's agent" type="email" formControlName="email">
-            @if(email.touched && email.invalid){
             <mat-error>{{errorEmail()}}</mat-error>
-            }
+            <mat-icon matPrefix>mail</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-100">
+            <mat-label>Airport where agent works</mat-label>
+            <mat-select formControlName="airportId">
+                @for (airport of store.airports(); track airport.id) {
+                <mat-option [value]="airport.id">{{airport.name}}</mat-option>
+                }
+            </mat-select>
+            <mat-error>{{errorAirportId()}}</mat-error>
+            <mat-icon matPrefix>flight</mat-icon>
         </mat-form-field>
 
     </form>

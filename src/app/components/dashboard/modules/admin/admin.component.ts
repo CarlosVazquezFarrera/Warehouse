@@ -9,6 +9,10 @@ import { AdminAgentsComponent } from './admin-agents/admin-agents.component';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
-export class AdminComponent {
+export class AdminComponent  {
 
+  onTabChanged(index: number) {
+    console.log('Índice de pestaña seleccionado:', index);
+  }
+ 
 }

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { AppRoutes, getChildRoutePath } from '@routes/app-routers';
+import { AppRoutes } from '@routes/app-routers';
 import { isLoggenInGuard } from '@guards/is-loggen-in.guard';
 import { isNotLoggenInGuard } from '@guards/is-not-loggen-in.guard';
 
@@ -14,8 +14,8 @@ export const routes: Routes = [
       // { path: 'account/:id', component: AccountDetailComponent }
       { path: `${AppRoutes.dashboard.children.inventory}/:idSupply/:idAirport`, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.inventory, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
-      { path: AppRoutes.dashboard.children.supplies, loadComponent: () => import('@components/dashboard/modules/supplies/supplies.component').then(s => s.SuppliesComponent) },
       { path: AppRoutes.dashboard.children.agents, loadComponent: () => import('@components/dashboard/modules/agents/agents.component').then(a => a.AgentsComponent) },
+      { path: AppRoutes.dashboard.children.products, loadComponent: () => import('@components/dashboard/modules/products/products.component').then(a => a.ProductsComponent) },
       { path: AppRoutes.dashboard.children.admin, loadComponent: () => import('@components/dashboard/modules/admin/admin.component').then(a => a.AdminComponent) },
       { path: '', redirectTo: AppRoutes.dashboard.children.inventory, pathMatch: 'full' }
 

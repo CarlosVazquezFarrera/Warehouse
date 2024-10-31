@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ModalsService } from '@services/modals.service';
@@ -11,6 +11,8 @@ import { ModalsService } from '@services/modals.service';
 })
 export class ModalHeaderComponent {
   private modalsService = inject(ModalsService);
+
+  public header = input<string>();
 
   public close() {
     this.modalsService.closeModal();

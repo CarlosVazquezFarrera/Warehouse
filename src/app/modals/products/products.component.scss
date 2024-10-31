@@ -1,0 +1,55 @@
+@use 'variables' as v;
+@use 'media-queries' as mq;
+
+
+form {
+    section.info-product {
+        @include mq.md() {
+            display: flex;
+            column-gap: v.$column-form-gap;
+        }
+    }
+
+    section.quantity-detail {
+        h4 {
+            font-style: italic;
+        }
+        section {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                "presentation"
+                "quantity-presentation"
+                "product-format"
+                "quantity-productFormat";
+
+            @include mq.md() {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-areas:
+                "presentation product-format"
+                "quantity-presentation quantity-productFormat";
+                column-gap: v.$column-form-gap;
+            }
+
+        }
+
+        #presentation {
+            grid-area: presentation;
+        }
+
+        #quantityPerPresentation {
+            grid-area: quantity-presentation;
+        }
+
+        #productFormat {
+            grid-area: product-format;
+        }
+
+        #quantityPerProductFormat {
+            grid-area: quantity-productFormat;
+        }
+    }
+    @include mq.md() {
+        margin-bottom: 5%;
+    }
+}

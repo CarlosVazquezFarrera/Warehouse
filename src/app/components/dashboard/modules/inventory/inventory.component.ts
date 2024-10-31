@@ -1,40 +1,23 @@
 import { AfterContentInit, Component, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTableModule } from '@angular/material/table';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-
-import { Airport } from '@models/DTO/airport';
 import { DashboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { environment } from '@environments/environment';
-import { InventoryItem } from '@models/api/inventoryItem';
-
-import { debounceTime, lastValueFrom, merge } from 'rxjs';
+import { debounceTime, lastValueFrom } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MaterialModule } from '@shared/modules/material.module';
+import { Product } from '@models/DTO/product';
 
 @Component({
   selector: 'app-inventory',
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
     FormsModule,
-    MatTableModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatIconModule,
-    MatButtonModule,
+    MatFormFieldModule,
+    MaterialModule,
     ReactiveFormsModule,
     NoDataComponent],
   templateUrl: './inventory.component.html',
@@ -43,19 +26,14 @@ import { debounceTime, lastValueFrom, merge } from 'rxjs';
 export class InventoryComponent implements OnInit, AfterContentInit {
   //#region Hooks
   async ngOnInit(): Promise<void> {
-    await this.store.getAiports();
-    if (this.store.airport().length > 0) {
-      const id = this.store.airport()[0].id;
-      this.airportId.setValue(id);
-    }
+    await this.store.loadProducts();
     await this.handleSupplyGotByURL();
   }
 
   ngAfterContentInit() {
-    merge(
-      this.airportId.valueChanges,
-      this.search.valueChanges.pipe(debounceTime(environment.defaultDebounceTime))
-    ).subscribe(() => this.store.getInventoryByAirport(this.airportId.value, this.search.value));
+    this.search.valueChanges.pipe(debounceTime(environment.defaultDebounceTime)).subscribe(() => {
+      this.store.searchProduct(this.search.value);
+    });
   }
   //#endregion
 
@@ -65,18 +43,16 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   private modalsService = inject(ModalsService);
   private route = inject(ActivatedRoute);
 
-  public displayedColumns: string[] = ['name', 'supplierPart', 'currentQuantity'];
-  public ariports: Airport[] = [];
-
+  public displayedColumns: string[] = ['name', 'supplierPart', 'presentation', 'productFormat', 'stock'];
   public form = this.fb.group({
-    airportId: [''],
     search: ['']
   });
   //#endregion
 
   //#region Methods
-  public supplyClicked(item: InventoryItem): void {
-    this.store.setInventyoryItemSelected(item);
+  public productClicked(product: Product): void {
+    this.store.setSelectedProduct(product);
+    this.store.setProductIdToNewEgress();
     this.modalsService.showLateralModal('movements');
   }
   public clearSearch(): void {
@@ -86,33 +62,30 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   public async scanQr(): Promise<void> {
     await lastValueFrom(this.modalsService.showModal('qrScanner').afterClosed());
     if (this.store.idSupplyScanned() === '') return;
-    await this.store.loadSupply();
+    //await this.store.loadSupply();
     this.store.clearIdSupplyScanned();
     this.modalsService.showLateralModal('movements');
   }
-  public handlePageEvent(e: PageEvent) {
+  public async handlePageEvent(e: PageEvent) {
     const { pageSize } = e;
     const pageNumber = e.pageIndex + 1;
-    this.store.getInventoryByAirport(this.airportId.value, this.search.value, pageNumber, pageSize);
+    await this.store.searchProduct(this.search.value, pageNumber, pageSize);
   }
 
   private async handleSupplyGotByURL(): Promise<void> {
     const idSupply = this.route.snapshot.paramMap.get('idSupply');
 
     if (!idSupply) return;
-    if (this.store.inventoryItemSelected.id() == '') return;
+    //if (this.store.prod.id() == '') return;
 
     this.modalsService.showLateralModal('movements');
   }
-  public addMissingProductComponent(): void {
-    this.modalsService.showLateralModal('addMissingProduct');
+  public addProduct(): void {
+    this.modalsService.showLateralModal('products');
   }
   //#endregion
 
   //#region Gets
-  private get airportId(): AbstractControl {
-    return this.form.get('airportId')!;
-  }
   public get search(): AbstractControl {
     return this.form.get('search')!;
   }

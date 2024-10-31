@@ -26,7 +26,8 @@ const initialState: AdminDashBoard = {
         name: "",
         lastName: "",
         email: "",
-        id: ""
+        id: "",
+        airportId: ""
     }
 }
 
@@ -34,8 +35,8 @@ export const AdminDashBoardStore = signalStore(
     { providedIn: 'root' },
     withState(initialState),
     withMethods((store, agentService = inject(AgentService)) => ({
-        async getPagedAgents(pageNumber?: number, pageSize?: number, search?: string,): Promise<void> {
-            const agents = await agentService.getPagedAllWithSearch<AgentBaseInfo>(search, pageNumber, pageSize, "GetPagedAgents");
+        async getPagedAgents(pageNumber?: number, pageSize?: number): Promise<void> {
+            const agents = await agentService.getPaged(pageNumber, pageSize, "GetActiveAgentsPaged");
             patchState(store, { agents })
         },
         agentSelected(agent: AgentBaseInfo): void {

@@ -12,6 +12,7 @@ import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { AgentPasswordInfo } from '@models/types/agentPasswordInfo';
 import { AgentService } from '@services/agent.service';
 import { ModalsService } from '@services/modals.service';
+import { MessageService } from '@services/message.service';
 
 @Component({
   selector: 'app-admin-agent',
@@ -35,6 +36,7 @@ export class AdminAgentComponent implements OnDestroy {
   public store = inject(AdminDashBoardStore);
   private agentService = inject(AgentService);
   private modalService = inject(ModalsService);
+  private messajeService = inject(MessageService);
 
   public password = new FormControl('', [Validators.required, Validators.minLength(5), Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$^&*()_-]).*$/)]);
   public hide = signal(true);
@@ -56,6 +58,10 @@ export class AdminAgentComponent implements OnDestroy {
       id: this.store.agent().id,
       password: this.password.value!
     }
+
+    const response = await this.messajeService.confirmationMessage("Are you sure you want to cotinue?");
+    if(!response) return;
+
     const result = await this.agentService.setPassword(passwordInfo);
     if (!result) return;
 

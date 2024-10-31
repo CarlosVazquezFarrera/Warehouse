@@ -9,7 +9,7 @@ import { HttpBase } from './http-base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class InventoryService extends HttpBase<InventoryItem>{
+export class InventoryService extends HttpBase<InventoryItem, InventoryItem>{
 
   constructor() {
     super("Inventory")

@@ -90,7 +90,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     petitionerId: ['', Validators.required],
   });
   public egressForm = this.fb.group({
-    quantity: ['', [Validators.required, Validators.max(this.store.inventoryItemSelected.currentQuantity()), Validators.min(1)]]
+    quantity: ['', [Validators.required, Validators.max(this.store.selectedProduct.stock()), Validators.min(1)]]
   });
   //#endregion
 
@@ -109,8 +109,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     this.stepper.next();
   }
   public nextToFinal(): void {
-    const amount = this.quantity.value ? parseInt(this.quantity.value!) : 0;
-    this.store.setRemovedAmount(amount);
+    this.store.setRemovedAmount(this.quantityValue);
     this.stepper.next();
   }
 
@@ -134,6 +133,10 @@ export class EgressComponent implements OnInit, AfterViewInit {
   }
   public get quantity() {
     return this.egressForm.get('quantity')!;
+  }
+
+  public get quantityValue(): number {
+    return this.quantity.value ? parseInt(this.quantity.value!) : 0;
   }
 
   public get formsInvalid(): boolean {

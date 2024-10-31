@@ -2,7 +2,7 @@
   <qrcode [qrdata]="dataQr" ariaLabel="QR code" [colorDark]="'#000000'" [colorLight]="'#ffffff'"
     [elementType]="'canvas'" errorCorrectionLevel="Q" imageSrc="./assets/united.jpg" [margin]="4" [scale]="1"
     [width]="1200" [imageHeight]="100" [imageWidth]="100" [title]="'code qr'" />
-    <h2>{{store.fullNameSupplySelected()}}</h2>
+    <h2>{{store.fullNameOfTheSelectedProduct()}}</h2>
 </section>
 <footer>
   <!-- @if(!platform.ANDROID || !platform.IOS) {

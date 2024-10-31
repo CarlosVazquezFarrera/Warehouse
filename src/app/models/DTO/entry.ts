@@ -4,5 +4,5 @@ export interface Entry {
   quantityAfter: number;
   date: Date;
   agentId: string;
-  supplyId: string;
+  productId: string;
 }

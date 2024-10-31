@@ -4,7 +4,7 @@ import { environment } from "@environments/environment";
 import { PagedResponse } from "@models/custom/pagedResonse";
 import { lastValueFrom } from "rxjs";
 
-export abstract class HttpBase<T> {
+export abstract class HttpBase<TDto,TNewEntity> {
   constructor(controller: string) {
     this.apiUrl = `${environment.baseApiUrl}${controller}`;
   }
@@ -13,36 +13,35 @@ export abstract class HttpBase<T> {
   protected pageNumber = environment.pagination.defaultPageNumber;
   protected pageSize = environment.pagination.defaultPageSize;
 
-  public async getById<T>(id: string): Promise<T> {
-    return await lastValueFrom(this.http.get<T>(`${this.apiUrl}/?Id=${id}`));
+  public async getById<T>(id: string): Promise<TDto> {
+    return await lastValueFrom(this.http.get<TDto>(`${this.apiUrl}/?Id=${id}`));
   }
 
-  public async getAll<T>(): Promise<Array<T>> {
-    return await lastValueFrom(this.http.get<Array<T>>(this.apiUrl));
+  public async getAll(): Promise<Array<TDto>> {
+    return await lastValueFrom(this.http.get<Array<TDto>>(this.apiUrl));
   }
-  public async getPagedAll<T>(pageNumber?: number, pageSize?: number): Promise<PagedResponse<T>> {
+  public async getPaged(pageNumber?: number, pageSize?: number, methodName?: string): Promise<PagedResponse<TDto>> {
     pageNumber = pageNumber ?? this.pageNumber;
     pageSize = pageSize ?? this.pageSize;
-    return await lastValueFrom(this.http.get<PagedResponse<T>>(`${this.apiUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`));
+    const url = methodName ? `${this.apiUrl}/${methodName}` : this.apiUrl;
+    return await lastValueFrom(this.http.get<PagedResponse<TDto>>(`${url}?pageNumber=${pageNumber}&pageSize=${pageSize}`));
   }
 
-  public async getPagedAllWithSearch<T>(search?: string, pageNumber?: number, pageSize?: number, methodName: string = ''): Promise<PagedResponse<T>> {
+  public async getPagedWithSearch(search?: string, pageNumber?: number, pageSize?: number, methodName: string = ''): Promise<PagedResponse<TDto>> {
     pageNumber = pageNumber ?? this.pageNumber;
     pageSize = pageSize ?? this.pageSize;
     search = search ?? '';
-    return await lastValueFrom(this.http.get<PagedResponse<T>>(`${this.apiUrl}/${methodName}?search=${search}&pageNumber=${pageNumber}&pageSize=${pageSize}`));
+    return await lastValueFrom(this.http.get<PagedResponse<TDto>>(`${this.apiUrl}/${methodName}?search=${search}&pageNumber=${pageNumber}&pageSize=${pageSize}`));
+  }
+  public async post(body: TNewEntity): Promise<TDto> {
+    return await lastValueFrom(this.http.post<TDto>(this.apiUrl, body));
   }
 
-  public async post<T, K>(body: K): Promise<T> {
-    return await lastValueFrom(this.http.post<T>(this.apiUrl, body));
+  public async put<TType = TDto>(body: TType): Promise<TDto> {
+    return await lastValueFrom(this.http.put<TDto>(this.apiUrl, body));
   }
 
-  public async put<T, K>(body: K): Promise<T> {
-    return await lastValueFrom(this.http.put<T>(this.apiUrl, body));
-  }
-
-
-  public async delete<T>(id: string): Promise<T> {
-    return await lastValueFrom(this.http.delete<T>(this.apiUrl));
+  public async delete(id: string): Promise<boolean> {
+    return await lastValueFrom(this.http.delete<boolean>(this.apiUrl));
   }
 }

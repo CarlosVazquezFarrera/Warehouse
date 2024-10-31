@@ -1,21 +1,21 @@
-<mat-tab-group>
+<mat-tab-group (selectedIndexChange)="onTabChanged($event)">
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon>group</mat-icon>
-            Agentes
+            Active Agents
         </ng-template>
         <app-admin-agents />
     </mat-tab>
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon>verified_user</mat-icon>
-            Permisos
+            <mat-icon>disabled_visible</mat-icon>
+            Inactive Agents
         </ng-template>
         Content 1
     </mat-tab>
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon>block</mat-icon>
+            <mat-icon>verified_user</mat-icon>
             Permisos
         </ng-template>
         Content 1

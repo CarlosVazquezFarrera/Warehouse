@@ -1,0 +1,81 @@
+<app-modal-header [header]="store.thereIsAProductSelected() ? 'Edit product' : 'New product'" />
+<section class="modal-lateral-body">
+    <form [formGroup]="form">
+        <section class="info-product">
+            <mat-form-field class="w-100">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput placeholder="Type the supply's name" appCapitalizeFirst
+                    formControlName="name">
+                <mat-error>{{errorsName()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="w-100">
+                <mat-label>SupplierPart</mat-label>
+                <input type="text" matInput placeholder="Type the supply's SupplierPart" formControlName="supplierPart">
+                <mat-error>{{errorSupplierPart()}}</mat-error>
+            </mat-form-field>
+        </section>
+
+        <mat-form-field class="w-100">
+            <mat-label>PackagingType</mat-label>
+            <mat-select formControlName="packagingTypeId">
+                @for (packagingType of store.packagingTypes(); track packagingType.id) {
+                <mat-option [value]="packagingType.id">{{packagingType.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <section class="quantity-detail">
+            <h4>Quantity details</h4>
+            <section>
+                <mat-form-field id="presentation">
+                    <mat-label>Presentation</mat-label>
+                    <mat-select formControlName="presentationId">
+                        @for (presentation of store.presentations(); track presentation.id) {
+                        <mat-option [value]="presentation.id">{{presentation.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field id="presentationQuantity">
+                    <mat-label>Presentation quantity</mat-label>
+                    <input matInput placeholder="Elements per presentation" type="number"
+                        formControlName="presentationQuantity">
+                    <mat-error>{{errorPresentationQuantity()}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field id="productFormat">
+                    <mat-label>ProductFormat</mat-label>
+                    <mat-select formControlName="productFormatId">
+
+                        @for (productFormat of store.productFormats(); track productFormat.id) {
+                        <mat-option [value]="productFormat.id">{{productFormat.name}}</mat-option>
+                        }
+                    </mat-select>
+
+                </mat-form-field>
+
+                <mat-form-field id="formatQuantity">
+                    <mat-label>Product format quantity</mat-label>
+                    <input matInput placeholder="Elements per Format" type="number" formControlName="formatQuantity">
+                    <mat-error>{{errorFormatQuantity()}}</mat-error>
+                </mat-form-field>
+            </section>
+        </section>
+        @if (!store.thereIsAProductSelected()) {
+        <mat-form-field class="w-100">
+            <mat-label>Stock</mat-label>
+            <input matInput placeholder="Total elements" type="number" formControlName="stock">
+        </mat-form-field>
+        }
+    </form>
+    @if (store.thereIsAProductSelected()) {
+    <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="update()">
+        Update
+    </button>
+    }
+    @else {
+    <button mat-raised-button color="primary w-100" [disabled]="form.invalid" (click)="save()">
+        Create
+    </button>
+    }
+</section>

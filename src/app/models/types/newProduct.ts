@@ -1,3 +1,3 @@
 import { Product } from "@models/DTO/product";
 
-export type NewProduct = Pick<Product, 'name' | 'supplierPart'>;
+export type NewProduct = Omit<Product, 'id' | 'airportId' | 'packagingTypeName' | 'productFormatName' | 'presentationName'>;

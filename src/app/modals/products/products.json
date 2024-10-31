@@ -1,0 +1,18 @@
+{
+    "errors": {
+        "presentationQuantity": {
+            "required": "Quantity per presentation is required",
+            "min": "Must be at least one"
+        },
+        "formatQuantity": {
+            "required": "Quantity per productFormat is required",
+            "min": "Must be at least one"
+        },
+        "supplierPart": {
+            "required": "SupplierPart is required"
+        },
+        "name": {
+            "required": "Name is required"
+        }
+    }
+}

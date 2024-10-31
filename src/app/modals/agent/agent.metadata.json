@@ -1,22 +1,30 @@
 {
     "errors": {
-        "agentNumber": {
-            "required": "The Agent number is required",
-            "minlength": "The Agent number must be at least 6 characters long",
-            "onlyNumbers": "The Agent number must be numbers only"
-        },
         "name": {
-            "required": "The Name is required",
-            "minlength": "The Name must be at least 2 characters long"
+            "required": "Name is required",
+            "minlength": "This be at least 2 characters"
         },
         "lastName": {
-            "required": "The Last name name is required",
-            "minlength": "The Last name must be at least 2 characters long"
+            "required": "Last name is required",
+            "minlength": "This must be at least 2 characters"
+        },
+        "agentNumber": {
+            "required": "Agent number is required",
+            "minlength": "This must be at least 6 characters",
+            "onlyNumbers": "Only numbers are allowed"
         },
         "email": {
-            "required": "The Email is required",
-            "minlength": "The Email must be at least 2 characters long",
+            "required": "Email is required",
+            "minlength": "This must be at least 2 characters",
             "email": "This must be an email"
+        },
+        "password": {
+            "required": "Password is required",
+            "minlength": "This must be at least 5 characters",
+            "passwordComplexity": "Password must include at least one uppercase letter and one special character"
+        },
+        "airportId": {
+            "required": "Airport is required"
         }
     }
 }
