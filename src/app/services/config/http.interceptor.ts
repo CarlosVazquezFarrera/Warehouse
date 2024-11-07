@@ -9,6 +9,7 @@ let activePetitions: number = 0;
 let lodingDisplayed: boolean = false;
 let anyError: boolean = false;
 
+
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   let loadingService = inject(LoadingService);
   let messageService = inject(MessageService);
@@ -36,17 +37,20 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       if (activePetitions == 0) {
         loadingService.closeModal();
         lodingDisplayed = false;
+        anyError = false;
       }
     }),
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 0) {
-        anyError = true;
-        messageService.showMessage('Server error. Contact support');
-      }
-      else {
-        if (error.error.status === 460) {
+      if (!anyError) {
+        if (error.status === 0) {
           anyError = true;
-          messageService.showMessage('Check your credentials', 'Something went wrong');
+          messageService.showMessage('Server error. Contact support');
+        }
+        else {
+          if (error.error.status === 460) {
+            anyError = true;
+            messageService.showMessage('Check your credentials', 'Something went wrong');
+          }
         }
       }
       return throwError(() => new Error(error.message));

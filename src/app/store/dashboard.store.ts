@@ -56,7 +56,7 @@ export const DashboardStore = signalStore(
     },
     async createNewProduct(newProduct: NewProduct): Promise<void> {
       await productService.post(newProduct);
-      const products = await productService.getPaged();
+      const products = await productService.getPaged(undefined, undefined, 'GetByAirport');
       patchState(store, { products });
     },
     async updateProduct(product: Product): Promise<void> {
