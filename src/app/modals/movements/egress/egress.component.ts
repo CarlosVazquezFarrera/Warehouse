@@ -1,26 +1,19 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
-import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { MatButtonModule } from '@angular/material/button';
-import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDividerModule } from '@angular/material/divider';
-
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Observable, map, startWith } from 'rxjs';
-
-import { AsyncPipe, DatePipe } from '@angular/common';
 import { Agent } from '@models/DTO/agent';
 import { DashboardStore } from '@store/dashboard.store';
 import * as json from './egress-metadata.json';
 import { WarehouseStore } from '@store/warehouse.store';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { AgentBaseInfo } from '@models/types/agentBaseInfo';
+import { MaterialModule } from '@shared/modules/material.module';
+import { FormModule } from '@shared/modules/form.module';
 
 
 @Component({
@@ -32,18 +25,9 @@ import { AgentBaseInfo } from '@models/types/agentBaseInfo';
       useValue: { showError: true },
     },
   ],
-  imports: [MatButtonModule,
-    MatStepperModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatDividerModule,
-    AsyncPipe,
-    MatTooltipModule,
-    MatDialogModule,
-    DatePipe
+  imports: [
+    MaterialModule,
+    FormModule,
   ],
   templateUrl: './egress.component.html',
   styleUrl: './egress.component.scss'
@@ -61,6 +45,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
       map((value: string | number) => this.filter(`${value}`))
     );
   }
+  
   ngAfterViewInit(): void {
     this.trigger.panelClosingActions.subscribe(e => {
       if (!(e && e.source)) {
@@ -105,11 +90,11 @@ export class EgressComponent implements OnInit, AfterViewInit {
   }
 
   public nextToEgressForm(): void {
-    this.store.setPetitionerId(this.petitionerId.value.id);
+    // this.store.setPetitionerId(this.petitionerId.value.id);
     this.stepper.next();
   }
   public nextToFinal(): void {
-    this.store.setRemovedAmount(this.quantityValue);
+    // this.store.setRemovedAmount(this.quantityValue);
     this.stepper.next();
   }
 
@@ -117,7 +102,7 @@ export class EgressComponent implements OnInit, AfterViewInit {
     if (this.formsInvalid) return;
     const response = await this.messageService.confirmationMessage('Are you sure you want to continue?');
     if (!response) return;
-    await this.store.saveNewEgress();
+    // await this.store.saveNewEgress();
     this.modalService.closeModal();
   }
 

@@ -12,7 +12,6 @@ import { AdminAgentsComponent } from './admin-agents/admin-agents.component';
 export class AdminComponent  {
 
   onTabChanged(index: number) {
-    console.log('Índice de pestaña seleccionado:', index);
   }
  
 }

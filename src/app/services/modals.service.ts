@@ -7,15 +7,20 @@ import { QrScannerComponent } from '@modals/qr-scanner/qr-scanner.component';
 import { AgentComponent } from '@modals/agent/agent.component';
 import { AdminAgentComponent } from '@modals/admin-agent/admin-agent.component';
 import { ProductsComponent } from '@modals/products/products.component';
+import { LateralModals } from '@shared/modalsKeys/lateral/lateralModals';
+import { Modals } from '@shared/modalsKeys/regular/modals';
+import { CreateEgressComponent } from '@modals/create-egress/create-egress.component';
+import { SelectProductsComponent } from '@modals/select-products/select-products.component';
 
-type LateralModals = 'movements' | 'supply' | 'addMissingProduct' | 'agent' | 'admin-agent' | 'products';
-type Modals = 'qrScanner';
 
 type AllowedModals =
   MovementsComponent |
   QrScannerComponent |
   AgentComponent |
-  AdminAgentComponent | ProductsComponent;
+  AdminAgentComponent |
+  ProductsComponent |
+  CreateEgressComponent | 
+  SelectProductsComponent;
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +51,9 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
       case 'products':
         this.open(ProductsComponent, lateralModalConfig);
         break;
+      case 'create-egress':
+        this.open(CreateEgressComponent, lateralModalConfig);
+        break;
     }
   }
 
@@ -56,9 +64,15 @@ export class ModalsService extends DialogBaseService<AllowedModals> {
   }
 
   public showModal(modal: Modals): MatDialogRef<AllowedModals> {
+    let config: MatDialogConfig = {
+      panelClass: 'modal-regular'
+    }
+
     switch (modal) {
       case 'qrScanner':
         return this.open(QrScannerComponent);
+      case 'select-products':
+        return this.open(SelectProductsComponent, config);
     }
   }
 

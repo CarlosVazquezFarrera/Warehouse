@@ -1,0 +1,132 @@
+<app-modal-header header="Egress" />
+
+<mat-stepper [tabIndex]="2" orientation="vertical">
+    <mat-step [stepControl]="departmentForm" errorMessage="This field is required.">
+        <form [formGroup]="departmentForm" autocomplete="off">
+            <ng-template matStepLabel>Requester department</ng-template>
+            <app-auto-complete-field [data]="store.departments()" label="Department name" textFilterProperty="name"
+                placeholder="Type the name" formControlName="departmentId" />
+        </form>
+        <div class="footer-egress">
+            <button mat-button (click)="goFromDepartmentToProduct()">Next</button>
+        </div>
+    </mat-step>
+    <mat-step [stepControl]="productsForm"
+        [errorMessage]="errorCount().length == 0 ? 'Check the quantity of the products': errorCount()">
+        <form [formGroup]="productsForm">
+            <ng-template matStepLabel>Products</ng-template>
+            <main class="products">
+                <div class="header">
+                    <button color="primary" mat-mini-fab (click)="addProducts()">
+                        @if (!store.thereAreProductsSelected()) {
+                        <mat-icon>add</mat-icon>
+                        }
+                        @else {
+                        <mat-icon>edit</mat-icon>
+                        }
+                    </button>
+                </div>
+                <main class="products-list" formArrayName="products">
+                    @if (!store.thereAreProductsSelected()) {
+                    <h3>
+                        No Products Selected
+                    </h3>
+                    }
+                    @else {
+                    <div class="example-action-buttons">
+                        <button mat-button (click)="accordion().openAll()">Expand All</button>
+                        <button mat-button (click)="accordion().closeAll()">Collapse All</button>
+                    </div>
+                    <mat-accordion multi>
+                        @for (product of productControls; track $index) {
+                        <mat-expansion-panel hideToggle [formGroupName]="$index">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title> {{product.get('name')?.value}}</mat-panel-title>
+                                <button mat-button color="primary"
+                                    (click)="deleteProduct($event, $index, product.get('id')?.value)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-expansion-panel-header>
+
+                            <mat-form-field class="w-100">
+                                <mat-label>Quantity</mat-label>
+                                <input #inputField type="number" matInput [formControl]="quantityControl($index)" />
+                                @if(product.get('quantity')?.hasError('required')) {
+                                <mat-error>Quantity is required</mat-error>
+                                }
+                                @if(product.get('quantity')?.hasError('min')) {
+                                <mat-error>Must be at least one</mat-error>
+                                }
+                                @if(product.get('quantity')?.hasError('max')) {
+                                <mat-error>
+                                    Stock available:
+                                    {{product.get('stock')?.value}}</mat-error>
+                                }
+                            </mat-form-field>
+
+                        </mat-expansion-panel>
+                        }
+                    </mat-accordion>
+                    }
+                </main>
+            </main>
+            <div class="footer-egress">
+                <button mat-button (click)="goBack()">Back</button>
+                <button mat-button (click)="goFromProductToFinal()">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Confirmation</ng-template>
+        @if(departmentForm.valid && productsForm.valid) {
+        <main class="confirmation">
+            <section class="info">
+                <section class="details">
+                    <h2>Date</h2>
+                    <p><em>This egress will be saved on this date.</em></p>
+                    <p class="text-bold"><em>{{now | date: 'fullDate'}}</em></p>
+                </section>
+                <section class="approver">
+                    <h2>Approver</h2>
+                    <p><em>Signed Approver</em></p>
+                    <p class="text-bold"><em>
+                            {{warehouseStore.agent.agentNumber()}} - {{warehouseStore.fullName()}}
+                        </em></p>
+                </section>
+            </section>
+            <mat-divider />
+            <section class="requested-products">
+                <h2>Requested Products</h2>
+                <table class="table-products" mat-table [dataSource]="productControls">
+                    <ng-container matColumnDef="product">
+                        <th mat-header-cell *matHeaderCellDef> Product </th>
+                        <td mat-cell *matCellDef="let fila">
+                            {{ fila.value.name }} - {{ fila.value.supplierPart }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                        <td mat-cell *matCellDef="let fila">
+                            {{ fila.value.quantity }}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </section>
+        </main>
+        }
+        @else {
+        <main>
+            <h2 class="align-center">Please complete all steps </h2>
+        </main>
+        }
+
+        <div class="footer-egress">
+            <button mat-button matStepperPrevious>Back</button>
+            <button [class.cursor-not-allowed]="formsInvalid" mat-button cdkFocusInitial [matTooltip]="tooltipFinal"
+                [matTooltipDisabled]="!formsInvalid" (click)="createOrden()">Accept</button>
+        </div>
+    </mat-step>
+</mat-stepper>

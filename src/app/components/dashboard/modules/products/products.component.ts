@@ -30,7 +30,7 @@ export class ProductsComponent implements OnInit {
     this.modalsService.showLateralModal('products');
   }
 
-  public addProduct(): void {
+  public addProducts(): void {
     this.modalsService.showLateralModal('products');
   }
 

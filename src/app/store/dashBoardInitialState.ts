@@ -1,4 +1,3 @@
-import { InventoryItem } from "@models/api/inventoryItem";
 import { Metadata } from "@models/custom/metadata";
 import { PagedResponse } from "@models/custom/pagedResonse";
 import { Agent } from "@models/DTO/agent";
@@ -8,28 +7,20 @@ import { Presentation } from "@models/DTO/presentation";
 import { Product } from "@models/DTO/product";
 import { ProductFormat } from "@models/DTO/productFormat";
 import { AgentBaseInfo } from "@models/types/agentBaseInfo";
-import { NewEgress } from "@models/types/newEgress";
 
 //#region Types
 export type DashBoard = {
     airports: Airport[],
     agents: AgentBaseInfo[],
     missingProduct: Product[],
-    newEgress: NewEgress,
     products: PagedResponse<Product>,
     selectedProduct: Product,
     idAirportSelected: string,
     pagedAgents: PagedResponse<Agent>,
     idAgentSelected: string,
-    idSupplyScanned: string,
     packagingTypes: Array<PackagingType>,
     presentations: Array<Presentation>,
     productFormats: Array<ProductFormat>,
-  }
-export const initialNewEgress: NewEgress = {
-    amountRemoved: 0,
-    petitionerId: "",
-    productId: ""
   }
   
   const initialMetadata: Metadata = {
@@ -59,7 +50,6 @@ export const initialNewEgress: NewEgress = {
   export const initialDashBoardState: DashBoard = {
     airports: [],
     agents: [],
-    newEgress: initialNewEgress,
     products: {
       data: [],
       metadata: initialMetadata
@@ -72,7 +62,6 @@ export const initialNewEgress: NewEgress = {
       metadata: initialMetadata
     },
     idAgentSelected: "",
-    idSupplyScanned: "",
     packagingTypes: [],
     presentations: [],
     productFormats: []

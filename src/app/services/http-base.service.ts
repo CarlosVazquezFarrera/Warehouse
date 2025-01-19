@@ -20,10 +20,12 @@ export abstract class HttpBase<TDto,TNewEntity> {
   public async getAll(): Promise<Array<TDto>> {
     return await lastValueFrom(this.http.get<Array<TDto>>(this.apiUrl));
   }
-  public async getPaged(pageNumber?: number, pageSize?: number, methodName?: string): Promise<PagedResponse<TDto>> {
+  public async getPaged(pageNumber?: number, pageSize?: number, methodName = 'getPaged' ): Promise<PagedResponse<TDto>> {
     pageNumber = pageNumber ?? this.pageNumber;
     pageSize = pageSize ?? this.pageSize;
-    const url = methodName ? `${this.apiUrl}/${methodName}` : this.apiUrl;
+    
+    const url = `${this.apiUrl}/${methodName}`;
+
     return await lastValueFrom(this.http.get<PagedResponse<TDto>>(`${url}?pageNumber=${pageNumber}&pageSize=${pageSize}`));
   }
 

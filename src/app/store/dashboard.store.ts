@@ -1,16 +1,11 @@
 import { computed, inject } from "@angular/core";
-import { InventoryItem } from "@models/api/inventoryItem";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { AgentService } from "@services/agent.service";
 import { AirportService } from "@services/airport.service";
-import { EgressService } from "@services/egress.service";
-import { InventoryService } from "@services/inventory.service";
-import { NewEgress } from "@models/types/newEgress";
 import { EntryService } from "@services/entry.service";
 import { Product } from "@models/DTO/product";
 import { ProductService } from "@services/product.service";
 import { NewProduct } from "@models/types/newProduct";
-import { SupplyService } from "@services/supply.service";
 import { NewAgent } from "@models/types/newAgent";
 import { Agent } from "@models/DTO/agent";
 import { PackagingType } from "@models/DTO/packagingType";
@@ -20,23 +15,24 @@ import { PresentationService } from "@services/presentation.service";
 import { ProductFormatService } from "@services/product-format.service";
 import { ProductFormat } from "@models/DTO/productFormat";
 import { initialDashBoardState, initialSelectedProduct } from "./dashBoardInitialState";
-import { Egress } from "@models/DTO/egress";
 import { NewEntry } from "@models/types/newEntry";
 import { Entry } from "@models/DTO/entry";
+import { NewEgress } from "@models/types/newEgress";
+import { EgressService } from "@services/egress.service";
 
 export const DashboardStore = signalStore(
   { providedIn: 'root' },
   withState(initialDashBoardState),
-  withMethods((store,
+  withMethods((
+    store,
     airportService = inject(AirportService),
     agentService = inject(AgentService),
-    egressService = inject(EgressService),
     entryService = inject(EntryService),
+    egressService = inject(EgressService),
     productService = inject(ProductService),
-    supplyService = inject(SupplyService),
     packagingTypeService = inject(PackagingTypeService),
     presentationService = inject(PresentationService),
-    productFormatService = inject(ProductFormatService)
+    productFormatService = inject(ProductFormatService),
   ) => ({
     //#region Airport
     async getAiports(): Promise<void> {
@@ -47,16 +43,16 @@ export const DashboardStore = signalStore(
 
     //#region  Products
     async loadProducts(pageNumber?: number, pageSize?: number): Promise<void> {
-      const products = await productService.getPaged(pageNumber, pageSize, "GetByAirport");
+      const products = await productService.getPaged(pageNumber, pageSize, 'GetProductsPagedByAirport');
       patchState(store, { products });
     },
     async searchProduct(search: string, pageNumber?: number, pageSize?: number) {
-      const products = await productService.getPagedWithSearch(search, pageNumber, pageSize, "GetByAirport");
+      const products = await productService.getPagedWithSearch(search, pageNumber, pageSize, 'GetProductsPagedByAirport');
       patchState(store, { products });
     },
     async createNewProduct(newProduct: NewProduct): Promise<void> {
       await productService.post(newProduct);
-      const products = await productService.getPaged(undefined, undefined, 'GetByAirport');
+      const products = await productService.getPaged(undefined, undefined, 'GetProductsPagedByAirport');
       patchState(store, { products });
     },
     async updateProduct(product: Product): Promise<void> {
@@ -114,11 +110,6 @@ export const DashboardStore = signalStore(
       patchState(store, { pagedAgents })
     },
 
-    setPetitionerId(petitionerId: string): void {
-      const newEgress: NewEgress = { ...store.newEgress(), petitionerId }
-      patchState(store, { newEgress })
-    },
-
     setIdAgent(idAgent: string): void {
       patchState(store, { idAgentSelected: idAgent });
     },
@@ -144,31 +135,6 @@ export const DashboardStore = signalStore(
     },
     //#endregion
 
-    //#region Egress
-    async saveNewEgress() {
-      const neweGress = store.newEgress();
-      const egress: Egress = await egressService.post(neweGress);
-      const products = store.products.data().map(p => {
-        if (p.id == egress.productId) {
-          return { ...p, stock: egress.quantityAfter }
-        }
-        return p;
-      });
-      patchState(store, (state) => ({
-        products: {
-          data: products,
-          metadata: { ...state.products.metadata }
-        }
-      }))
-    },
-    setProductIdToNewEgress(): void {
-      patchState(store, (state) => ({
-        newEgress: {
-          ...state.newEgress,
-          productId: store.selectedProduct().id
-        }
-      }))
-    },
 
     //#endregion
 
@@ -195,39 +161,6 @@ export const DashboardStore = signalStore(
     },
     //#endregion
 
-    //#region  Inventory
-    setIdSupplyScanned(idSupplyScanned: string): void {
-      patchState(store, { idSupplyScanned });
-    },
-    clearIdSupplyScanned(): void {
-      patchState(store, { idSupplyScanned: '' })
-    },
-    //#endregion
-
-    //#region  Egress
-    setRemovedAmount(amountRemoved: number): void {
-      const newEgress: NewEgress = { ...store.newEgress(), amountRemoved }
-      patchState(store, { newEgress })
-    },
-    newEgressRegistered(currentQuantity: number, supplyId: string): void {
-      // const data = store.inventory.data().map(i => {
-      //   if (i.id == supplyId) {
-      //     const newTotal = i.currentQuantity - currentQuantity;
-      //     const newEgress: InventoryItem = { ...i, currentQuantity: newTotal }
-      //     return newEgress;
-      //   }
-      //   return i;
-      // });
-      // patchState(store, (state) => ({
-      //   inventory: {
-      //     data,
-      //     metadata: { ...state.inventory.metadata }
-      //   }
-      // }));
-
-    },
-    //#endregion
-
     //#region PackagingType
     async loadPackagingTypes(): Promise<void> {
       const packagingTypes: Array<PackagingType> = await packagingTypeService.getAll();
@@ -247,20 +180,37 @@ export const DashboardStore = signalStore(
     async loadProductFormat(): Promise<void> {
       const productFormats: Array<ProductFormat> = await productFormatService.getAll();
       patchState(store, { productFormats });
+    },
+    //#endregion
+
+    //#region Egresses 
+    async createEgressOrder(egresses: Array<NewEgress>): Promise<void> {
+      const egressesSaved = await egressService.createEgressOrder(egresses);
+      const egressMap = new Map(egressesSaved.map(egress => [egress.productId, egress]));
+
+      const updatedProducts = store.products.data().map(product => {
+        const matchingRecord = egressMap.get(product.id);
+        if (matchingRecord) {
+          return {
+            ...product,
+            stock: matchingRecord.quantityAfter,
+          };
+        }
+        return product;
+      });
+
+      patchState(store, (state) => ({
+        products: {
+          data: updatedProducts,
+          metadata: { ...state.products.metadata }
+        }
+      }));
     }
     //#endregion
   })),
-  withComputed(({ newEgress, agents, selectedProduct, pagedAgents, idAgentSelected, products }) => ({
-    petitionerSelected: computed(() => {
-      const id = newEgress.petitionerId();
-      const agent = agents().find(a => a.id == id);
-      return `${agent?.agentNumber} - ${agent?.name} ${agent?.lastName}`;
-    }),
+  withComputed(({ agents, selectedProduct, pagedAgents, idAgentSelected, products }) => ({
     agentSelected: computed(() => {
       return pagedAgents.data().find(a => a.id === idAgentSelected())
-    }),
-    newAgressValid: computed(() => {
-      return newEgress.amountRemoved() != 0 && newEgress.petitionerId() != ''
     }),
     inventoryHasData: computed(() => {
       return products.data().length > 0;

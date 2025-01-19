@@ -7,7 +7,6 @@ import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { environment } from '@environments/environment';
 import { debounceTime, lastValueFrom } from 'rxjs';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaterialModule } from '@shared/modules/material.module';
 import { Product } from '@models/DTO/product';
 
@@ -16,7 +15,6 @@ import { Product } from '@models/DTO/product';
   standalone: true,
   imports: [
     FormsModule,
-    MatFormFieldModule,
     MaterialModule,
     ReactiveFormsModule,
     NoDataComponent],
@@ -52,7 +50,6 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   //#region Methods
   public productClicked(product: Product): void {
     this.store.setSelectedProduct(product);
-    this.store.setProductIdToNewEgress();
     this.modalsService.showLateralModal('movements');
   }
   public clearSearch(): void {
@@ -61,10 +58,10 @@ export class InventoryComponent implements OnInit, AfterContentInit {
 
   public async scanQr(): Promise<void> {
     await lastValueFrom(this.modalsService.showModal('qrScanner').afterClosed());
-    if (this.store.idSupplyScanned() === '') return;
+    // if (this.store.idSupplyScanned() === '') return;
     //await this.store.loadSupply();
-    this.store.clearIdSupplyScanned();
-    this.modalsService.showLateralModal('movements');
+    // this.store.clearIdSupplyScanned();
+    // this.modalsService.showLateralModal('movements');
   }
   public async handlePageEvent(e: PageEvent) {
     const { pageSize } = e;
@@ -80,8 +77,9 @@ export class InventoryComponent implements OnInit, AfterContentInit {
 
     this.modalsService.showLateralModal('movements');
   }
-  public addProduct(): void {
-    this.modalsService.showLateralModal('products');
+  public createOrder(): void {
+    this.modalsService.showLateralModal('create-egress');
+    //this.modalsService.showModal('select-products')
   }
   //#endregion
 

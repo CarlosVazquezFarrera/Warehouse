@@ -66,6 +66,18 @@ body {
   }
 }
 
+.modal-regular {
+  width: 100%;
+
+  @include mq.lg() {
+    width: 50%;
+  }
+
+  @include mq.xl() {
+    width: 35%;
+  }
+}
+
 .cursor-not-allowed {
   cursor: not-allowed !important;
 }
@@ -117,4 +129,20 @@ table {
 
 .px-3 {
   padding: 3%;
+}
+
+.header-table {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1% 0;
+}
+
+.search-row {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+
+  mat-form-field {
+    width: 100%;
+  }
 }

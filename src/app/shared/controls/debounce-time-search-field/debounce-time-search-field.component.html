@@ -1,0 +1,10 @@
+<mat-form-field class="w-100">
+    <mat-label>Search</mat-label>
+    <input type="text" matInput placeholder="Name or Supplier Part" matInput [formControl]="inputText" (click)="inputClicked()">
+    @if (inputText.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+        <mat-icon>close</mat-icon>
+    </button>
+    }
+    <mat-icon matIconPrefix>search</mat-icon>
+</mat-form-field>

@@ -8,4 +8,5 @@ export interface Egress extends BaseDTO {
   petitionerId: string;
   approverId: string;
   productId: string;
+  departmentId: string;
 }

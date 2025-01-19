@@ -28,7 +28,7 @@ export class QrScannerComponent {
       return
     };
 
-    this.store.setIdSupplyScanned(scan.text);
+    // this.store.setIdSupplyScanned(scan.text);
     this.modalsService.closeModal();
   }
 }

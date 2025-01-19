@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnChanges, OnInit, SimpleChanges, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -17,7 +17,6 @@ export type typeField = 'text' | 'number'
     MatInputModule,
     MatAutocompleteModule,
     AsyncPipe,
-    JsonPipe,
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
@@ -65,7 +64,6 @@ export class AutoCompleteFieldComponent implements ControlValueAccessor, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     if (changes['data'].firstChange) return;
     this.filteredOptions = this.inputText.valueChanges.pipe(
       startWith(''),
@@ -77,8 +75,6 @@ export class AutoCompleteFieldComponent implements ControlValueAccessor, OnChang
 
     this.inputText.setValidators(validators);
     this.inputText.updateValueAndValidity();
-
-
   }
 
   public writeValue(data: string): void {

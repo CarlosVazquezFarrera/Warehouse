@@ -1,0 +1,11 @@
+{
+    "errors": {
+      "count": {
+        "min": "Add at least one product"
+      }
+    },
+    "tooltip": {
+      "final": "Check the fields"
+    }
+  }
+  

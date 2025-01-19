@@ -1,0 +1,64 @@
+@use 'media-queries' as mq;
+
+::ng-deep .mat-vertical-stepper-header {
+    pointer-events: none !important;
+}
+
+div.footer-egress {
+    display: flex;
+    justify-content: flex-end;
+}
+
+main.products {
+    .header {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .products-list {
+        margin-top: 4%;
+
+        mat-expansion-panel {
+            margin-bottom: 2%;
+        }
+    }
+}
+
+main.confirmation {
+    // // max-height: 55dvh;
+    // // overflow-y: auto;
+
+    // @include mq.md() {
+    //     max-height: unset;
+    //     overflow-y: unset;
+    // }
+
+    .info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(1, 1fr);
+        gap: 2%;
+
+        .details {
+            height: 100%;
+            // display: flex;
+            // flex-direction: column-reverse;
+
+            .tablet-desktop {
+                display: none;
+
+                @include mq.md() {
+                    display: block;
+                }
+            }
+
+            .mobile {
+                display: block;
+
+                @include mq.md() {
+                    display: none;
+                }
+            }
+        }
+    }
+}

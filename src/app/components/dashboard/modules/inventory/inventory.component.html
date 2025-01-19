@@ -16,6 +16,11 @@
       </button>
     </div>
   </form>
+  <section class="header-table">
+    <button mat-mini-fab color="primary" aria-label="Add supply" matTooltip="Create an order" (click)="createOrder()" >
+        <mat-icon>local_shipping</mat-icon>
+    </button>
+</section>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="store.products.data()">
       <ng-container matColumnDef="name" sticky>
