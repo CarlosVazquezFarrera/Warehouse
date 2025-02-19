@@ -25,7 +25,6 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   //#region Hooks
   async ngOnInit(): Promise<void> {
     await this.store.loadProducts();
-    await this.handleSupplyGotByURL();
   }
 
   ngAfterContentInit() {
@@ -67,14 +66,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     await this.store.searchProduct(this.search.value, pageNumber, pageSize);
   }
 
-  private async handleSupplyGotByURL(): Promise<void> {
-    const idSupply = this.route.snapshot.paramMap.get('idSupply');
-
-    if (!idSupply) return;
-    //if (this.store.prod.id() == '') return;
-
-    this.modalsService.showLateralModal('movements');
-  }
+ 
   public createOrder(): void {
     this.modalsService.showLateralModal('create-egress');
     //this.modalsService.showModal('select-products')
