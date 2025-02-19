@@ -21,6 +21,7 @@ export type DashBoard = {
     packagingTypes: Array<PackagingType>,
     presentations: Array<Presentation>,
     productFormats: Array<ProductFormat>,
+    productNameScanned: string
   }
   
   const initialMetadata: Metadata = {
@@ -64,7 +65,8 @@ export type DashBoard = {
     idAgentSelected: "",
     packagingTypes: [],
     presentations: [],
-    productFormats: []
+    productFormats: [],
+    productNameScanned: ""
   }
   //#endregion
   
