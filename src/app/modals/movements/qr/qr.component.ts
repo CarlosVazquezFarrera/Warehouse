@@ -29,7 +29,7 @@ export class QrComponent {
 
 
   public get dataQr(): string {
-    const id = this.store.selectedProduct.id();
-    return `IdSupply=${id}`;
+    const name = this.store.selectedProduct().name;
+    return `ProductName=${name}`;
   }
 }

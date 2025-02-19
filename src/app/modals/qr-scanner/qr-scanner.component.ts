@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ModalHeaderComponent } from '@shared/components/modal-header/modal-header.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DashboardStore } from '@store/dashboard.store';
@@ -15,20 +15,24 @@ import * as json from './qr-metadata.json';
   styleUrl: './qr-scanner.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QrScannerComponent {
+export class QrScannerComponent implements OnInit {
+
   private store = inject(DashboardStore);
   private modalsService = inject(ModalsService);
   private snackService = inject(SnackService);
-  public supplyIdTegex = "^IdSupply=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$";
+  public supplyIdTegex =  "^ProductName=\s*(.+)$";
 
-
+  ngOnInit(): void {
+    this.store.resetProductNameScanned();
+  }
+  
   public async qrDetected(scan: QrResult) {
     if (!scan.valid) {
       this.snackService.showAutoCloseMessage(json.qrInvalid);
       return
     };
 
-    // this.store.setIdSupplyScanned(scan.text);
+    this.store.setProductNameScanned(scan.text);
     this.modalsService.closeModal();
   }
 }

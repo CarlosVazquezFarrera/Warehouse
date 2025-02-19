@@ -205,10 +205,16 @@ export const DashboardStore = signalStore(
           metadata: { ...state.products.metadata }
         }
       }));
+    },
+    setProductNameScanned(productNameScanned: string): void {
+      patchState(store, { productNameScanned })
+    },
+    resetProductNameScanned(): void {
+      patchState(store, { productNameScanned: '' })
     }
     //#endregion
   })),
-  withComputed(({ agents, selectedProduct, pagedAgents, idAgentSelected, products }) => ({
+  withComputed(({ productNameScanned, selectedProduct, pagedAgents, idAgentSelected, products }) => ({
     agentSelected: computed(() => {
       return pagedAgents.data().find(a => a.id === idAgentSelected())
     }),
@@ -218,6 +224,7 @@ export const DashboardStore = signalStore(
     thereIsAProductSelected: computed(() => {
       return selectedProduct().id !== '';
     }),
+    thereIsNotProductScanned: computed(()=> productNameScanned() === ''),
     fullNameOfTheSelectedProduct: computed(() => `${selectedProduct().name} ${selectedProduct().supplierPart}`)
   }))
 
