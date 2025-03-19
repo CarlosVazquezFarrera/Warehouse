@@ -9,6 +9,7 @@ import { environment } from '@environments/environment';
 import { debounceTime, lastValueFrom } from 'rxjs';
 import { MaterialModule } from '@shared/modules/material.module';
 import { Product } from '@models/DTO/product';
+import { CompleteStockPipe } from '@shared/pipes/complete-stock.pipe';
 
 @Component({
   selector: 'app-inventory',
@@ -17,7 +18,8 @@ import { Product } from '@models/DTO/product';
     FormsModule,
     MaterialModule,
     ReactiveFormsModule,
-    NoDataComponent],
+    NoDataComponent,
+    CompleteStockPipe],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
 })
@@ -40,7 +42,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   private modalsService = inject(ModalsService);
   private route = inject(ActivatedRoute);
 
-  public displayedColumns: string[] = ['name', 'supplierPart', 'presentation', 'productFormat', 'stock'];
+  public displayedColumns: string[] = ['name', 'supplierPart', 'presentation', 'productFormat', 'completeStock', 'stock'];
   public form = this.fb.group({
     search: ['']
   });

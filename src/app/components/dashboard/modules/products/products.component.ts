@@ -22,8 +22,8 @@ export class ProductsComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'supplierPart', 'presentation', 'presentationQuantity', 'productFormat', 'formatQuantity', 'stock'];
 
 
-  ngOnInit(): void {
-    this.store.loadProducts();
+  async ngOnInit() {
+    await this.store.loadProducts();
   }
   public productClicked(product: Product): void {
     this.store.setSelectedProduct(product);

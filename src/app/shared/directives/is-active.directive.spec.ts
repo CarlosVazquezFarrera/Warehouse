@@ -1,4 +1,4 @@
-import { IsActiveDirective } from './is-active.directive';
+import { IsActiveDirective } from "./is-active.directive";
 
 describe('IsActiveDirective', () => {
   it('should create an instance', () => {

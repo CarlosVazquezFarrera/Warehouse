@@ -123,7 +123,10 @@ table {
 }
 
 .mat-elevation-z8 {
-  overflow-x: auto;
+  .content {
+    overflow-x: auto;
+  }
+
   margin-bottom: 2%;
 }
 

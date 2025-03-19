@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { WarehouseStore } from '@store/warehouse.store';
 import { IsActiveMatchOptions, Router, RouterModule } from '@angular/router';
-import { IsActiveDirective } from '@directives/is-active.directive';
+import { IsActiveDirective } from '@shared/directives/is-active.directive';
 
 @Component({
   selector: 'app-sidebar-item',
