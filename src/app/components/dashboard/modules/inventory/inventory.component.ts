@@ -10,6 +10,7 @@ import { debounceTime, lastValueFrom } from 'rxjs';
 import { MaterialModule } from '@shared/modules/material.module';
 import { Product } from '@models/DTO/product';
 import { CompleteStockPipe } from '@shared/pipes/complete-stock.pipe';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-inventory',
