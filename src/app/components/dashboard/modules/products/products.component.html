@@ -16,10 +16,13 @@
                 <th mat-header-cell *matHeaderCellDef> Supplier Part </th>
                 <td mat-cell *matCellDef="let element"> {{element.supplierPart}} </td>
             </ng-container>
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef> Category </th>
+                <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
+            </ng-container>
             <ng-container matColumnDef="presentation">
                 <th mat-header-cell *matHeaderCellDef> PackagingType </th>
                 <td mat-cell *matCellDef="let element"> {{element.packagingTypeName}} </td>
-
             </ng-container>
             <ng-container matColumnDef="presentationQuantity">
                 <th mat-header-cell *matHeaderCellDef> Qty </th>

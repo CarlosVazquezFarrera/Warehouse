@@ -13,4 +13,6 @@ export interface Product extends BaseDTO {
   packagingTypeName: string;
   productFormatName: string;
   presentationName: string;
+  categoryId: string;
+  categoryName: string;
 }

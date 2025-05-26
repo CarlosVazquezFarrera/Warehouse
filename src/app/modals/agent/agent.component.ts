@@ -12,7 +12,7 @@ import { passwordComplexityValidator } from '@validators/password';
 import { FormModule } from '@shared/modules/form.module';
 import { MaterialModule } from '@shared/modules/material.module';
 import { CapitalizeFirstDirective } from '@shared/directives/capitalize-first.directive';
-import { RemoveSpaces } from '@shared/helper/string';
+import { removeSpaces } from '@shared/helper/string';
 
 @Component({
   selector: 'app-agent',
@@ -101,11 +101,11 @@ export class AgentComponent implements OnDestroy, OnInit {
   }
 
   private generateShortName(): void {
-    this.shortName.setValue(`${RemoveSpaces(this.nameValue.at(0)!).toUpperCase()}.${RemoveSpaces(this.lastNameValue).toLocaleUpperCase()}`);
+    this.shortName.setValue(`${removeSpaces(this.nameValue.at(0)!).toUpperCase()}.${removeSpaces(this.lastNameValue).toLocaleUpperCase()}`);
   }
 
   private generatUnitedEmail(): void {
-    this.email.setValue(`${RemoveSpaces(this.nameValue).toLowerCase()}.${RemoveSpaces(this.lastNameValue.trim().toLowerCase())}@united.com`);
+    this.email.setValue(`${removeSpaces(this.nameValue).toLowerCase()}.${removeSpaces(this.lastNameValue.trim().toLowerCase())}@united.com`);
   }
   private control(name: string): AbstractControl {
     return this.form.get(name)!;

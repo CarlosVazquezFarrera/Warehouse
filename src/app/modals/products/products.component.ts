@@ -9,6 +9,7 @@ import { MaterialModule } from '@shared/modules/material.module';
 import { merge } from 'rxjs';
 import { NewProduct } from '@models/types/newProduct';
 import { Product } from '@models/DTO/product';
+import { cleanString } from '@shared/helper/string';
 
 @Component({
   selector: 'app-products',
@@ -31,7 +32,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.loadPackagingTypes();
     this.store.loadPresentations();
-    this.store.loadProductFormat();
+    this.store.loadProductFormats();
+    this.store.loadCategories();
     this.presentationId.valueChanges.subscribe(_ => this.presentationIdHasChanged());
 
     merge(
@@ -67,6 +69,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     productFormatId: [this.store.selectedProduct().productFormatId ?? '', Validators.required],
     presentationQuantity: [this.store.selectedProduct().presentationQuantity ?? '', [Validators.required, Validators.min(1)]],
     formatQuantity: [this.store.selectedProduct().formatQuantity ?? '', [Validators.required, Validators.min(1)]],
+    categoryId: [this.store.selectedProduct().categoryId ?? '', Validators.required],
     stock: [{ value: this.store.selectedProduct().stock ?? 0, disabled: true }],
   });
 
@@ -94,6 +97,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
     }
     else {
       this.presentationQuantity.enable();
+      this.presentationQuantity.removeValidators(Validators.min(1));
+      this.presentationQuantity.addValidators(Validators.min(2));
+      this.presentationQuantity.updateValueAndValidity();
       this.presentationQuantity.setValue(null);
     }
   }
@@ -140,11 +146,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public get productFormatId(): AbstractControl {
     return this.control('productFormatId');
   }
+  public get categoryId(): AbstractControl {
+    return this.control('categoryId');
+  }
   private get newProduct(): NewProduct {
     return {
-      name: this.name.value,
-      supplierPart: this.supplierPart.value,
+      name: cleanString(`${this.name.value}`),
+      supplierPart: cleanString(`${this.supplierPart.value}`),
       packagingTypeId: this.packagingTypeId.value,
+      categoryId: this.categoryId.value,
       presentationId: this.presentationId.value,
       presentationQuantity: this.presentationQuantity.value,
       productFormatId: this.productFormatId.value,
@@ -154,21 +164,17 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   private get product(): Product {
-    return {
-      name: this.name.value,
-      supplierPart: this.supplierPart.value,
-      packagingTypeId: this.packagingTypeId.value,
-      presentationId: this.presentationId.value,
-      presentationQuantity: this.presentationQuantity.value,
-      productFormatId: this.productFormatId.value,
-      formatQuantity: this.formatQuantity.value,
+    const product: Product = {
+      ...this.newProduct,
       id: this.store.selectedProduct().id,
       packagingTypeName: this.store.packagingTypes().find(p => p.id == this.packagingTypeId.value)?.name!,
       productFormatName: this.store.productFormats().find(p => p.id == this.productFormatId.value)?.name!,
       presentationName: this.store.presentations().find(p => p.id == this.presentationId.value)?.name!,
+      categoryName:  this.store.categories().find(c => c.id == this.categoryId.value)?.name!,
       stock: this.store.selectedProduct().stock,
-      airportId: this.store.selectedProduct().airportId
+      airportId: this.store.selectedProduct().airportId,
     }
+    return product;
   }
   // #endregion
 

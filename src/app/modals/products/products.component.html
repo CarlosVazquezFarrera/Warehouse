@@ -24,6 +24,16 @@
             </mat-select>
         </mat-form-field>
 
+        <mat-form-field class="w-100">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="categoryId">
+                @for (packagingType of store.categories(); track packagingType.id) {
+                <mat-option [value]="packagingType.id">{{packagingType.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+
         <section class="quantity-detail">
             <h4>Quantity details</h4>
             <section>

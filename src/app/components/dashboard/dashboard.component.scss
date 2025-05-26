@@ -36,6 +36,7 @@
     .app-container {
       margin-right: auto;
       margin-left: auto;
+      padding: 1%;
       // padding: 15px 0;
       width: 90%;
       @include mq.md() {

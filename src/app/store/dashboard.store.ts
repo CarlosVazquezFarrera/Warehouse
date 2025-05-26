@@ -19,6 +19,7 @@ import { NewEntry } from "@models/types/newEntry";
 import { Entry } from "@models/DTO/entry";
 import { NewEgress } from "@models/types/newEgress";
 import { EgressService } from "@services/egress.service";
+import { CategoryService } from "@services/category.service";
 
 export const DashboardStore = signalStore(
   { providedIn: 'root' },
@@ -33,6 +34,7 @@ export const DashboardStore = signalStore(
     packagingTypeService = inject(PackagingTypeService),
     presentationService = inject(PresentationService),
     productFormatService = inject(ProductFormatService),
+    categoryService = inject(CategoryService),
   ) => ({
     //#region Airport
     async getAiports(): Promise<void> {
@@ -46,8 +48,24 @@ export const DashboardStore = signalStore(
       const products = await productService.getPaged(pageNumber, pageSize, 'GetProductsPagedByAirport');
       patchState(store, { products });
     },
-    async searchProduct(search: string, pageNumber?: number, pageSize?: number) {
-      const products = await productService.getPagedWithSearch(search, pageNumber, pageSize, 'GetProductsPagedByAirport');
+    
+    async searchProduct(pageNumber?: number, pageSize?: number, search?: string, categoryId?: string, productFormatId?: string, pacakagingTypeId?: string): Promise<void> {
+      
+      const params: Record<string, string | number | undefined> = {
+        Search: search,
+        PageNumber: pageNumber,
+        PageSize: pageSize,
+        CategoryId: categoryId,
+        ProductFormatId: productFormatId,
+        PackagingTypeId: pacakagingTypeId,
+      };
+      
+      const filters = Object.entries(params)
+      .filter(([_, value]) => !!value)
+      .map(([key, value]) => `${key}=${value}`); // Construir los pares clave-valor
+
+     
+      const products = await productService.getPagedWithFilters('GetProductsPagedByAirport', filters);
       patchState(store, { products });
     },
     async createNewProduct(newProduct: NewProduct): Promise<void> {
@@ -177,7 +195,7 @@ export const DashboardStore = signalStore(
     //#endregion
 
     //#region ProductFormat 
-    async loadProductFormat(): Promise<void> {
+    async loadProductFormats(): Promise<void> {
       const productFormats: Array<ProductFormat> = await productFormatService.getAll();
       patchState(store, { productFormats });
     },
@@ -211,8 +229,16 @@ export const DashboardStore = signalStore(
     },
     resetProductNameScanned(): void {
       patchState(store, { productNameScanned: '' })
-    }
+    },
     //#endregion
+
+    //#region Category
+    async loadCategories(): Promise<void> {
+      const categories = await categoryService.getAll();
+      patchState(store, { categories })
+    },
+    //#endregion
+
   })),
   withComputed(({ productNameScanned, selectedProduct, pagedAgents, idAgentSelected, products }) => ({
     agentSelected: computed(() => {
@@ -224,7 +250,7 @@ export const DashboardStore = signalStore(
     thereIsAProductSelected: computed(() => {
       return selectedProduct().id !== '';
     }),
-    thereIsNotProductScanned: computed(()=> productNameScanned() === ''),
+    thereIsNotProductScanned: computed(() => productNameScanned() === ''),
     fullNameOfTheSelectedProduct: computed(() => `${selectedProduct().name} ${selectedProduct().supplierPart}`)
   }))
 

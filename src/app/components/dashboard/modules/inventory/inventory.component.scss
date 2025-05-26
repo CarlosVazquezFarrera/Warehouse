@@ -18,12 +18,66 @@
   }
 
   .inventory-options {
-    @include mq.lg() {
-      display: flex;
-      column-gap: 20px;
+    display: flex;
+    flex-direction: column;
+    column-gap: 20px;
+
+    fieldset {
+      display: grid;
+      grid-column-gap: 2%;
+      padding: 0%;
+
+      .category {
+        grid-area: category;
+      }
+
+      .productFormat {
+        grid-area: productFormat;
+      }
+
+      .packagingType {
+        grid-area: packagingType;
+      }
+
+      grid-template: 'category productFormat'
+      'packagingType packagingType';
+
+      border: unset;
+
+      @include mq.md() {
+        grid-template: 'category productFormat packagingType';
+      }
+    }
+
+    .search-row {
+      .search-actions {
+        display: flex;
+        flex-direction: row;
+        column-gap: 3%;
+        justify-content: space-between;
+        margin-bottom: 2%;
+
+        @include mq.lg() {
+          justify-content: initial;
+          margin-bottom: unset;
+        }
+      }
+    }
+
+  }
+
+  .header-options {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1% 0;
+
+    &.filters-opend {
+      justify-content: space-between;
+
     }
   }
 }
+
 .mat-mdc-table-sticky-border-elem-right {
   border-left: 1px solid #e0e0e0;
 }

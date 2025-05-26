@@ -2,7 +2,7 @@
     "errors": {
         "presentationQuantity": {
             "required": "Quantity per presentation is required",
-            "min": "Must be at least one"
+            "min": "Must be a higher number"
         },
         "formatQuantity": {
             "required": "Quantity per productFormat is required",
