@@ -19,7 +19,7 @@ import { DashboardStore } from '@store/dashboard.store';
 export class ProductsComponent implements OnInit {
   public store = inject(DashboardStore);
   private modalsService = inject(ModalsService);
-  public displayedColumns: string[] = ['name', 'supplierPart', 'category', 'presentation', 'presentationQuantity', 'productFormat', 'formatQuantity', 'stock'];
+  public displayedColumns: string[] = ['name', 'supplierPart', 'category', 'packagingType', 'presentation', 'presentationQuantity', 'productFormat', 'formatQuantity'];
 
 
   async ngOnInit() {

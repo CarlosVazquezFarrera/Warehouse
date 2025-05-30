@@ -34,6 +34,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.store.loadPresentations();
     this.store.loadProductFormats();
     this.store.loadCategories();
+    this.disablePresentationQuantityIfSingle();
     this.presentationId.valueChanges.subscribe(_ => this.presentationIdHasChanged());
 
     merge(
@@ -57,10 +58,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   public errorsName = signal(this.jsonErrors.errors.name.required);
   public errorSupplierPart = signal(this.jsonErrors.errors.supplierPart.required);
 
-  // #endregion
 
-
-  // #region Methods
   public form = this.fb.group({
     name: [this.store.selectedProduct().name ?? '', Validators.required],
     supplierPart: [this.store.selectedProduct().supplierPart ?? '', Validators.required],
@@ -73,6 +71,17 @@ export class ProductsComponent implements OnInit, OnDestroy {
     stock: [{ value: this.store.selectedProduct().stock ?? 0, disabled: true }],
   });
 
+  // #endregion
+
+
+  // #region Methods
+
+  public disablePresentationQuantityIfSingle() {
+    if (!this.store.selectedProduct().presentationId) return;
+
+    if (this.store.selectedProduct().presentationName.toLowerCase() !== "single") return
+    this.presentationQuantity.disable();
+  }
   private control(name: string): AbstractControl {
     return this.form.get(name)!;
   }
@@ -170,7 +179,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       packagingTypeName: this.store.packagingTypes().find(p => p.id == this.packagingTypeId.value)?.name!,
       productFormatName: this.store.productFormats().find(p => p.id == this.productFormatId.value)?.name!,
       presentationName: this.store.presentations().find(p => p.id == this.presentationId.value)?.name!,
-      categoryName:  this.store.categories().find(c => c.id == this.categoryId.value)?.name!,
+      categoryName: this.store.categories().find(c => c.id == this.categoryId.value)?.name!,
       stock: this.store.selectedProduct().stock,
       airportId: this.store.selectedProduct().airportId,
     }
