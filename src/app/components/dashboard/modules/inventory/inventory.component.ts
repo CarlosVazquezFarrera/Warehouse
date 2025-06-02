@@ -44,7 +44,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
       .subscribe(() => this.searchProducts());
 
     merge(
-      this.pacakagingTypeId.valueChanges,
+      this.packagingTypeId.valueChanges,
       this.productFormatId.valueChanges,
       this.categoryId.valueChanges,
     ).subscribe(() => this.searchProducts());
@@ -61,13 +61,13 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   public displayedColumns: string[] = ['name', 'supplierPart', 'category', 'productFormat', 'completeStock', 'stock'];
   public form = this.fb.group({
     search: [''],
-    pacakagingTypeId: [null],
+    packagingTypeId: [null],
     productFormatId: [null],
     categoryId: [null]
   });
   public search = this.control('search');
   public productFormatId = this.control('productFormatId');
-  public pacakagingTypeId = this.control('pacakagingTypeId');
+  public packagingTypeId = this.control('packagingTypeId');
   public categoryId = this.control('categoryId');
   //#endregion
 
@@ -81,7 +81,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   }
   public clearPackagingType(event: Event): void {
     event.stopPropagation();
-    this.pacakagingTypeId.patchValue('');
+    this.packagingTypeId.patchValue('');
   }
 
   public clearProductFormat(event: Event): void {
@@ -95,7 +95,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   }
 
   public clearFilters(): void {
-    this.pacakagingTypeId.patchValue('', { emitEvent: false });
+    this.packagingTypeId.patchValue('', { emitEvent: false });
     this.productFormatId.patchValue('', { emitEvent: false });
     this.categoryId.patchValue('', { emitEvent: false });
     this.searchProducts();
@@ -108,7 +108,7 @@ export class InventoryComponent implements OnInit, AfterContentInit {
   }
 
   private async searchProducts(pageNumber?: number, pageSize?: number): Promise<void> {
-    await this.store.searchProduct(pageNumber, pageSize, this.search.value, this.categoryId.value, this.productFormatId.value, this.pacakagingTypeId.value);
+    await this.store.searchProduct(pageNumber, pageSize, this.search.value, this.categoryId.value, this.productFormatId.value, this.packagingTypeId.value);
   }
 
   public async handlePageEvent(e: PageEvent) {

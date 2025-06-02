@@ -56,14 +56,14 @@
       </mat-form-field>
       <mat-form-field class="w-100 packagingType">
         <mat-label>PackagingType</mat-label>
-        <mat-select formControlName="pacakagingTypeId">
+        <mat-select formControlName="packagingTypeId">
           @for (packagingType of store.packagingTypes(); track packagingType.id) {
           <mat-option [value]="packagingType.id">
             {{packagingType.name}}
           </mat-option>
           }
         </mat-select>
-        @if (pacakagingTypeId.value) {
+        @if (packagingTypeId.value) {
         <button @bounce matSuffix mat-icon-button aria-label="Clear pacakagingType"
           (click)="clearPackagingType($event)">
           <mat-icon>close</mat-icon>
@@ -77,7 +77,7 @@
   <section class="header-options" [ngClass]="{'filters-opend': showFilters}">
     @if (showFilters) {
     <button  mat-mini-fab color="primary" aria-label="Clear filters" matTooltip="Clear filters" (click)="clearFilters()"
-      [disabled]="!categoryId.value && !productFormatId.value && !pacakagingTypeId.value">
+      [disabled]="!categoryId.value && !productFormatId.value && !packagingTypeId.value">
       <mat-icon>delete_sweep</mat-icon>
     </button>
     }
