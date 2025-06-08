@@ -3,6 +3,7 @@
 section {
   display: flex;
   justify-content: center;
+
   video {
     width: 100%;
     height: auto;
@@ -11,5 +12,8 @@ section {
       width: 75%;
     }
 
+    @include qm.lg() {
+      width: 60%;
+    }
   }
 }

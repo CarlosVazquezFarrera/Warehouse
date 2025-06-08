@@ -48,9 +48,9 @@ export const DashboardStore = signalStore(
       const products = await productService.getPaged(pageNumber, pageSize, 'GetProductsPagedByAirport');
       patchState(store, { products });
     },
-    
+
     async searchProduct(pageNumber?: number, pageSize?: number, search?: string, categoryId?: string, productFormatId?: string, pacakagingTypeId?: string): Promise<void> {
-      
+
       const params: Record<string, string | number | undefined> = {
         Search: search,
         PageNumber: pageNumber,
@@ -59,12 +59,12 @@ export const DashboardStore = signalStore(
         ProductFormatId: productFormatId,
         PackagingTypeId: pacakagingTypeId,
       };
-      
-      const filters = Object.entries(params)
-      .filter(([_, value]) => !!value)
-      .map(([key, value]) => `${key}=${value}`); // Construir los pares clave-valor
 
-     
+      const filters = Object.entries(params)
+        .filter(([_, value]) => !!value)
+        .map(([key, value]) => `${key}=${value}`); // Construir los pares clave-valor
+
+
       const products = await productService.getPagedWithFilters('GetProductsPagedByAirport', filters);
       patchState(store, { products });
     },
@@ -181,6 +181,9 @@ export const DashboardStore = signalStore(
 
     //#region PackagingType
     async loadPackagingTypes(): Promise<void> {
+      if (store.packagingTypes().length > 0) {
+        return;
+      }
       const packagingTypes: Array<PackagingType> = await packagingTypeService.getAll();
       patchState(store, { packagingTypes })
     },
@@ -196,6 +199,9 @@ export const DashboardStore = signalStore(
 
     //#region ProductFormat 
     async loadProductFormats(): Promise<void> {
+      if (store.productFormats().length > 0) {
+        return;
+      }
       const productFormats: Array<ProductFormat> = await productFormatService.getAll();
       patchState(store, { productFormats });
     },
@@ -234,6 +240,9 @@ export const DashboardStore = signalStore(
 
     //#region Category
     async loadCategories(): Promise<void> {
+      if (store.categories().length > 0) {
+        return;
+      }
       const categories = await categoryService.getAll();
       patchState(store, { categories })
     },

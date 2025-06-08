@@ -1,33 +1,30 @@
-import { AfterContentInit, Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { DashboardStore } from '@store/dashboard.store';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
-import { environment } from '@environments/environment';
-import { debounceTime, lastValueFrom, merge } from 'rxjs';
 import { MaterialModule } from '@shared/modules/material.module';
 import { Product } from '@models/DTO/product';
 import { CompleteStockPipe } from '@shared/pipes/complete-stock.pipe';
-import { fadeInOut } from '@shared/animations/fadeInOut';
-import { bounce } from '@shared/animations/bounce';
 import { CommonModule } from '@angular/common';
+import { ProductFiltersComponent } from '@shared/components/product-filters/product-filters.component';
+import { Filters } from '@models/custom/filters';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  animations: [fadeInOut, bounce],
   imports: [
     CommonModule,
-    FormsModule,
     MaterialModule,
-    ReactiveFormsModule,
     NoDataComponent,
-    CompleteStockPipe],
+    CompleteStockPipe,
+    ProductFiltersComponent
+  ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
 })
-export class InventoryComponent implements OnInit, AfterContentInit {
+export class InventoryComponent implements OnInit {
   //#region Methods
   async ngOnInit(): Promise<void> {
     this.store.loadPackagingTypes();
@@ -35,40 +32,15 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     this.store.loadCategories();
     await this.store.loadProducts();
   }
-
-  ngAfterContentInit() {
-    this.search.valueChanges
-      .pipe(
-        debounceTime(environment.defaultDebounceTime)
-      )
-      .subscribe(() => this.searchProducts());
-
-    merge(
-      this.packagingTypeId.valueChanges,
-      this.productFormatId.valueChanges,
-      this.categoryId.valueChanges,
-    ).subscribe(() => this.searchProducts());
-
-  }
   //#endregion
 
   //#region Properties
   public store = inject(DashboardStore);
-  private fb = inject(FormBuilder);
   private modalsService = inject(ModalsService);
-  public showFilters = false;
-
   public displayedColumns: string[] = ['name', 'supplierPart', 'category', 'productFormat', 'completeStock', 'stock'];
-  public form = this.fb.group({
-    search: [''],
-    packagingTypeId: [null],
-    productFormatId: [null],
-    categoryId: [null]
-  });
-  public search = this.control('search');
-  public productFormatId = this.control('productFormatId');
-  public packagingTypeId = this.control('packagingTypeId');
-  public categoryId = this.control('categoryId');
+  public filters!: Filters;
+  public pageNumber!: number;
+  public pageSize!: number;
   //#endregion
 
   //#region Methods
@@ -76,57 +48,27 @@ export class InventoryComponent implements OnInit, AfterContentInit {
     this.store.setSelectedProduct(product);
     this.modalsService.showLateralModal('movements');
   }
-  public clearSearch(): void {
-    this.search.patchValue('');
-  }
-  public clearPackagingType(event: Event): void {
-    event.stopPropagation();
-    this.packagingTypeId.patchValue('');
-  }
 
-  public clearProductFormat(event: Event): void {
-    event.stopPropagation();
-    this.productFormatId.patchValue('');
-  }
-
-  public clearCategory(event: Event): void {
-    event.stopPropagation();
-    this.categoryId.patchValue('');
-  }
-
-  public clearFilters(): void {
-    this.packagingTypeId.patchValue('', { emitEvent: false });
-    this.productFormatId.patchValue('', { emitEvent: false });
-    this.categoryId.patchValue('', { emitEvent: false });
+  public filtersHasChanged(filters: Filters): void {
+    this.filters = filters;
     this.searchProducts();
   }
 
-  public async scanQr(): Promise<void> {
-    await lastValueFrom(this.modalsService.showModal('qrScanner').afterClosed());
-    if (this.store.thereIsNotProductScanned()) return;
-    this.search.patchValue(this.store.productNameScanned());
-  }
-
-  private async searchProducts(pageNumber?: number, pageSize?: number): Promise<void> {
-    await this.store.searchProduct(pageNumber, pageSize, this.search.value, this.categoryId.value, this.productFormatId.value, this.packagingTypeId.value);
+  private async searchProducts(): Promise<void> {
+    this.pageNumber = environment.pagination.defaultPageNumber;
+    const { search, categoryId, productFormatId, packagingTypeId } = this.filters;
+    await this.store.searchProduct(this.pageNumber, this.pageSize, search, categoryId, productFormatId, packagingTypeId);
   }
 
   public async handlePageEvent(e: PageEvent) {
-    const { pageSize } = e;
-    const pageNumber = e.pageIndex + 1;
-    await this.searchProducts(pageNumber, pageSize);
+    const { pageSize, pageIndex } = e;
+    this.pageNumber = pageIndex + 1;
+    this.pageSize = pageSize;
+    await this.searchProducts();
   }
 
   public createOrder(): void {
     this.modalsService.showLateralModal('create-egress');
-  }
-
-  public toggleFilters(): void {
-    this.showFilters = !this.showFilters;
-  }
-
-  private control(nombre: string): AbstractControl {
-    return this.form.get(nombre)!;
   }
   //#endregion
 }

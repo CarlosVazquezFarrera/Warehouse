@@ -1,0 +1,88 @@
+<form [formGroup]="form">
+    <fieldset>
+        <section class="search-filter">
+            <mat-form-field class="w-100 search">
+                <mat-label>Search</mat-label>
+                <input type="text" matInput placeholder="Type the Name or Supplier Part" formControlName="search">
+                @if (search.value) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch($event)">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+                <mat-icon matIconPrefix>search</mat-icon>
+            </mat-form-field>
+            @if (showScanButton()) {
+            <button mat-mini-fab color="primary" aria-label="Scan" matTooltip="Scan QR Code" (click)="scanQr()">
+                <mat-icon>qr_code_scanner</mat-icon>
+            </button>
+            }
+            @if (showFiltersButton()) {
+            <button mat-mini-fab color="primary" aria-label="Filter" matTooltip="Show filters"
+                (click)="toggleFilters()">
+                <mat-icon>filter_list</mat-icon>
+            </button>
+            }
+
+        </section>
+        @if (isOpened()) {
+        <section class="filters-actions" @fadeInOut>
+            <section class="filters w-100">
+                <mat-form-field class="w-100 category">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="categoryId">
+                        @for (category of store.categories(); track category.id) {
+                        <mat-option [value]="category.id">
+                            {{category.name}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                    @if (categoryId.value) {
+                    <button @bounce matSuffix mat-icon-button aria-label="Clear category"
+                        (click)="clearCategory($event)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                </mat-form-field>
+                <mat-form-field class="w-100 productFormat">
+                    <mat-label>ProductFormat</mat-label>
+                    <mat-select formControlName="productFormatId">
+                        @for (productFormat of store.productFormats(); track productFormat.id) {
+                        <mat-option [value]="productFormat.id">
+                            {{productFormat.name}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                    @if (productFormatId.value) {
+                    <button @bounce matSuffix mat-icon-button aria-label="Clear productFormat"
+                        (click)="clearProductFormat($event)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                </mat-form-field>
+                <mat-form-field class="w-100 packagingType">
+                    <mat-label>PackagingType</mat-label>
+                    <mat-select formControlName="packagingTypeId">
+                        @for (packagingType of store.packagingTypes(); track packagingType.id) {
+                        <mat-option [value]="packagingType.id">
+                            {{packagingType.name}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                    @if (packagingTypeId.value) {
+                    <button @bounce matSuffix mat-icon-button aria-label="Clear pacakagingType"
+                        (click)="clearPackagingType($event)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                </mat-form-field>
+            </section>
+            <button class="clear-filters" mat-mini-fab color="primary" aria-label="Filter" matTooltip="Clear filters"
+                [disabled]="!categoryId.value && !productFormatId.value && !packagingTypeId.value"
+                (click)="clearFilters()">
+                <mat-icon>delete_sweep</mat-icon>
+            </button>
+
+        </section>
+        }
+    </fieldset>
+</form>

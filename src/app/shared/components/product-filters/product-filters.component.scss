@@ -1,0 +1,64 @@
+@use 'media-queries' as mq;
+
+
+
+form {
+    @include mq.bf-lg() {
+        padding-bottom: 1%;
+
+    }
+
+    fieldset {
+        padding: 0%;
+        border: unset;
+
+        .search-filter,
+        .filters,
+        .filters-actions {
+            display: flex;
+            column-gap: 2%;
+            align-items: baseline;
+        }
+
+        .filters-actions {
+            flex-direction: column;
+
+            @include mq.lg() {
+                flex-direction: row;
+            }
+
+            .filters {
+                display: grid;
+
+                @include mq.md() {
+                    .category {
+                        grid-area: category;
+                    }
+
+                    .productFormat {
+                        grid-area: productFormat;
+                    }
+
+                    .packagingType {
+                        grid-area: packagingType;
+                    }
+
+                    grid-template: 'category productFormat'
+                    'packagingType packagingType';
+                }
+
+                @include mq.lg() {
+                    display: flex;
+                }
+            }
+
+            button {
+                @include mq.bf-lg() {
+                    width: 100%;
+                    border-radius: unset;
+                }
+            }
+
+        }
+    }
+}
