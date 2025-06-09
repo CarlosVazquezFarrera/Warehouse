@@ -16,7 +16,7 @@ import { cleanString } from '@shared/helper/string';
   standalone: true,
   imports: [
     FormModule,
-    MaterialModule
+    MaterialModule,
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'

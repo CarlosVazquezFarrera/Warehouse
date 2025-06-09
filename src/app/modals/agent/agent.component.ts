@@ -11,7 +11,6 @@ import { filter, merge, tap } from 'rxjs';
 import { passwordComplexityValidator } from '@validators/password';
 import { FormModule } from '@shared/modules/form.module';
 import { MaterialModule } from '@shared/modules/material.module';
-import { CapitalizeFirstDirective } from '@shared/directives/capitalize-first.directive';
 import { removeSpaces } from '@shared/helper/string';
 
 @Component({
@@ -19,9 +18,7 @@ import { removeSpaces } from '@shared/helper/string';
   standalone: true,
   imports: [
     FormModule,
-    MaterialModule,
-    CapitalizeFirstDirective,
-  ]
+    MaterialModule]
   ,
   templateUrl: './agent.component.html',
   styleUrl: './agent.component.scss'
@@ -44,7 +41,7 @@ export class AgentComponent implements OnDestroy, OnInit {
       });
   }
   ngOnInit(): void {
-    if (this.store.agentSelected()?.id){
+    if (this.store.agentSelected()?.id) {
       this.passWord.clearValidators();
       this.passWord.disable();
     }

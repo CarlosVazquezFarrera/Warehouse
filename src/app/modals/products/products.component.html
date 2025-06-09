@@ -4,13 +4,13 @@
         <section class="info-product">
             <mat-form-field class="w-100">
                 <mat-label>Name</mat-label>
-                <input type="text" matInput placeholder="Type the supply's name" appCapitalizeFirst
+                <input type="text" matInput placeholder="Type the supply's name" appUppercase
                     formControlName="name">
                 <mat-error>{{errorsName()}}</mat-error>
             </mat-form-field>
             <mat-form-field class="w-100">
                 <mat-label>SupplierPart</mat-label>
-                <input type="text" matInput placeholder="Type the supply's SupplierPart" formControlName="supplierPart">
+                <input type="text" matInput placeholder="Type the supply's SupplierPart" formControlName="supplierPart" appUppercase>
                 <mat-error>{{errorSupplierPart()}}</mat-error>
             </mat-form-field>
         </section>
