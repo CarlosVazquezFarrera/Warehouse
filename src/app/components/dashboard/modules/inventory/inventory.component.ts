@@ -51,20 +51,21 @@ export class InventoryComponent implements OnInit {
 
   public filtersHasChanged(filters: Filters): void {
     this.filters = filters;
+    this.pageNumber = environment.pagination.defaultPageNumber;
+
     this.searchProducts();
   }
 
-  private async searchProducts(): Promise<void> {
-    this.pageNumber = environment.pagination.defaultPageNumber;
-    const { search, categoryId, productFormatId, packagingTypeId } = this.filters;
-    await this.store.searchProduct(this.pageNumber, this.pageSize, search, categoryId, productFormatId, packagingTypeId);
+  private searchProducts() {
+    const { search, categoryId, productFormatId, packagingTypeId } = this.filters ?? {};
+    this.store.searchProduct(this.pageNumber, this.pageSize, search, categoryId, productFormatId, packagingTypeId);
   }
 
-  public async handlePageEvent(e: PageEvent) {
+  public handlePageEvent(e: PageEvent) {
     const { pageSize, pageIndex } = e;
     this.pageNumber = pageIndex + 1;
     this.pageSize = pageSize;
-    await this.searchProducts();
+    this.searchProducts();
   }
 
   public createOrder(): void {

@@ -50,17 +50,17 @@ export class ProductsComponent implements OnInit {
     this.modalsService.showLateralModal('products');
   }
 
-  private async searchProducts(): Promise<void> {
+  private searchProducts() {
     this.pageNumber = environment.pagination.defaultPageNumber;
-    const { search, categoryId, productFormatId, packagingTypeId } = this.filters;
-    await this.store.searchProduct(this.pageNumber, this.pageSize, search, categoryId, productFormatId, packagingTypeId);
+    const { search, categoryId, productFormatId, packagingTypeId } = this.filters ?? {};
+    this.store.searchProduct(this.pageNumber, this.pageSize, search, categoryId, productFormatId, packagingTypeId);
   }
 
-  public async handlePageEvent(e: PageEvent) {
+  public handlePageEvent(e: PageEvent) {
     const { pageSize, pageIndex } = e;
     this.pageNumber = pageIndex + 1;
     this.pageSize = pageSize;
-    await this.searchProducts();
+    this.searchProducts();
   }
   //#endregion
 }
