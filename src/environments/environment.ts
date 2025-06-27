@@ -1,5 +1,5 @@
 export const environment = {
-  baseApiUrl: 'http://airportwarehouse.com.mx:8080/api/',
+  baseApiUrl: 'airportwarehouse.com.mx:8080/api/',
   defaultDebounceTime: 1000,
   pagination: {
     defaultPageSize: 10,
