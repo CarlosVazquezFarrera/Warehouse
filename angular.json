@@ -21,6 +21,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "angularx-qrcode",
+              "html2canvas"
+            ],
             "outputPath": "dist/warehouse",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -50,7 +54,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "1mb",
                   "maximumError": "1mb"
                 },
                 {
