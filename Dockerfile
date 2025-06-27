@@ -9,7 +9,9 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build
+ENV NODE_OPTIONS=--max_old_space_size=1024
+
+RUN npm run build --configuration=production
 
 # Etapa 2: Imagen de producción con Nginx
 FROM nginx:alpine
