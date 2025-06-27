@@ -8,7 +8,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build --configuration=production
+
+RUN npm run build
 
 # Etapa 2: Imagen de producción con Nginx
 FROM nginx:alpine
