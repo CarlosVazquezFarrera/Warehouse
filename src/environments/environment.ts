@@ -1,5 +1,5 @@
 export const environment = {
-  baseApiUrl: 'https://airportwarehouse.com.mx/api/',
+  baseApiUrl: 'https://airportwarehouseapi.onrender.com/api/',
   defaultDebounceTime: 1000,
   pagination: {
     defaultPageSize: 10,
