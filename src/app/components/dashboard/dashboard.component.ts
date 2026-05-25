@@ -25,8 +25,8 @@ export class DashboardComponent {
   public menuItems: Array<DashboardItem> = [
     { url: getChildRoutePath("dashboard", "inventory"), icon: 'inventory', text: 'Inventory'},
     { url: getChildRoutePath("dashboard", "products"), icon: 'list', text: 'Products'},
-    { url: getChildRoutePath("dashboard", "agents"), icon: 'group', text: 'Agents'},
-    { url: getChildRoutePath("dashboard", "admin"), icon: 'admin_panel_settings', text: 'Admin'}
+    // { url: getChildRoutePath("dashboard", "agents"), icon: 'group', text: 'Agents'},
+    // { url: getChildRoutePath("dashboard", "admin"), icon: 'admin_panel_settings', text: 'Admin'}
 
   ]
 }
