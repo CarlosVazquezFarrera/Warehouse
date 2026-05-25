@@ -1,23 +1,6 @@
 <main class="inventory-container">
   <app-product-filters (filtersHasChanged)="filtersHasChanged($event)" />
-  <section class="header-options">
-    <!-- <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="createOrder()">
-        <mat-icon>local_shipping</mat-icon>
-        <span>New order</span>
-      </button>
-
-    </mat-menu>
- -->
-
-    <!-- <button mat-mini-fab color="primary" aria-label="Add supply" matTooltip="Create an order" (click)="createOrder()">
-      <mat-icon>local_shipping</mat-icon>
-                <mat-icon>qr_code_scanner</mat-icon>
-    </button>
-    -->
+  <section class="header-table">
     <button mat-mini-fab color="primary" aria-label="Add supply" matTooltip="Create an order" (click)="createOrder()">
       <mat-icon>local_shipping</mat-icon>
     </button>
