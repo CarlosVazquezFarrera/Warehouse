@@ -111,45 +111,12 @@ export const DashboardStore = signalStore(
         }
       }));
     },
-    //#endregion 
+    //#endregion
 
     //#region Agents
     async getAgents(): Promise<void> {
       const agents = await agentService.getAll();
       patchState(store, { agents });
-    },
-    async getPagedAgents(pageNumber?: number, pageSize?: number, search?: string,): Promise<void> {
-      const pagedAgents = await agentService.getPagedWithSearch(search, pageNumber, pageSize, "GetPagedAgents");
-      patchState(store, { pagedAgents })
-    },
-    async registerNewAgent(agent: NewAgent): Promise<void> {
-      await agentService.post(agent);
-      const pagedAgents = await agentService.getPagedWithSearch(undefined, undefined, undefined, "GetPagedAgents");
-      patchState(store, { pagedAgents })
-    },
-
-    setIdAgent(idAgent: string): void {
-      patchState(store, { idAgentSelected: idAgent });
-    },
-    clearAgentId(): void {
-      patchState(store, { idAgentSelected: '' });
-    },
-    async updateAgent(agent: Agent): Promise<void> {
-      const updateAgent = await agentService.put(agent);
-
-      const agents = store.pagedAgents.data().map(a => {
-        if (a.id == updateAgent.id) {
-          return { ...updateAgent };
-        }
-        return a;
-      });
-
-      patchState(store, (state) => ({
-        pagedAgents: {
-          data: agents,
-          metadata: { ...state.pagedAgents.metadata }
-        }
-      }));
     },
     //#endregion
 
@@ -197,7 +164,7 @@ export const DashboardStore = signalStore(
     },
     //#endregion
 
-    //#region ProductFormat 
+    //#region ProductFormat
     async loadProductFormats(): Promise<void> {
       if (store.productFormats().length > 0) {
         return;
@@ -207,7 +174,7 @@ export const DashboardStore = signalStore(
     },
     //#endregion
 
-    //#region Egresses 
+    //#region Egresses
     async createEgressOrder(egresses: Array<NewEgress>): Promise<void> {
       const egressesSaved = await egressService.createEgressOrder(egresses);
       const egressMap = new Map(egressesSaved.map(egress => [egress.productId, egress]));

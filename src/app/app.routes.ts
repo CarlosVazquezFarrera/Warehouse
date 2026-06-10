@@ -14,9 +14,7 @@ export const routes: Routes = [
       // { path: 'account/:id', component: AccountDetailComponent }
       { path: `${AppRoutes.dashboard.children.inventory}/:idSupply/:idAirport`, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.inventory, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
-      { path: AppRoutes.dashboard.children.agents, loadComponent: () => import('@components/dashboard/modules/agents/agents.component').then(a => a.AgentsComponent) },
       { path: AppRoutes.dashboard.children.products, loadComponent: () => import('@components/dashboard/modules/products/products.component').then(a => a.ProductsComponent) },
-      { path: AppRoutes.dashboard.children.admin, loadComponent: () => import('@components/dashboard/modules/admin/admin.component').then(a => a.AdminComponent) },
       { path: '', redirectTo: AppRoutes.dashboard.children.inventory, pathMatch: 'full' }
 
     ]
