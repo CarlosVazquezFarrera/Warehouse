@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject, input, output } from '@angular/core';
+import { ModalsService } from '@services/modals.service';
 import QrScanner from 'qr-scanner';
-import { MessageService } from '@services/message.service';
 
 export type QrResult = {
   valid: boolean,
@@ -17,7 +17,7 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
 
   //#region Properties
   private beep = new Audio("/assets/audio/beep.mp3");
-  private messageService = inject(MessageService);
+  private modalsService = inject(ModalsService);
   private qrScanner: QrScanner | undefined;
 
   @ViewChild('video', { static: false }) video!: ElementRef<HTMLVideoElement>;
@@ -71,7 +71,7 @@ export class QrReaderComponent implements AfterViewInit, OnDestroy {
     const hasCamera = await QrScanner.hasCamera();
 
     if (!hasCamera) {
-      this.messageService.showMessage('Camera not found');
+      this.modalsService.openDialog('information', 'Camera not found')
       return;
     }
     const videoElem = this.video.nativeElement;

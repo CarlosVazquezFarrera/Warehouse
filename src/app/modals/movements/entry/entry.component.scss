@@ -17,7 +17,12 @@ main {
       margin-top: 2%;
     }
 
-    &.entry-form {
+
+    .resume {
+      em {
+        font-size: larger;
+      }
+
       .mobile-text {
         display: none;
 
@@ -26,41 +31,46 @@ main {
         }
       }
 
-      .details {
-
-        .responsible,
-        .date {
-          p strong {
-            font-weight: normal;
-
-            @include mq.md() {
-              font-weight: bold;
-            }
-          }
-        }
-
+      .details,
+      .resume,
+      .stock {
+        margin: 5% 0;
 
         @include mq.md() {
-          margin-top: 10px;
-          display: grid;
-          grid-template-areas: 'responsible date';
-          column-gap: 5%;
-
-          .responsible {
-            grid-area: responsible;
-          }
-
-          .date {
-            grid-area: date;
-          }
+          margin: 3% 0;
         }
 
+        @include mq.lg() {
+          margin: 2% 0;
+        }
+      }
+
+      .details {
+        display: grid;
+        grid-template-areas: 'responsible date';
+        column-gap: 5%;
+
+        .responsible {
+          grid-area: responsible;
+        }
+
+        .date {
+          grid-area: date;
+        }
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        column-gap: 2%;
+        margin: 1% 0;
       }
     }
-  }
 
-  footer {
-    display: flex;
-    justify-content: flex-end;
   }
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
 }

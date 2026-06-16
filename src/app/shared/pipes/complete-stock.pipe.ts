@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { Product } from '@models/DTO/product';
+import { ProductDto } from '@models/Dto/productDto';
 
 @Pipe({
   name: 'completeStock',
@@ -9,7 +9,7 @@ import { Product } from '@models/DTO/product';
 export class CompleteStockPipe implements PipeTransform {
 
 
-  transform(product: Product): string {
+  transform(product: ProductDto): string {
     const unitPresentation = product.formatQuantity * product.presentationQuantity;
     const completeStock = product.stock / unitPresentation;
 

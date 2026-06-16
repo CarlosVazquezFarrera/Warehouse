@@ -33,7 +33,6 @@ export class LoginComponent {
   public fb = inject(FormBuilder);
   private store = inject(WarehouseStore);
   private router = inject(Router);
-  private sessionService = inject(SessionService);
   public hide = true;
 
 
@@ -58,10 +57,7 @@ export class LoginComponent {
     if (this.formLogin.invalid)
       return;
     await this.store.login(this.emploeeNumber.value, this.passWord.value);
-    const user = this.store.agent();
-    const token = this.store.token();
-    if (user && token) {
-      this.sessionService.login(user, token);
+    if (this.store.isLoggedIn()) {
       this.router.navigateByUrl(AppRoutes.dashboard.path);
     }
   }

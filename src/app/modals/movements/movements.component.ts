@@ -1,9 +1,9 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import { QrComponent } from './qr/qr.component';
 import { EntryComponent } from './entry/entry.component';
-import { DashboardStore } from '@store/dashboard.store';
 import { MaterialModule } from '@shared/modules/material.module';
 import { FormModule } from '@shared/modules/form.module';
+import { WarehouseStore } from '@store/warehouse.store';
 
 @Component({
   selector: 'app-movements',
@@ -11,15 +11,15 @@ import { FormModule } from '@shared/modules/form.module';
   imports: [
     FormModule,
     MaterialModule,
-    QrComponent, 
+    QrComponent,
     EntryComponent],
   templateUrl: './movements.component.html',
   styleUrl: './movements.component.scss'
 })
 export class MovementsComponent implements OnDestroy {
   ngOnDestroy(): void {
-   this.store.resetSelectedProduct();
+    this.store.resetSelectedProduct();
   }
 
-  private store = inject(DashboardStore);
+  private store = inject(WarehouseStore);
 }

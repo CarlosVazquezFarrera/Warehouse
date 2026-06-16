@@ -1,12 +1,30 @@
 .search {
-    margin: 4%;
+  margin: 4%;
 }
 
 mat-dialog-content.products {
-    max-height: 45dvh;
-    padding: 0;
+  padding: 0;
 
 }
+
 mat-divider {
-    margin: 2% 0;
+  margin: 2% 0;
+}
+
+.products-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.col-product {
+  width: 80%;
+}
+
+.col-stock {
+  width: 10%;
+}
+
+.col-select {
+  width: 10%;
+  text-align: center;
 }

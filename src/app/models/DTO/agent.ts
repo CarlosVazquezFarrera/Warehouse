@@ -1,12 +1,12 @@
-import { BaseDTO } from "./baseDTO"
+import { BaseDto } from "./baseDto"
 
-export interface Agent extends BaseDTO {
+export interface AgentDto extends BaseDto {
   agentNumber: string
   shortName: string
   name: string
   lastName: string
   email: string
-  password: string
   airportId: string;
-  isActive?: boolean
+  isActive: boolean
+  token: string
 }

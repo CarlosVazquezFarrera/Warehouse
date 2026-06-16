@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/material/paginator';
 import { RouterOutlet } from '@angular/router';
 
@@ -11,7 +12,11 @@ import { RouterOutlet } from '@angular/router';
   providers: [
     {
       provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
-      useValue:{ pageSize: 10, pageSizeOptions: [10, 25, 50] }
+      useValue: { pageSize: 10, pageSizeOptions: [10, 25, 50] }
+    },
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: { autoFocus: 'dialog', restoreFocus: true }
     }
   ],
 })

@@ -1,7 +1,7 @@
 import { Component, Inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
-import { MessageParams } from '../models/messageParams';
+import { MessageParams } from '../../models/custom/messageParams';
 
 @Component({
   selector: 'app-message',

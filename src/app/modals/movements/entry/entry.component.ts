@@ -1,14 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
-import { DashboardStore } from '@store/dashboard.store';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import * as json from './entry-metadata.json';
 import { WarehouseStore } from '@store/warehouse.store';
-import { MessageService } from '@services/message.service';
 import { ModalsService } from '@services/modals.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormModule } from '@shared/modules/form.module';
 import { MaterialModule } from '@shared/modules/material.module';
+import { environment } from '@environments/environment';
+import { EntryPipe } from '@shared/pipes/entry.pipe';
+import { Entry } from '@models/types/Entry';
 
 @Component({
   selector: 'app-entry',
@@ -17,7 +18,9 @@ import { MaterialModule } from '@shared/modules/material.module';
     FormModule,
     MaterialModule,
     DatePipe,
+    EntryPipe,
     ReactiveFormsModule,
+    DecimalPipe
   ],
   templateUrl: './entry.component.html',
   styleUrl: './entry.component.scss'
@@ -27,10 +30,8 @@ export class EntryComponent {
     ErrorMessageHandle(this.quantity, this.errorQuantity, json.errors.quantity)
   }
   //#region Properties
-  public store = inject(DashboardStore);
-  public warehouseStore = inject(WarehouseStore);
+  public store = inject(WarehouseStore);
   public fb = inject(FormBuilder);
-  private messageService = inject(MessageService);
   private modalService = inject(ModalsService);
 
   public errorQuantity = signal(json.errors.quantity.required);
@@ -46,15 +47,20 @@ export class EntryComponent {
   //#region Methods
   public async accept(): Promise<void> {
     if (this.form.invalid) return;
-
-    const response = await this.messageService.confirmationMessage(json.messages.acceptEntry);
+    const response = await this.modalService.openDialog('confirmation', environment.defaultConfirmationMessage, 'Warning');
     if (!response) return;
-
-    await this.store.saveNewEntry(this.quantity.value);
-    this.modalService.closeModal();
+    await this.store.createEntry(this.entry);
+    this.modalService.close();
   }
   //#endregion
 
-
-
+  //#region Getters
+  private get entry(): Entry {
+    const entry: Entry = {
+      productId: this.store.selectedProduct()?.id!,
+      quantityIncoming: Number(this.form.get('quantity')?.value)
+    }
+    return entry;
+  }
+  //#endregion
 }

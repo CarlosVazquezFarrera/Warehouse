@@ -15,6 +15,6 @@ export class ModalHeaderComponent {
   public header = input<string>();
 
   public close() {
-    this.modalsService.closeModal();
+    this.modalsService.close();
   }
 }

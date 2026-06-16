@@ -1,5 +1,5 @@
 <main>
-  <h2 class="header">{{store.fullNameOfTheSelectedProduct()}}</h2>
+  <h2 class="header">{{store.selectedProduct()?.name}}</h2>
   <form class="entry-form" autocomplete="off" [formGroup]="form">
     <mat-form-field class="w-100">
       <mat-label>Quantity</mat-label>
@@ -8,43 +8,54 @@
       <mat-error>{{errorQuantity()}}</mat-error>
       }
     </mat-form-field>
-    <mat-divider />
-    <section class="details">
-      <div class="responsible">
-        <h2>Agent</h2>
-        <p class="mobile-text">
+
+    <section class="resume">
+      <header class="header">
+        <h2>Review your entry</h2>
+        <span>
+          <mat-icon aria-hidden="false" aria-label="Add icon" fontIcon="add_shopping_cart"></mat-icon>
+        </span>
+      </header>
+
+      <mat-divider />
+      <section class="details">
+        <div class="responsible">
+          <h2><span class="mobile-text">Responsible</span>Agent</h2>
+          <strong>{{store.agent.agentNumber()}} - </strong>
+          <em>{{store.fullName()}}</em>
+        </div>
+        <div class="date">
+          <h2>Entry date</h2>
           <em>
-            Responsible agent
+            {{now | date : 'fullDate'}}
           </em>
-        </p>
-        <p>
-          <strong>
-            <em>
-              {{warehouseStore.fullName()}} - {{warehouseStore.agent.agentNumber()}}
-            </em>
-          </strong>
-        </p>
+        </div>
+      </section>
 
-      </div>
-      <div class="date">
-        <h2>Date of entry</h2>
-        <p class="mobile-text">
+      <mat-divider />
+      <section class="stock">
+        <em><strong> Current stock:</strong> {{store.selectedProduct()?.stock}} pieces</em>
+      </section>
+
+      <mat-divider />
+      <section class="resume">
+        @if(!form.get('quantity')?.value){
+        <strong>
           <em>
-            This will be saved with this date
+            No additional pieces will be added to this product
           </em>
-        </p>
-        <p>
+        </strong>
+        }
+        @else {
+        <em>
           <strong>
-            <em>
-              {{now | date : 'fullDate'}}
-            </em>
+            {{store.selectedProduct() | entry: form.get('quantity')?.value! | number:'1.0-0' }}
           </strong>
-        </p>
-      </div>
-
-
+          pieces will be be added to this product
+        </em>
+        }
+      </section>
     </section>
-
 
   </form>
   <footer>

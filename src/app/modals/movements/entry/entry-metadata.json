@@ -4,8 +4,5 @@
       "required": "The quantity is required",
       "min": "The quantity must be at least one"
     }
-  },
-  "messages": {
-    "acceptEntry": "Are you sure you want to continue?"
   }
 }

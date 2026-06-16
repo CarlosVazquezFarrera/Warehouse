@@ -2,7 +2,7 @@ import { Component, Inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MessageParams } from '../models/messageParams';
+import { MessageParams } from '../../models/custom/messageParams';
 
 @Component({
   selector: 'app-confirmation',

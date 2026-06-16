@@ -78,6 +78,7 @@ body {
   }
 }
 
+
 .cursor-not-allowed {
   cursor: not-allowed !important;
 }
@@ -94,11 +95,13 @@ body {
   font-weight: bold;
 }
 
-
-.mat-mdc-row:hover .mat-mdc-cell {
-  cursor: pointer;
-  background-color: v.$background-hover-table;
+table.primary {
+  .mat-mdc-row:hover .mat-mdc-cell {
+    cursor: pointer;
+    background-color: v.$background-hover-table;
+  }
 }
+
 
 table {
   width: 100%;
@@ -148,4 +151,9 @@ table {
   mat-form-field {
     width: 100%;
   }
+}
+
+
+span.supplierPart {
+  font-weight: bold;
 }

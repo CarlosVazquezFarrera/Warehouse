@@ -17,7 +17,7 @@ export function getChildRoutePath(parentPath: Parents, childRoute: DashboardChil
   if (!parent.hasOwnProperty('path') || !parent.hasOwnProperty('children'))
     throw new Error('This is not a valid Parent');
   const child: string = parent.children[childRoute];
-  return `${parent.path}/${child}`;
+  return `/${parent.path}/${child}`;
 }
 
 

@@ -6,15 +6,14 @@ import { ModalHeaderComponent } from '@shared/components/modal-header/modal-head
 import { MaterialModule } from '@shared/modules/material.module';
 import { AutoCompleteFieldComponent } from '@shared/controls/auto-complete-field/auto-complete-field.component';
 import { ModalsService } from '@services/modals.service';
-import { EgressStore } from '@store/egress.store';
-import { Product } from '@models/DTO/product';
 import * as json from './create-egress-metadata.json';
 import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { DatePipe } from '@angular/common';
 import { MatAccordion } from '@angular/material/expansion';
 import { WarehouseStore } from '@store/warehouse.store';
-import { NewEgress } from '@models/types/newEgress';
-import { DashboardStore } from '@store/dashboard.store';
+import { ProductDto } from '@models/Dto/productDto';
+import { Egress } from '@models/types/egress';
+import { environment } from '@environments/environment';
 
 
 @Component({
@@ -26,7 +25,8 @@ import { DashboardStore } from '@store/dashboard.store';
       useValue: { showError: true },
     },
   ],
-  imports: [ModalHeaderComponent,
+  imports: [
+    ModalHeaderComponent,
     MaterialModule,
     AutoCompleteFieldComponent,
     DatePipe
@@ -46,30 +46,31 @@ export class CreateEgressComponent implements OnInit, OnDestroy {
 
     effect(() => {
       const product = this.store.lastProductRemoved();
-
       if (!product) return;
       this.productHasBeenRemoved(product);
     });
   }
 
+
   //#region Properties
-
-
+  public store = inject(WarehouseStore);
+  private modalsService = inject(ModalsService);
+  public displayedColumns: string[] = ['product', 'quantity'];
   public now = new Date();
-  public errorCount = signal(json.errors.count.min);
 
+  public errorCount = signal(json.errors.count.min);
   public tooltipFinal = json.tooltip.final;
-  public store = inject(EgressStore);
-  public bashBoardStore = inject(DashboardStore); 
-  public warehouseStore = inject(WarehouseStore);
 
   public accordion = viewChild.required(MatAccordion);
   public stepper = viewChild.required(MatStepper);
 
-  public displayedColumns: string[] = ['product', 'quantity'];
-  private modalsService = inject(ModalsService);
+
   private productsIdSelected = new Set<string>();
   private fb = inject(FormBuilder);
+
+  //#endregion
+
+  //#endregion Forms
 
   public departmentForm = this.fb.group({
     departmentId: ['', Validators.required]
@@ -84,12 +85,9 @@ export class CreateEgressComponent implements OnInit, OnDestroy {
   //#region Methods
   public async ngOnInit(): Promise<void> {
     await this.store.getDepartments();
-    this.departmentId.valueChanges.subscribe(deparmentId => {
-      this.store.setDepartmentId(deparmentId);
-    });
   }
   public ngOnDestroy(): void {
-    this.store.clearEgress();
+    this.store.resetEgress();
   }
 
   public goFromDepartmentToProduct(): void {
@@ -104,10 +102,10 @@ export class CreateEgressComponent implements OnInit, OnDestroy {
   }
 
   public addProducts(): void {
-    this.modalsService.showModal('select-products')
+    this.modalsService.open('select-products', 'center')
   }
 
-  private addProductToArray(product: Product): void {
+  private addProductToArray(product: ProductDto): void {
     this.productsIdSelected.add(product.id);
     const control = this.fb.group({
       id: [product.id],
@@ -120,7 +118,7 @@ export class CreateEgressComponent implements OnInit, OnDestroy {
     this.count.setValue(this.productsIdSelected.size)
   }
 
-  private productHasBeenRemoved(product: Product): void {
+  private productHasBeenRemoved(product: ProductDto): void {
     const index = this.productsIdArray.findIndex(p => p === product.id);
     if (index < 0) return;
     this.removeFromSetAndArray(product.id, index);
@@ -128,7 +126,7 @@ export class CreateEgressComponent implements OnInit, OnDestroy {
 
   public deleteProduct(event: Event, index: number, productId: string) {
     event.stopPropagation();
-    this.store.removeProducrById(productId);
+    this.store.removeProduct(productId);
     this.removeFromSetAndArray(productId, index);
   }
 
@@ -145,18 +143,20 @@ export class CreateEgressComponent implements OnInit, OnDestroy {
 
   public async createOrden(): Promise<void> {
     if (this.formsInvalid) return;
-    await this.bashBoardStore.createEgressOrder(this.newEgress);
-    this.modalsService.closeModal();
+    const result = await this.modalsService.openDialog('confirmation', environment.defaultConfirmationMessage, 'Warning');
+    if (!result) return;
+    await this.store.createListEgress(this.newEgress);
+    this.modalsService.close();
   }
   //#endregion
 
   //#region Gets
-  public get newEgress(): Array<NewEgress> {
+  public get newEgress(): Array<Egress> {
     const productEgress = this.products.controls.map((control: AbstractControl) => {
-      const product: NewEgress = {
+      const product: Egress = {
         amountRemoved: control.get('quantity')!.value as number,
         productId: control.get('id')!.value,
-        departmentId: this.store.requestingDepartment()!
+        departmentId: this.departmentId.value,
       }
       return product;
     });

@@ -1,12 +1,12 @@
 import { AfterContentInit, Component, inject, input, output, signal } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { environment } from '@environments/environment';
-import { Filters } from '@models/custom/filters';
+import { ProductSearch } from '@models/requestParams/productSearch';
 import { ModalsService } from '@services/modals.service';
 import { bounce } from '@shared/animations/bounce';
 import { fadeInOut } from '@shared/animations/fadeInOut';
 import { MaterialModule } from '@shared/modules/material.module';
-import { DashboardStore } from '@store/dashboard.store';
+import { WarehouseStore } from '@store/warehouse.store';
 import { debounceTime, lastValueFrom, merge } from 'rxjs';
 
 @Component({
@@ -20,15 +20,10 @@ import { debounceTime, lastValueFrom, merge } from 'rxjs';
 export class ProductFiltersComponent implements AfterContentInit {
   //#region Properties
   private fb = inject(FormBuilder);
-  public store = inject(DashboardStore);
+  public store = inject(WarehouseStore);
+  private modalsService = inject(ModalsService);
 
-  private filtersApplied: Filters = {
-    search: undefined,
-    packagingTypeId: undefined,
-    productFormatId: undefined,
-    categoryId: undefined,
-  };
-  public filtersHasChanged = output<Filters>();
+  private filtersApplied!: ProductSearch;
 
   public form = this.fb.group({
     search: [null],
@@ -36,15 +31,13 @@ export class ProductFiltersComponent implements AfterContentInit {
     productFormatId: [null],
     categoryId: [null]
   });
-  public productFormatId = this.control('productFormatId');
-  public packagingTypeId = this.control('packagingTypeId');
-  public categoryId = this.control('categoryId');
-  public search = this.control('search');
 
   public isOpened = signal<boolean>(false);
+
   public showFiltersButton = input<boolean>(true);
   public showScanButton = input<boolean>(true);
-  private modalsService = inject(ModalsService);
+  public filtersHasChanged = output<ProductSearch>();
+
 
   //#endregion
 
@@ -69,6 +62,7 @@ export class ProductFiltersComponent implements AfterContentInit {
   }
 
   public clearFilters() {
+    this.search.setValue(null, { emitEvent: false });
     this.productFormatId.setValue(null, { emitEvent: false });
     this.packagingTypeId.setValue(null, { emitEvent: false });
     this.categoryId.setValue(null, { emitEvent: false });
@@ -94,9 +88,9 @@ export class ProductFiltersComponent implements AfterContentInit {
   }
 
   public async scanQr(): Promise<void> {
-    await lastValueFrom(this.modalsService.showModal('qrScanner').afterClosed());
-    if (this.store.thereIsNotProductScanned()) return;
-    this.search.patchValue(this.store.productNameScanned(), { emitEvent: false });
+    await lastValueFrom(this.modalsService.open('qrScanner', 'center', {}).afterClosed());
+    if (this.store.thereIsNotScannedProduct()) return;
+    this.search.patchValue(this.store.scannedProduct(), { emitEvent: false });
     this.applyFilters();
   }
 
@@ -115,4 +109,18 @@ export class ProductFiltersComponent implements AfterContentInit {
   }
   //#endregion
 
+  //#endregion Getters
+  public get productFormatId() {
+    return this.control('productFormatId');
+  }
+  public get packagingTypeId() {
+    return this.control('packagingTypeId');
+  }
+  public get categoryId() {
+    return this.control('categoryId');
+  }
+  public get search() {
+    return this.control('search');
+  }
+  //#endregion
 }

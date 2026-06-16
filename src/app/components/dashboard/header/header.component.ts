@@ -6,8 +6,8 @@ import { WarehouseStore } from '@store/warehouse.store';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AppRoutes } from '@routes/app-routers';
-import { MessageService } from '@services/message.service';
 import { SessionService } from '@services/session.service';
+import { ModalsService } from '@services/modals.service';
 
 @Component({
   selector: 'app-header',
@@ -20,13 +20,13 @@ export class HeaderComponent {
   public store = inject(WarehouseStore);
   private router = inject(Router);
   private sessionService = inject(SessionService);
-  public messageService = inject(MessageService);
+  public modalsService = inject(ModalsService);
 
   public toggle(): void {
     this.store.toggleMenu();
   }
   public async logOut(): Promise<void> {
-    const response = await this.messageService.confirmationMessage('Are you sure you want to log out?');
+    const response = await this.modalsService.openDialog('confirmation', 'Are you sure you want to log out?')
     if (response) {
       this.sessionService.logOut();
       this.store.logOut();

@@ -1,35 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Agent } from '@models/DTO/agent';
-import { AgentBaseInfo } from '@models/types/agentBaseInfo';
-type SessionKey = 'token' | 'agent'
+import { AgentDto } from '@models/Dto/agent';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-
   constructor() {
     const agent = this.getAgentUser();
-    this.currentUserIsloggedIn = agent ? true: false;
+    this.currentUserIsloggedIn = agent ? true : false;
   }
+  private agentKey = 'agent';
   private currentUserIsloggedIn: boolean = false;
 
-  public login(agentInfo: AgentBaseInfo, tokenInfo: string) {
-    const agent: SessionKey = 'agent';
-    sessionStorage.setItem(agent, JSON.stringify(agentInfo));
-    const token: SessionKey = 'token'
-    sessionStorage.setItem(token, JSON.stringify(tokenInfo));
+  public login(agentInfo: AgentDto) {
+    sessionStorage.setItem(this.agentKey, JSON.stringify(agentInfo));
     this.currentUserIsloggedIn = true;
   }
 
-  public getAgentUser(): Agent | undefined {
-    const agent: SessionKey = 'agent';
-    const value = sessionStorage.getItem(agent);
+  public getAgentUser(): AgentDto | undefined {
+    const value = sessionStorage.getItem(this.agentKey);
     if (value) {
-      const agent: Agent = JSON.parse(value);
+      const agent: AgentDto = JSON.parse(value);
       return agent;
     }
-
     return undefined;
   }
 
@@ -38,14 +31,12 @@ export class SessionService {
     this.currentUserIsloggedIn = false;
   }
 
-  public get isLoggedIn (): boolean {
+  public get isLoggedIn(): boolean {
     return this.currentUserIsloggedIn;
   }
 
-  public get token(): string {
-    const token: SessionKey = 'token';
-    const value = sessionStorage.getItem(token);
-    return JSON.parse(value!);
+  public get token(): string | undefined {
+    return this.getAgentUser()?.token;
   }
 
 }

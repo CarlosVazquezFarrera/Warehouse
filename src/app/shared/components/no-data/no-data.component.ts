@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { WarehouseStore } from '@store/warehouse.store';
 @Component({
   selector: 'app-no-data',
   standalone: true,
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './no-data.component.scss'
 })
 export class NoDataComponent {
-
+  public store = inject(WarehouseStore);
 }

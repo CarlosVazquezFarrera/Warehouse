@@ -1,4 +1,4 @@
-<mat-list-item class="item" appIsActive [url]="url()" (click)="itemClicked()">
+<mat-list-item class="item" (click)="itemClicked()" [routerLink]="url()" routerLinkActive="is-activated" [routerLinkActiveOptions]="{ exact: true }">
   <mat-icon matListItemIcon>{{icon()}}</mat-icon>
   <div matListItemTitle>{{text()}}</div>
 </mat-list-item>

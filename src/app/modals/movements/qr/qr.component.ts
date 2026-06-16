@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { DashboardStore } from '@store/dashboard.store';
 import { downloadHTMLElement } from '@shared/helper/download-file';
 import { printHTMLElement } from '@shared/helper/printer';
 import { Platform } from '@angular/cdk/platform';
+import { WarehouseStore } from '@store/warehouse.store';
 
 
 @Component({
@@ -17,11 +17,11 @@ import { Platform } from '@angular/cdk/platform';
 })
 export class QrComponent {
 
-  public store = inject(DashboardStore);
+  public store = inject(WarehouseStore);
   public platform = inject(Platform);
 
   public async download(): Promise<void> {
-    await downloadHTMLElement('qr', this.store.selectedProduct.name(), 'jpeg');
+    await downloadHTMLElement('qr', this.store.selectedProduct()!.name, 'jpeg');
   }
   public async print() {
     await printHTMLElement('qr');
@@ -29,7 +29,7 @@ export class QrComponent {
 
 
   public get dataQr(): string {
-    const name = this.store.selectedProduct().name;
+    const name = this.store.selectedProduct()!.name;
     return `ProductName=${name}`;
   }
 }
