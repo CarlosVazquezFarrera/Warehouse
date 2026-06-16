@@ -20,6 +20,8 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
     "paths": {
       "@validators/*": ["./src/app/shared/validators/*"],
       "@components/*": ["./src/app/components/*"],
@@ -33,8 +35,7 @@
       "@routes/*": ["./src/app/routes/*"],
       "@pipes/*": ["./src/app/pipes/*"],
       "@directives/*": ["./src/app/directives/*"],
-      "@environments/*": ["./src/environments/*"],
-
+      "@environments/*": ["./src/environments/*"]
     },
     "lib": [
       "ES2022",
