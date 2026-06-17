@@ -2,7 +2,7 @@ import { inject, InjectionToken } from "@angular/core";
 import { environment } from "@environments/environment";
 import { PagedResult } from "@models/custom/pagedResult";
 import { SelectableProduct } from "@models/custom/selectableProduct";
-import { AgentDto } from "@models/Dto/agent";
+import { AgentDto } from "@models/Dto/agentDto";
 import { DepartmentDto } from "@models/Dto/departmentDto";
 import { PackagingTypeDto } from "@models/Dto/packagingTypeDto";
 import { PresentationDto } from "@models/Dto/presentationDto";

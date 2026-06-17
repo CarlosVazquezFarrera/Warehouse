@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AgentDto } from '@models/Dto/agent';
+import { AgentDto } from '@models/Dto/agentDto';
 
 @Injectable({
   providedIn: 'root'

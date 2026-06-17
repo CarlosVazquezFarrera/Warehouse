@@ -17,7 +17,7 @@ import { Product } from "@models/types/product";
 import { EgressService } from "@services/http/egress.service";
 import { Egress } from "@models/types/egress";
 import { EntryService } from "@services/http/entry.service";
-import { Entry } from "@models/types/Entry";
+import { Entry } from "@models/types/entry";
 
 
 export const WarehouseStore = signalStore(
