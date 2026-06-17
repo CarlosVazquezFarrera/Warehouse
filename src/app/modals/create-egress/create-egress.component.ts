@@ -11,9 +11,9 @@ import { ErrorMessageHandle } from '@shared/utils/error-message-handle';
 import { DatePipe } from '@angular/common';
 import { MatAccordion } from '@angular/material/expansion';
 import { WarehouseStore } from '@store/warehouse.store';
+import { ProductDto } from '@models/Dto/productDto';
+import { Egress } from '@models/types/egress';
 import { environment } from '@environments/environment';
-import { ProductDto } from '../../models/Dto/productDto';
-import { Egress } from '../../models/types/egress';
 
 
 @Component({

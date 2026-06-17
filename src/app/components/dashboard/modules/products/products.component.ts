@@ -1,11 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { environment } from '@environments/environment';
+import { ProductSearch } from '@models/requestParams/productSearch';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { ProductFiltersComponent } from '@shared/components/product-filters/product-filters.component';
 import { MaterialModule } from '@shared/modules/material.module';
 import { WarehouseStore } from '@store/warehouse.store';
-import { ProductSearch } from '../../../../models/requestParams/productSearch';
 
 @Component({
   selector: 'app-products',

@@ -4,20 +4,20 @@ import { SessionService } from "@services/session.service";
 import { initialState, WarehouseState } from "./initial-state";
 import { ProductFormatService } from "@services/http/product-format.service";
 import { ProductService } from "@services/http/product.service";
+import { ProductSearch } from "@models/requestParams/productSearch";
 import { PresentationService } from "@services/http/presentation.service";
 import { DepartmentService } from "@services/http/department.service";
+import { ProductDto } from "@models/Dto/productDto";
 import { CategoryService } from "@services/http/category.service";
 import { PackagingTypeService } from "@services/http/packaging-type.service";
 import { mapPagedAfterUpdate, mapPagedProductToSelectableProduct } from "@shared/helper/mapper";
 import { LoginService } from "@services/http/login.service";
 import { environment } from "@environments/environment";
+import { Product } from "@models/types/product";
 import { EgressService } from "@services/http/egress.service";
+import { Egress } from "@models/types/egress";
 import { EntryService } from "@services/http/entry.service";
-import { Product } from "../models/types/product";
-import { ProductDto } from "../models/Dto/productDto";
-import { Egress } from "../models/types/egress";
-import { Entry } from "../models/types/entry";
-import { ProductSearch } from "../models/requestParams/productSearch";
+import { Entry } from "@models/types/entry";
 
 
 export const WarehouseStore = signalStore(

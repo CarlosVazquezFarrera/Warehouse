@@ -2,12 +2,12 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { PageEvent } from '@angular/material/paginator';
+import { ProductDto } from '@models/Dto/productDto';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { DebounceTimeSearchFieldComponent } from '@shared/controls/debounce-time-search-field/debounce-time-search-field.component';
 import { MaterialModule } from '@shared/modules/material.module';
 import { WarehouseStore } from '@store/warehouse.store';
-import { ProductDto } from '../../models/Dto/productDto';
 
 @Component({
   selector: 'app-select-products',

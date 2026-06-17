@@ -9,7 +9,7 @@ import { FormModule } from '@shared/modules/form.module';
 import { MaterialModule } from '@shared/modules/material.module';
 import { environment } from '@environments/environment';
 import { EntryPipe } from '@shared/pipes/entry.pipe';
-import { Entry } from '../../../models/types/entry';
+import { Entry } from '@models/types/entry';
 
 @Component({
   selector: 'app-entry',

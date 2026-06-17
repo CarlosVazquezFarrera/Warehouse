@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { ProductDto } from '@models/Dto/productDto';
 import { HttpGetService } from './http-get.service';
-import { ProductDto } from '../../models/Dto/productDto';
 
 @Injectable({
   providedIn: 'root'

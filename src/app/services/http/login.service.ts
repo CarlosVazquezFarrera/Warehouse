@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '@environments/environment';
-import { AgentDto } from '../../models/Dto/agentDto';
+import { AgentDto } from '@models/Dto/agentDto';
 
 
 @Injectable({

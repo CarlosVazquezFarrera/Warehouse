@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -32,6 +33,9 @@
       ],
       "@components/*": [
         "./src/app/components/*"
+      ],
+      "@models/*": [
+        "./src/app/models/*"
       ],
       "@store/*": [
         "./src/app/store/*"

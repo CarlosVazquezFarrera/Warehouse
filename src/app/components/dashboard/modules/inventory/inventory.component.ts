@@ -7,7 +7,7 @@ import { CompleteStockPipe } from '@shared/pipes/complete-stock.pipe';
 import { CommonModule } from '@angular/common';
 import { ProductFiltersComponent } from '@shared/components/product-filters/product-filters.component';
 import { WarehouseStore } from '@store/warehouse.store';
-import { ProductSearch } from '../../../../models/requestParams/productSearch';
+import { ProductSearch } from '@models/requestParams/productSearch';
 
 @Component({
   selector: 'app-inventory',
