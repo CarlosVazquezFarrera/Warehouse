@@ -20,21 +20,46 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
-      "@validators/*": ["./src/app/shared/validators/*"],
-      "@components/*": ["./src/app/components/*"],
-      "@services/*": ["./src/app/services/*"],
-      "@shared/*": ["./src/app/shared/*"],
-      "@types/*": ["./src/app/types/*"],
-      "@models/*": ["./src/app/models/*"],
-      "@modals/*": ["./src/app/modals/*"],
-      "@store/*": ["./src/app/store/*"],
-      "@guards/*": ["./src/app/guards/*"],
-      "@routes/*": ["./src/app/routes/*"],
-      "@pipes/*": ["./src/app/pipes/*"],
-      "@directives/*": ["./src/app/directives/*"],
-      "@environments/*": ["./src/environments/*"]
+      "@routes/*": [
+        "./src/app/routes/*"
+      ],
+      "@environments/*": [
+        "./src/environments/*"
+      ],
+      "@utils/*": [
+        "./src/app/utils/*"
+      ],
+      "@components/*": [
+        "./src/app/components/*"
+      ],
+      "@models/*": [
+        "./src/app/models/*"
+      ],
+      "@store/*": [
+        "./src/app/store/*"
+      ],
+      "@shared/*": [
+        "./src/app/shared/*"
+      ],
+      "@services/*": [
+        "./src/app/services/*"
+      ],
+      "@modals/*": [
+        "./src/app/modals/*"
+      ],
+      "@validators/*": [
+        "./src/app/validators/*"
+      ],
+      "@helpers/*": [
+        "./src/app/helpers/*"
+      ],
+      "@directives/*": [
+        "./src/app/directives/*"
+      ],
+      "@guards/*": [
+        "./src/app/guards/*"
+      ]
     },
     "lib": [
       "ES2022",
