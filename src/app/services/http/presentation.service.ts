@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpGetService } from './http-get.service';
-import { PresentationDto } from '@models/Dto/presentationDto';
 import { HttpClient } from '@angular/common/http';
+import { PresentationDto } from '../../models/Dto/presentationDto';
 
 
 @Injectable({

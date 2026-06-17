@@ -1,15 +1,15 @@
 import { inject, InjectionToken } from "@angular/core";
 import { environment } from "@environments/environment";
-import { PagedResult } from "@models/custom/pagedResult";
-import { SelectableProduct } from "@models/custom/selectableProduct";
-import { AgentDto } from "@models/Dto/agentDto";
-import { DepartmentDto } from "@models/Dto/departmentDto";
-import { PackagingTypeDto } from "@models/Dto/packagingTypeDto";
-import { PresentationDto } from "@models/Dto/presentationDto";
-import { ProductDto } from "@models/Dto/productDto";
-import { ProductFormatDto } from "@models/Dto/productFormatDto";
-import { ProductSearch } from "@models/requestParams/productSearch";
 import { SessionService } from "@services/session.service";
+import { AgentDto } from "../models/Dto/agentDto";
+import { PackagingTypeDto } from "../models/Dto/packagingTypeDto";
+import { ProductFormatDto } from "../models/Dto/productFormatDto";
+import { PagedResult } from "../models/custom/pagedResult";
+import { ProductDto } from "../models/Dto/productDto";
+import { SelectableProduct } from "../models/custom/selectableProduct";
+import { ProductSearch } from "../models/requestParams/productSearch";
+import { PresentationDto } from "../models/Dto/presentationDto";
+import { DepartmentDto } from "../models/Dto/departmentDto";
 
 type Warehouse = {
   agent: AgentDto,

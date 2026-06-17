@@ -8,8 +8,9 @@ import { MaterialModule } from '@shared/modules/material.module';
 import { merge } from 'rxjs';
 import { cleanString } from '@shared/helper/string';
 import { WarehouseStore } from '@store/warehouse.store';
-import { ProductDto } from '@models/Dto/productDto';
-import { Product } from '@models/types/product';
+import { Product } from '../../models/types/product';
+import { ProductDto } from '../../models/Dto/productDto';
+
 
 @Component({
   selector: 'app-products',

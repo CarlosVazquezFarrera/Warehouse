@@ -1,3 +1,3 @@
-import { EntryDto } from "@models/Dto/entryDto";
+import { EntryDto } from "../Dto/entryDto";
 
 export type Entry = Omit<EntryDto, 'id'>;

@@ -6,8 +6,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 import { SidebarItemComponent } from '@shared/components/sidebar-item/sidebar-item.component';
-import { DashboardItem } from '@models/custom/dashBoardItem';
 import { getChildRoutePath } from '@routes/app-routers';
+import { DashboardItem } from '../../models/custom/dashBoardItem';
 
 @Component({
   selector: 'app-dashboard',

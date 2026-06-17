@@ -1,7 +1,7 @@
-import { PagedResult } from '@models/custom/pagedResult';
-import { ProductDto } from '@models/Dto/productDto';
-import { SelectableProduct } from '@models/custom/selectableProduct';
-import { BaseDto } from '@models/Dto/baseDto';
+import { PagedResult } from "../../models/custom/pagedResult";
+import { SelectableProduct } from "../../models/custom/selectableProduct";
+import { BaseDto } from "../../models/Dto/baseDto";
+import { ProductDto } from "../../models/Dto/productDto";
 
 export function mapPagedProductToSelectableProduct(pagedResult: PagedResult<ProductDto>, selectedId: Set<string>): PagedResult<SelectableProduct> {
   return {

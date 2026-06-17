@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpCrudService } from './http-crud.service';
-import { ProductDto } from '@models/Dto/productDto';
 import { HttpClient } from '@angular/common/http';
-import { Product } from '@models/types/product';
-import { PagedResult } from '@models/custom/pagedResult';
+import { Product } from '../../models/types/product';
+import { ProductDto } from '../../models/Dto/productDto';
+import { PagedResult } from '../../models/custom/pagedResult';
+
 
 @Injectable({
   providedIn: 'root'

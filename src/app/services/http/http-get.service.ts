@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '@environments/environment';
-import { PagedResult } from '@models/custom/pagedResult';
+import { PagedResult } from '../../models/custom/pagedResult';
 
 @Injectable({
   providedIn: 'root'

@@ -1,13 +1,13 @@
 import { AfterContentInit, Component, inject, input, output, signal } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { environment } from '@environments/environment';
-import { ProductSearch } from '@models/requestParams/productSearch';
 import { ModalsService } from '@services/modals.service';
 import { bounce } from '@shared/animations/bounce';
 import { fadeInOut } from '@shared/animations/fadeInOut';
 import { MaterialModule } from '@shared/modules/material.module';
 import { WarehouseStore } from '@store/warehouse.store';
 import { debounceTime, lastValueFrom, merge } from 'rxjs';
+import { ProductSearch } from '../../../models/requestParams/productSearch';
 
 @Component({
   selector: 'app-product-filters',
