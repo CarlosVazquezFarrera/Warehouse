@@ -1,7 +1,7 @@
 import { AfterContentInit, Component, inject, input, output, signal } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { environment } from '@environments/environment';
-import { ProductSearch } from '@models/requestParams/productSearch';
+import { ProductParams } from '@models/requestParams/productParams';
 import { ModalsService } from '@services/modals.service';
 import { bounce } from '@shared/animations/bounce';
 import { fadeInOut } from '@shared/animations/fadeInOut';
@@ -23,7 +23,7 @@ export class ProductFiltersComponent implements AfterContentInit {
   public store = inject(WarehouseStore);
   private modalsService = inject(ModalsService);
 
-  private filtersApplied!: ProductSearch;
+  private filtersApplied!: ProductParams;
 
   public form = this.fb.group({
     search: [null],
@@ -36,7 +36,7 @@ export class ProductFiltersComponent implements AfterContentInit {
 
   public showFiltersButton = input<boolean>(true);
   public showScanButton = input<boolean>(true);
-  public filtersHasChanged = output<ProductSearch>();
+  public filtersHasChanged = output<ProductParams>();
 
 
   //#endregion

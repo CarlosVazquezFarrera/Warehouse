@@ -7,7 +7,7 @@ import { CompleteStockPipe } from '@shared/pipes/complete-stock.pipe';
 import { CommonModule } from '@angular/common';
 import { ProductFiltersComponent } from '@shared/components/product-filters/product-filters.component';
 import { WarehouseStore } from '@store/warehouse.store';
-import { ProductSearch } from '@models/requestParams/productSearch';
+import { ProductParams } from '@models/requestParams/productParams';
 
 @Component({
   selector: 'app-inventory',
@@ -47,7 +47,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.store.setSelectedProduct(product);
     this.modalsService.open('movements');
   }
-  public filtersHasChanged(filters: ProductSearch): void {
+  public filtersHasChanged(filters: ProductParams): void {
     this.store.setProductFilter(filters);
     this.store.searchProducts(1)
   }

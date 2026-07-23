@@ -4,7 +4,6 @@ import { SessionService } from "@services/session.service";
 import { initialState, WarehouseState } from "./initial-state";
 import { ProductFormatService } from "@services/http/product-format.service";
 import { ProductService } from "@services/http/product.service";
-import { ProductSearch } from "@models/requestParams/productSearch";
 import { PresentationService } from "@services/http/presentation.service";
 import { DepartmentService } from "@services/http/department.service";
 import { ProductDto } from "@models/Dto/productDto";
@@ -18,6 +17,9 @@ import { EgressService } from "@services/http/egress.service";
 import { Egress } from "@models/types/egress";
 import { EntryService } from "@services/http/entry.service";
 import { Entry } from "@models/types/entry";
+import { ProductParams } from "@models/requestParams/productParams";
+import { ActivityEngressParams } from "@models/requestParams/activityEngressParams";
+import { LedgerEgressParams } from "@models/requestParams/ledgerEgressParams";
 
 
 export const WarehouseStore = signalStore(
@@ -115,6 +117,7 @@ export const WarehouseStore = signalStore(
         patchState(store, { deparments })
       },
       //#endregion
+
       //#region Egress
       async createListEgress(listEgress: Egress[]) {
         const processedList = await egressService.createList(listEgress);
@@ -136,6 +139,16 @@ export const WarehouseStore = signalStore(
             data: updatedProducts
           }
         });
+      },
+      async searchEgresses(pageNumber?: number) {
+        patchState(store, { isLoading: true });
+        const pagesEgresses = await egressService.search(store.activityFilters(), pageNumber, store.activityPagedSize());
+        patchState(store, { pagesEgresses }, { isLoading: false });
+      },
+      async getTotalUnitRemoved(pageNumber?: number) {
+        patchState(store, { isLoading: true });
+        const ledgerEgressMovement = await egressService.totalUnitRemoved(store.ledgerEgressFilter(), pageNumber, store.ledgerEgressMovementPageSize());
+        patchState(store, { ledgerEgressMovement }, { isLoading: false });
       },
       //#endregion
 
@@ -180,13 +193,13 @@ export const WarehouseStore = signalStore(
       cleanProductFilter() {
         patchState(store, { filtersProduct: {} });
       },
-      setProductFilter(filters: ProductSearch) {
+      setProductFilter(filters: ProductParams) {
         patchState(store, { filtersProduct: filters });
       },
       cleanSelectProductFilter() {
         patchState(store, { filtersSelectProduct: {} });
       },
-      setSelectProductFilter(filters: ProductSearch) {
+      setSelectProductFilter(filters: ProductParams) {
         patchState(store, { filtersSelectProduct: filters });
       },
       resetScannedProduct() {
@@ -207,15 +220,38 @@ export const WarehouseStore = signalStore(
           lastProductAdded: null,
           lastProductRemoved: null,
         });
+      },
+      setActivityFilters(filters?: ActivityEngressParams) {
+        patchState(store, { activityFilters: filters });
+      },
+      setActivityPagedSize(size: number) {
+        patchState(store, { activityPagedSize: size });
+      },
+      clearActivityFilters() {
+        patchState(store, { activityFilters: {} });
+      },
+      clearActivityPagedSize() {
+        patchState(store, { activityPagedSize: environment.pagination.defaultPageSize });
+      },
+      setLedgerPageSize(size: number) {
+        patchState(store, { ledgerEgressMovementPageSize: size });
+      },
+      setLedgerFilter(filters: LedgerEgressParams) {
+        patchState(store, { ledgerEgressFilter: filters });
+      },
+      clearLedgerPageSize() {
+        patchState(store, { ledgerEgressMovementPageSize: environment.pagination.defaultPageSize });
       }
     })
   ),
-  withComputed(({ agent, pagedProducts, selectedProductId, scannedProduct, selectpagedProducts, selectedProductIds }) => ({
+  withComputed(({ agent, pagedProducts, selectedProductId, scannedProduct, selectpagedProducts, selectedProductIds, pagesEgresses, ledgerEgressMovement }) => ({
     fullName: computed(() => `${agent().name} ${agent().lastName}`),
     productsHaveData: computed(() => pagedProducts.data().length > 0),
     selectProductsHaveData: computed(() => selectpagedProducts.data().length > 0),
     selectedProduct: computed(() => pagedProducts.data().find(p => p.id == selectedProductId())),
     thereIsNotScannedProduct: computed(() => scannedProduct() === ''),
-    thereAreSelectedProducts: computed(() => selectedProductIds().size > 0)
+    thereAreSelectedProducts: computed(() => selectedProductIds().size > 0),
+    agressesHaveData: computed(() => pagesEgresses().data.length > 0),
+    totalEgressHaveDate: computed(() => ledgerEgressMovement().data.length > 0)
   }))
 );

@@ -1,5 +1,5 @@
 <app-header />
-<mat-drawer-container class="dasboard-container" [hasBackdrop]="true">
+<mat-drawer-container class="dashboard-container" [hasBackdrop]="true">
   <mat-drawer class="drawer" [disableClose]="true" mode="over" [opened]="store.isOpen()">
     <mat-list>
       @for (item of menuItems; track $index) {

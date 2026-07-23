@@ -7,4 +7,6 @@ export interface EgressDto extends BaseDto {
   departmentId: string;
   quantityBefore?: number;
   quantityAfter?: number;
+  productName?: string;
+  approverName?: string;
 }

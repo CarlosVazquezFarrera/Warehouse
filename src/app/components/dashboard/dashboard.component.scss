@@ -1,6 +1,6 @@
 @use 'media-queries' as mq;
 
-.dasboard-container {
+.dashboard-container {
   height: 93dvh;
 
   @include mq.md() {
@@ -33,15 +33,19 @@
   }
 
   .main {
+    height: 100%;
     .app-container {
+      height: 100%;
+      box-sizing: border-box;
       margin-right: auto;
       margin-left: auto;
       padding: 1%;
-      // padding: 15px 0;
       width: 90%;
+
       @include mq.md() {
         width: 85%;
       }
+
       @include mq.lg() {
         width: 70%;
       }

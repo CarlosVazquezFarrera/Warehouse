@@ -18,7 +18,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [],
@@ -42,7 +42,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatExpansionModule,
     MatListModule,
     MatCheckboxModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDatepickerModule
   ],
   exports: [
     FormsModule,
@@ -63,7 +64,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatExpansionModule,
     MatListModule,
     MatCheckboxModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDatepickerModule
   ]
 })
 export class MaterialModule { }

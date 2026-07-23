@@ -14,6 +14,7 @@ export const routes: Routes = [
       { path: `${AppRoutes.dashboard.children.inventory}/:idSupply/:idAirport`, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.inventory, loadComponent: () => import('@components/dashboard/modules/inventory/inventory.component').then(i => i.InventoryComponent) },
       { path: AppRoutes.dashboard.children.products, loadComponent: () => import('@components/dashboard/modules/products/products.component').then(a => a.ProductsComponent) },
+      { path: AppRoutes.dashboard.children.egress, loadComponent: () => import('@components/dashboard/modules/egress/egress.component').then(a => a.EgressComponent) },
       { path: '', redirectTo: AppRoutes.dashboard.children.inventory, pathMatch: 'full' }
 
     ]

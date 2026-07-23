@@ -1,5 +1,4 @@
-import { DecimalPipe } from '@angular/common';
-import { inject, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { ProductDto } from '@models/Dto/productDto';
 
 @Pipe({

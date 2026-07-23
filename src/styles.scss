@@ -125,9 +125,44 @@ table {
   margin-top: 3%;
 }
 
+.egress-children-body {
+  margin-top: 3%;
+  padding: 0 5% 10% 5%;
+
+  .table-header-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5%;
+  }
+}
+
 .mat-elevation-z8 {
+  background-color: white;
+
   .content {
-    overflow-x: auto;
+    height: 50dvh;
+
+    @include mq.sm() {
+      height: 58dvh;
+    }
+
+    @include mq.md() {
+      height: 60dvh;
+    }
+
+    @include mq.lg() {
+      height: 55dvh;
+    }
+
+    @include mq.xl() {
+      height: 50dvh;
+    }
+
+    overflow: auto;
+
+    table {
+      width: 100%;
+    }
   }
 
   margin-bottom: 2%;
@@ -156,4 +191,9 @@ table {
 
 span.supplierPart {
   font-weight: bold;
+}
+
+
+.tab-icon {
+  margin-right: 8px;
 }

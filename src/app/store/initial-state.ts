@@ -2,13 +2,17 @@ import { inject, InjectionToken } from "@angular/core";
 import { environment } from "@environments/environment";
 import { PagedResult } from "@models/custom/pagedResult";
 import { SelectableProduct } from "@models/custom/selectableProduct";
+import { TotalEgressMovementDto } from "@models/Dto/totalEgressMovementDto";
 import { AgentDto } from "@models/Dto/agentDto";
 import { DepartmentDto } from "@models/Dto/departmentDto";
+import { EgressDto } from "@models/Dto/egressDto";
 import { PackagingTypeDto } from "@models/Dto/packagingTypeDto";
 import { PresentationDto } from "@models/Dto/presentationDto";
 import { ProductDto } from "@models/Dto/productDto";
 import { ProductFormatDto } from "@models/Dto/productFormatDto";
-import { ProductSearch } from "@models/requestParams/productSearch";
+import { ActivityEngressParams } from "@models/requestParams/activityEngressParams";
+import { LedgerEgressParams } from "@models/requestParams/ledgerEgressParams";
+import { ProductParams } from "@models/requestParams/productParams";
 import { SessionService } from "@services/session.service";
 
 type Warehouse = {
@@ -25,33 +29,48 @@ type Warehouse = {
   productsPageSize: number,
   selectProductsPageSize: number,
   scannedProduct: string,
-  filtersProduct: ProductSearch,
-  filtersSelectProduct: ProductSearch,
+  filtersProduct: ProductParams,
+  filtersSelectProduct: ProductParams,
   presentations: PresentationDto[],
   deparments: DepartmentDto[],
   selectedProductIds: Set<string>,
   lastProductAdded: ProductDto | null,
   lastProductRemoved: ProductDto | null,
+  pagesEgresses: PagedResult<EgressDto>,
+  activityPagedSize: number,
+  activityFilters: ActivityEngressParams | null,
+  ledgerEgressMovement: PagedResult<TotalEgressMovementDto>,
+  ledgerEgressMovementPageSize: number,
+  ledgerEgressFilter: LedgerEgressParams | null
+}
+
+const pagedInitialState = {
+  page: 0,
+  pageSize: 0,
+  totalCount: 0,
+  totalPages: 0,
+  hasPreviousPage: false,
+  hasNextPage: false
 }
 
 const initialPagedProducts: PagedResult<ProductDto> = {
   data: [],
-  page: 0,
-  pageSize: 0,
-  totalCount: 0,
-  totalPages: 0,
-  hasPreviousPage: false,
-  hasNextPage: false
+  ...pagedInitialState
+}
+
+const initialPagedEgresses: PagedResult<EgressDto> = {
+  data: [],
+  ...pagedInitialState
 }
 
 const initialSelectableProduct: PagedResult<SelectableProduct> = {
   data: [],
-  page: 0,
-  pageSize: 0,
-  totalCount: 0,
-  totalPages: 0,
-  hasPreviousPage: false,
-  hasNextPage: false
+  ...pagedInitialState
+}
+
+const initialTotalEgressMovement: PagedResult<TotalEgressMovementDto> = {
+  data: [],
+  ...pagedInitialState
 }
 export const initialState: Warehouse = {
   isOpen: false,
@@ -72,6 +91,7 @@ export const initialState: Warehouse = {
   productFormats: [],
   categories: [],
   pagedProducts: initialPagedProducts,
+  pagesEgresses: initialPagedEgresses,
   selectpagedProducts: initialSelectableProduct,
   selectedProductId: "",
   productsPageSize: environment.pagination.defaultPageSize,
@@ -84,6 +104,11 @@ export const initialState: Warehouse = {
   selectedProductIds: new Set(),
   lastProductAdded: null,
   lastProductRemoved: null,
+  activityPagedSize: environment.pagination.defaultPageSize,
+  activityFilters: null,
+  ledgerEgressMovement: initialTotalEgressMovement,
+  ledgerEgressMovementPageSize: environment.pagination.defaultPageSize,
+  ledgerEgressFilter: null
 };
 
 export const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
@@ -100,6 +125,7 @@ export const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
         productFormats: [],
         categories: [],
         pagedProducts: initialPagedProducts,
+        pagesEgresses: initialPagedEgresses,
         selectpagedProducts: initialSelectableProduct,
         selectedProductId: "",
         productsPageSize: initialState.productsPageSize,
@@ -111,7 +137,12 @@ export const WarehouseState = new InjectionToken<Warehouse>('Warehouse', {
         deparments: [],
         selectedProductIds: new Set(),
         lastProductAdded: null,
-        lastProductRemoved: null
+        lastProductRemoved: null,
+        activityPagedSize: environment.pagination.defaultPageSize,
+        activityFilters: null,
+        ledgerEgressMovement: initialTotalEgressMovement,
+        ledgerEgressMovementPageSize: environment.pagination.defaultPageSize,
+        ledgerEgressFilter: null
       }
       return loggedInState;
     }

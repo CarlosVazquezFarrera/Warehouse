@@ -1,7 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { environment } from '@environments/environment';
-import { ProductSearch } from '@models/requestParams/productSearch';
+import { ProductParams } from '@models/requestParams/productParams';
 import { ModalsService } from '@services/modals.service';
 import { NoDataComponent } from '@shared/components/no-data/no-data.component';
 import { ProductFiltersComponent } from '@shared/components/product-filters/product-filters.component';
@@ -40,7 +39,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.store.cleanProductPageSize();
     this.store.cleanProductFilter();
   }
-  public filtersHasChanged(filters: ProductSearch): void {
+  public filtersHasChanged(filters: ProductParams): void {
     this.store.setProductFilter(filters)
     this.store.searchProducts(1)
   }

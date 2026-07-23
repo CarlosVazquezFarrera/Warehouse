@@ -1,0 +1,28 @@
+<mat-tab-group dynamicHeight animationDuration="0">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">history</mat-icon>
+      Activity
+    </ng-template>
+    <ng-template matTabContent>
+      <section class="egress-children-body">
+        <app-activity />
+      </section>
+    </ng-template>
+
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">business_center</mat-icon>
+      Ledger
+    </ng-template>
+    <ng-template matTabContent>
+      <section class="egress-children-body">
+        <app-ledger />
+      </section>
+    </ng-template>
+
+  </mat-tab>
+
+</mat-tab-group>

@@ -22,7 +22,10 @@ export class DashboardComponent {
   public store = inject(WarehouseStore);
 
   public menuItems: Array<DashboardItem> = [
-    { url: getChildRoutePath("dashboard", "inventory"), icon: 'inventory', text: 'Inventory'},
-    { url: getChildRoutePath("dashboard", "products"), icon: 'list', text: 'Products'},
+    { url: getChildRoutePath("dashboard", "inventory"), icon: 'inventory', text: 'Inventory' },
+    { url: getChildRoutePath("dashboard", "products"), icon: 'list', text: 'Product' },
+    // { url: getChildRoutePath("dashboard", "entry"), icon: 'insert_chart', text: 'Entry' },
+    { url: getChildRoutePath("dashboard", "egress"), icon: 'bar_chart', text: 'Egress' },
+
   ]
 }

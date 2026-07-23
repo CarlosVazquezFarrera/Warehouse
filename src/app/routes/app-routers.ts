@@ -1,5 +1,5 @@
 type Parents = 'dashboard';
-type DashboardChildren = 'inventory' | 'products';
+type DashboardChildren = 'inventory' | 'products' | 'egress' | 'entry';
 const dashboard: string = 'dashboard';
 export const AppRoutes = {
   login: 'login',
@@ -7,7 +7,9 @@ export const AppRoutes = {
     path: 'dashboard',
     children: {
       inventory: 'inventory',
-      products: 'products'
+      products: 'products',
+      egress: 'egress',
+      entry: 'entry'
     } as Record<DashboardChildren, string>
   }
 }
