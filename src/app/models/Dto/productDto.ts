@@ -15,4 +15,5 @@ export interface ProductDto extends BaseDto {
   presentationName?: string;
   categoryId: string;
   categoryName?: string;
+  type?: number;
 }

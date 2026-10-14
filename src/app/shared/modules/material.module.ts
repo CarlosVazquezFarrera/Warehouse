@@ -19,7 +19,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   declarations: [],
   imports: [
@@ -43,7 +43,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatListModule,
     MatCheckboxModule,
     MatMenuModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSlideToggleModule
   ],
   exports: [
     FormsModule,
@@ -65,7 +66,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatListModule,
     MatCheckboxModule,
     MatMenuModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule { }

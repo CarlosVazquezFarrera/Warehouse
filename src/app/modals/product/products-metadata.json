@@ -13,6 +13,10 @@
         },
         "name": {
             "required": "Name is required"
+        },
+        "stock": {
+            "required": "Stock is required",
+            "min": "Must be at least one"
         }
     }
 }

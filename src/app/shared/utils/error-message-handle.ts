@@ -13,6 +13,7 @@ export function ErrorMessageHandle(control: AbstractControl, signal: WritableSig
 }
 
 function createErrorMessage(control: AbstractControl, json: JsonType): string {
+  console.log('control.errors', control.errors);
   if (!control.errors) return '';
 
   const errors = Object.keys(control.errors as object);

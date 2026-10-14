@@ -71,9 +71,12 @@
       </section>
     </section>
     @if (!store.selectedProduct()) {
+    <mat-slide-toggle formControlName="customStock" color="primary" class="custom-stock">Custom Initial Stock</mat-slide-toggle>
+
     <mat-form-field class="w-100">
       <mat-label>Stock</mat-label>
       <input matInput placeholder="Total elements" type="number" formControlName="stock">
+      <mat-error>{{errorStock()}}</mat-error>
     </mat-form-field>
     }
   </form>
