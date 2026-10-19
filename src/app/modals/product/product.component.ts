@@ -102,15 +102,12 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   public async save(): Promise<void> {
     if (this.form.invalid) return;
-    console.log('this.product', this.newProduct);
-
     await this.store.createProduct(this.newProduct);
     this.modalService.close();
   }
 
   public async update(): Promise<void> {
     if (this.form.invalid) return;
-    console.log('this.product', this.product);
     await this.store.updateProduct(this.product);
     this.modalService.close();
   }
