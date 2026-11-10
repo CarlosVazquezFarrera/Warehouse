@@ -1,0 +1,8 @@
+{
+  "name": "airportwarehouse",
+  "compatibility_date": "2026-11-09",
+  "assets": {
+    "directory": "./dist/warehouse/browser",
+    "not_found_handling": "single-page-application"
+  }
+}
