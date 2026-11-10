@@ -10,11 +10,10 @@ import { SessionService } from '@services/session.service';
 import { ModalsService } from '@services/modals.service';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   public store = inject(WarehouseStore);

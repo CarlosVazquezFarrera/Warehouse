@@ -10,12 +10,11 @@ import { WarehouseStore } from '@store/warehouse.store';
 import { debounceTime, lastValueFrom, merge } from 'rxjs';
 
 @Component({
-  selector: 'app-product-filters',
-  standalone: true,
-  animations: [fadeInOut, bounce],
-  imports: [MaterialModule],
-  templateUrl: './product-filters.component.html',
-  styleUrl: './product-filters.component.scss'
+    selector: 'app-product-filters',
+    animations: [fadeInOut, bounce],
+    imports: [MaterialModule],
+    templateUrl: './product-filters.component.html',
+    styleUrl: './product-filters.component.scss'
 })
 export class ProductFiltersComponent implements AfterContentInit {
   //#region Properties

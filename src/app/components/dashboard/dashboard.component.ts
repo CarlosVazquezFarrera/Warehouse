@@ -10,11 +10,10 @@ import { DashboardItem } from '@models/custom/dashBoardItem';
 import { getChildRoutePath } from '@routes/app-routers';
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [MatSidenavModule, HeaderComponent, RouterOutlet, MatListModule, MatIconModule, SidebarItemComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+    selector: 'app-dashboard',
+    imports: [MatSidenavModule, HeaderComponent, RouterOutlet, MatListModule, MatIconModule, SidebarItemComponent],
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
   constructor() {

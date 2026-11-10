@@ -4,11 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
 import { MessageParams } from '../../models/custom/messageParams';
 
 @Component({
-  selector: 'app-message',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
-  templateUrl: './message.component.html',
-  styleUrl: './message.component.scss'
+    selector: 'app-message',
+    imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
+    templateUrl: './message.component.html',
+    styleUrl: './message.component.scss'
 })
 export class MessageComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: MessageParams) {

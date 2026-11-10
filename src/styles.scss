@@ -141,6 +141,8 @@ table {
 
   .content {
     height: 50dvh;
+    overflow: auto;
+    margin-bottom: 2%;
 
     @include mq.sm() {
       height: 58dvh;
@@ -158,14 +160,11 @@ table {
       height: 50dvh;
     }
 
-    overflow: auto;
-
     table {
       width: 100%;
     }
   }
 
-  margin-bottom: 2%;
 }
 
 .px-3 {

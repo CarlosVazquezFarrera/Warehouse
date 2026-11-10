@@ -5,20 +5,19 @@ import { MaterialModule } from '@shared/modules/material.module';
 import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-debounce-time-search-field',
-  standalone: true,
-  imports: [
-    MaterialModule
-  ],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DebounceTimeSearchFieldComponent),
-      multi: true,
-    },
-  ],
-  templateUrl: './debounce-time-search-field.component.html',
-  styleUrl: './debounce-time-search-field.component.scss'
+    selector: 'app-debounce-time-search-field',
+    imports: [
+        MaterialModule
+    ],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => DebounceTimeSearchFieldComponent),
+            multi: true,
+        },
+    ],
+    templateUrl: './debounce-time-search-field.component.html',
+    styleUrl: './debounce-time-search-field.component.scss'
 })
 export class DebounceTimeSearchFieldComponent implements ControlValueAccessor, OnDestroy {
   placeholder = input<string>('Type');

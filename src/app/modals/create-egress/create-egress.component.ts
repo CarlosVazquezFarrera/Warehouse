@@ -17,22 +17,21 @@ import { environment } from '@environments/environment';
 
 
 @Component({
-  selector: 'app-create-egress',
-  standalone: true,
-  providers: [
-    {
-      provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { showError: true },
-    },
-  ],
-  imports: [
-    ModalHeaderComponent,
-    MaterialModule,
-    AutoCompleteFieldComponent,
-    DatePipe
-  ],
-  templateUrl: './create-egress.component.html',
-  styleUrl: './create-egress.component.scss'
+    selector: 'app-create-egress',
+    providers: [
+        {
+            provide: STEPPER_GLOBAL_OPTIONS,
+            useValue: { showError: true },
+        },
+    ],
+    imports: [
+        ModalHeaderComponent,
+        MaterialModule,
+        AutoCompleteFieldComponent,
+        DatePipe
+    ],
+    templateUrl: './create-egress.component.html',
+    styleUrl: './create-egress.component.scss'
 })
 export class CreateEgressComponent implements OnInit, OnDestroy {
   constructor() {

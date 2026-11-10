@@ -12,14 +12,13 @@ import { ProductDto } from '@models/Dto/productDto';
 import { Product } from '@models/types/product';
 
 @Component({
-  selector: 'app-products',
-  standalone: true,
-  imports: [
-    FormModule,
-    MaterialModule,
-  ],
-  templateUrl: './product.component.html',
-  styleUrl: './product.component.scss'
+    selector: 'app-products',
+    imports: [
+        FormModule,
+        MaterialModule,
+    ],
+    templateUrl: './product.component.html',
+    styleUrl: './product.component.scss'
 })
 export class ProductComponent implements OnInit, OnDestroy {
   constructor() {

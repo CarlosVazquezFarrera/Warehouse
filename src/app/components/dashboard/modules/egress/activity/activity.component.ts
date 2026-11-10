@@ -14,15 +14,14 @@ import { EgressDto } from '@models/Dto/egressDto';
 import { formatDateToUSA } from '@shared/helper/date';
 
 @Component({
-  selector: 'app-activity',
-  standalone: true,
-  imports: [
-    MaterialModule,
-    NoDataComponent,
-    CustomDatePipe
-  ],
-  templateUrl: './activity.component.html',
-  styleUrl: './activity.component.scss'
+    selector: 'app-activity',
+    imports: [
+        MaterialModule,
+        NoDataComponent,
+        CustomDatePipe
+    ],
+    templateUrl: './activity.component.html',
+    styleUrl: './activity.component.scss'
 })
 export class ActivityComponent implements OnInit {
 

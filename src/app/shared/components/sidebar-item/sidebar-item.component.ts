@@ -7,11 +7,10 @@ import { WarehouseStore } from '@store/warehouse.store';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-sidebar-item',
-  standalone: true,
-  imports: [MatDividerModule, MatIconModule, MatButtonModule, MatListModule, RouterModule],
-  templateUrl: './sidebar-item.component.html',
-  styleUrl: './sidebar-item.component.scss'
+    selector: 'app-sidebar-item',
+    imports: [MatDividerModule, MatIconModule, MatButtonModule, MatListModule, RouterModule],
+    templateUrl: './sidebar-item.component.html',
+    styleUrl: './sidebar-item.component.scss'
 })
 export class SidebarItemComponent {
   private store = inject(WarehouseStore);

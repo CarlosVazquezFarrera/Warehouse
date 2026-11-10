@@ -10,17 +10,16 @@ import { WarehouseStore } from '@store/warehouse.store';
 import { ProductParams } from '@models/requestParams/productParams';
 
 @Component({
-  selector: 'app-inventory',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    NoDataComponent,
-    CompleteStockPipe,
-    ProductFiltersComponent
-  ],
-  templateUrl: './inventory.component.html',
-  styleUrl: './inventory.component.scss'
+    selector: 'app-inventory',
+    imports: [
+        CommonModule,
+        MaterialModule,
+        NoDataComponent,
+        CompleteStockPipe,
+        ProductFiltersComponent
+    ],
+    templateUrl: './inventory.component.html',
+    styleUrl: './inventory.component.scss'
 })
 export class InventoryComponent implements OnInit, OnDestroy {
   //#region Methods

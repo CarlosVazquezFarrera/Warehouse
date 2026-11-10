@@ -8,15 +8,14 @@ import { MaterialModule } from '@shared/modules/material.module';
 import { WarehouseStore } from '@store/warehouse.store';
 
 @Component({
-  selector: 'app-products',
-  standalone: true,
-  imports: [
-    MaterialModule,
-    NoDataComponent,
-    ProductFiltersComponent
-  ],
-  templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+    selector: 'app-products',
+    imports: [
+        MaterialModule,
+        NoDataComponent,
+        ProductFiltersComponent
+    ],
+    templateUrl: './products.component.html',
+    styleUrl: './products.component.scss'
 })
 export class ProductsComponent implements OnInit, OnDestroy {
   //#region Properties

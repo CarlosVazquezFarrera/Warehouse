@@ -27,18 +27,17 @@ const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-ledger',
-  standalone: true,
-  imports: [
-    NoDataComponent,
-    MaterialModule,
-    DecimalPipe
-  ],
-  providers: [
-    provideMomentDateAdapter(MY_FORMATS),
-  ],
-  templateUrl: './ledger.component.html',
-  styleUrl: './ledger.component.scss'
+    selector: 'app-ledger',
+    imports: [
+        NoDataComponent,
+        MaterialModule,
+        DecimalPipe
+    ],
+    providers: [
+        provideMomentDateAdapter(MY_FORMATS),
+    ],
+    templateUrl: './ledger.component.html',
+    styleUrl: './ledger.component.scss'
 })
 export class LedgerComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);

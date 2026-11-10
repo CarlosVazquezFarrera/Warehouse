@@ -12,18 +12,17 @@ import { EntryPipe } from '@shared/pipes/entry.pipe';
 import { Entry } from '@models/types/entry';
 
 @Component({
-  selector: 'app-entry',
-  standalone: true,
-  imports: [
-    FormModule,
-    MaterialModule,
-    DatePipe,
-    EntryPipe,
-    ReactiveFormsModule,
-    DecimalPipe
-  ],
-  templateUrl: './entry.component.html',
-  styleUrl: './entry.component.scss'
+    selector: 'app-entry',
+    imports: [
+        FormModule,
+        MaterialModule,
+        DatePipe,
+        EntryPipe,
+        ReactiveFormsModule,
+        DecimalPipe
+    ],
+    templateUrl: './entry.component.html',
+    styleUrl: './entry.component.scss'
 })
 export class EntryComponent {
   constructor() {

@@ -6,15 +6,15 @@ import { FormModule } from '@shared/modules/form.module';
 import { WarehouseStore } from '@store/warehouse.store';
 
 @Component({
-  selector: 'app-movements',
-  standalone: true,
-  imports: [
-    FormModule,
-    MaterialModule,
-    QrComponent,
-    EntryComponent],
-  templateUrl: './movements.component.html',
-  styleUrl: './movements.component.scss'
+    selector: 'app-movements',
+    imports: [
+        FormModule,
+        MaterialModule,
+        QrComponent,
+        EntryComponent
+    ],
+    templateUrl: './movements.component.html',
+    styleUrl: './movements.component.scss'
 })
 export class MovementsComponent implements OnDestroy {
   ngOnDestroy(): void {

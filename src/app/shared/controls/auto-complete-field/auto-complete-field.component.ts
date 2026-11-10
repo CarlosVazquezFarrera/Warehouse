@@ -11,26 +11,25 @@ import { JsonType } from '@shared/utils/error-message-handle';
 export type typeField = 'text' | 'number'
 
 @Component({
-  selector: 'app-auto-complete-field',
-  standalone: true,
-  imports: [
-    MatInputModule,
-    MatAutocompleteModule,
-    AsyncPipe,
-    FormsModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    MatButtonModule
-  ],
-  templateUrl: './auto-complete-field.component.html',
-  styleUrl: './auto-complete-field.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AutoCompleteFieldComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-auto-complete-field',
+    imports: [
+        MatInputModule,
+        MatAutocompleteModule,
+        AsyncPipe,
+        FormsModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatButtonModule
+    ],
+    templateUrl: './auto-complete-field.component.html',
+    styleUrl: './auto-complete-field.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => AutoCompleteFieldComponent),
+            multi: true
+        }
+    ]
 })
 
 export class AutoCompleteFieldComponent implements ControlValueAccessor, OnChanges, OnInit {

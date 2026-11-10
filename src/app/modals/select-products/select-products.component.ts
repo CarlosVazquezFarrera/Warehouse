@@ -10,15 +10,14 @@ import { MaterialModule } from '@shared/modules/material.module';
 import { WarehouseStore } from '@store/warehouse.store';
 
 @Component({
-  selector: 'app-select-products',
-  standalone: true,
-  imports: [
-    MaterialModule,
-    DebounceTimeSearchFieldComponent,
-    NoDataComponent
-  ],
-  templateUrl: './select-products.component.html',
-  styleUrl: './select-products.component.scss'
+    selector: 'app-select-products',
+    imports: [
+        MaterialModule,
+        DebounceTimeSearchFieldComponent,
+        NoDataComponent
+    ],
+    templateUrl: './select-products.component.html',
+    styleUrl: './select-products.component.scss'
 })
 export class SelectProductsComponent implements OnInit, OnDestroy {
   public store = inject(WarehouseStore);

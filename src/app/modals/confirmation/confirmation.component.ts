@@ -5,11 +5,10 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MessageParams } from '../../models/custom/messageParams';
 
 @Component({
-  selector: 'app-confirmation',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatDividerModule],
-  templateUrl: './confirmation.component.html',
-  styleUrl: './confirmation.component.scss'
+    selector: 'app-confirmation',
+    imports: [MatDialogModule, MatButtonModule, MatDividerModule],
+    templateUrl: './confirmation.component.html',
+    styleUrl: './confirmation.component.scss'
 })
 export class ConfirmationComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: MessageParams) {

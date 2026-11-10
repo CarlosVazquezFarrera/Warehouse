@@ -8,12 +8,11 @@ import * as json from './qr-metadata.json';
 import { WarehouseStore } from '@store/warehouse.store';
 
 @Component({
-  selector: 'app-qr-scanner',
-  standalone: true,
-  imports: [ModalHeaderComponent, MatDialogModule, QrReaderComponent],
-  templateUrl: './qr-scanner.component.html',
-  styleUrl: './qr-scanner.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-qr-scanner',
+    imports: [ModalHeaderComponent, MatDialogModule, QrReaderComponent],
+    templateUrl: './qr-scanner.component.html',
+    styleUrl: './qr-scanner.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QrScannerComponent implements OnInit {
 
